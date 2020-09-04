@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 // Shader paths
-#define SHADER_PATH_VERTEX "VertexShader.vert"
-#define SHADER_PATH_FRAGMENT "FragmentShader.frag"
+#define SHADER_PATH_VERTEX "Shaders/VertexShader.vert"
+#define SHADER_PATH_FRAGMENT "Shaders/FragmentShader.frag"
 
 // Exceptions messages
 #define EXCEPTION_MSG_INIT "Error while initializing program"

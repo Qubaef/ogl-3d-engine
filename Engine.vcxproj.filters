@@ -50,14 +50,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="FragmentShader.frag">
-      <Filter>Pliki źródłowe\Shaders</Filter>
-    </None>
-    <None Include="VertexShader.vert">
-      <Filter>Pliki źródłowe\Shaders</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="CameraController.hpp">
       <Filter>Pliki nagłówkowe\Classes</Filter>
     </ClInclude>
@@ -76,5 +68,13 @@
     <ClInclude Include="InitializationException.hpp">
       <Filter>Pliki nagłówkowe\Exceptions</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\FragmentShader.frag">
+      <Filter>Pliki źródłowe\Shaders</Filter>
+    </None>
+    <None Include="Shaders\VertexShader.vert">
+      <Filter>Pliki źródłowe\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

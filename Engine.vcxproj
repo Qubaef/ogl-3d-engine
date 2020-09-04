@@ -136,16 +136,16 @@
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FragmentShader.frag" />
-    <None Include="VertexShader.vert" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="CameraController.hpp" />
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="Includes.hpp" />
     <ClInclude Include="InitializationException.hpp" />
     <ClInclude Include="Shader.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\FragmentShader.frag" />
+    <None Include="Shaders\VertexShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
