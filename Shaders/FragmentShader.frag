@@ -33,7 +33,7 @@ void main(){
 	// Ambient
 	vec3 ambient_light = light.ambient * material.ambient;
 	// Diffuse
-	vec3 diffuse_light = light.diffuse * material.diffuse * max(dot(normalize(normal), normalize(-light.direction)), 0.0) ;
+	vec3 diffuse_light = light.diffuse * material.diffuse * max(dot(normalize(normal), normalize(light.direction)), 0.0) ;
 
 	// Specular
 	vec3 view_direction = normalize(view_pos - frag_pos);

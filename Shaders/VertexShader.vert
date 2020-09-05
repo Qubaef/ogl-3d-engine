@@ -6,6 +6,7 @@ layout(location = 1) in vec3 vertexNormal_modelspace;
 uniform mat4 MVP;
 uniform mat4 V;
 uniform mat4 M;
+uniform mat3 M_inverted;
 
 out vec3 normal;
 out vec3 frag_pos;
@@ -18,6 +19,8 @@ void main() {
 
 	// Calculate data for fragment shader
 	frag_pos = vec3(M * vec4(vertexPosition_modelspace, 1.0));
-	normal = mat3(transpose(inverse(M))) * vertexNormal_modelspace;
+
+	normal = M_inverted * vertexNormal_modelspace;
+
 	fragment_color = vec3(0.2f, 0.2f, 0.2f);
 }

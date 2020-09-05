@@ -58,8 +58,11 @@ private:
 	// Process user's input
 	void process_input();
 
-	// track time per frame and print status to Console
+	// Track time per frame and print status to Console
 	void track_time_per_frame();
+
+	// Check for ogl errors
+	bool check_errors(const char* location);
 
 public:
 	Engine();

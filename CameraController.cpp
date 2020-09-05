@@ -152,6 +152,7 @@ mat4* CameraController::getMVPMatrix()
 	return &MVP;
 }
 
+
 vec3& CameraController::getPosition()
 {
 	return cameraPosition;

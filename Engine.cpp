@@ -177,6 +177,33 @@ void Engine::track_time_per_frame()
 }
 
 
+bool Engine::check_errors(const char* location)
+{
+	GLenum errorCode;
+	bool result = false;
+
+	while ((errorCode = glGetError()) != GL_NO_ERROR)
+	{
+		std::string error;
+		switch (errorCode)
+		{
+		case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
+		case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
+		case GL_INVALID_OPERATION:             error = "INVALID_OPERATION"; break;
+		case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
+		case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
+		case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
+		case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
+		}
+		printf_s("%s error in %s\n", error.c_str(), location);
+		result = true;
+	}
+
+	return result;
+}
+
+
+
 Engine::Engine()
 {
 	// Initialize engine components
@@ -219,12 +246,12 @@ int Engine::run()
 	shader_lighting->set_vec3("light.ambient", vec3(0.2f, 0.2f, 0.2f));
 	shader_lighting->set_vec3("light.diffuse", vec3(0.5f, 0.5f, 0.5f));
 	shader_lighting->set_vec3("light.specular", vec3(1.f, 1.f, 1.f));
-	shader_lighting->set_vec3("light.direction", vec3(-0.2f, -1.0f, -0.3f));
+	shader_lighting->set_vec3("light.direction", vec3(-1.f, -1.0f, -1.f));
 
-	shader_lighting->set_vec3("material.ambient", vec3(0.01f, 0.03f, 0.01f));
-	shader_lighting->set_vec3("material.diffuse", vec3(0.00f, 0.02f, 0.00f));
-	shader_lighting->set_vec3("material.specular", vec3(0.3f, 0.5f, 0.3f));
-	shader_lighting->set_float("material.shininess", 32.f);
+	shader_lighting->set_vec3("material.ambient", vec3(0.24f, 0.19f, 0.07f));
+	shader_lighting->set_vec3("material.diffuse", vec3(0.75f, 0.6f, 0.22f));
+	shader_lighting->set_vec3("material.specular", vec3(0.62f, 0.55f, 0.36f));
+	shader_lighting->set_float("material.shininess", 1);
 
 	// Get a handles for our "MVP" uniform
 	GLuint MatrixID = glGetUniformLocation(shader_lighting->get_ID(), "MVP");
@@ -363,9 +390,8 @@ int Engine::run()
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(*mvp)[0][0]);
 		glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &(*V)[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &(*M)[0][0]);
+		shader_lighting->set_mat3("M_inverted", mat3(transpose(inverse(*M))));
 		shader_lighting->set_vec3("view_pos", p_controller->getPosition());
-
-		// TODO: for some reason color gets zeroed in the shader (find why and add light structure)
 
 		// Bind to vertices to perform draw operation
 		glBindVertexArray(vertices_VBO_id);
@@ -391,7 +417,7 @@ int Engine::run()
 		p_controller->updateCamera();
 
 		// check for errors
-		assert(glGetError() == GL_NO_ERROR);
+		assert(check_errors("render loop") == false);
 	}
 
 	// Cleanup VBO and shader program
