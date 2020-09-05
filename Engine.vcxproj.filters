@@ -31,6 +31,12 @@
     <Filter Include="Pliki źródłowe\Shaders">
       <UniqueIdentifier>{e21cf9f9-6634-4e1f-bfd0-87a2579bf165}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki źródłowe\Classes\Lights">
+      <UniqueIdentifier>{0b49947f-a2d7-47de-a0cc-67c8d165b680}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Classes\Lights">
+      <UniqueIdentifier>{38bcae43-6ad6-4e75-8274-c585a41650ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraController.cpp">
@@ -47,6 +53,18 @@
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Pliki źródłowe\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="LightDirectional.cpp">
+      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="LightPoint.cpp">
+      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="LightManager.cpp">
+      <Filter>Pliki źródłowe\Classes\Lights</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,12 +86,30 @@
     <ClInclude Include="InitializationException.hpp">
       <Filter>Pliki nagłówkowe\Exceptions</Filter>
     </ClInclude>
+    <ClInclude Include="Light.hpp">
+      <Filter>Pliki nagłówkowe\Classes\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="LightManager.hpp">
+      <Filter>Pliki nagłówkowe\Classes\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="LightPoint.hpp">
+      <Filter>Pliki nagłówkowe\Classes\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="LightDirectional.hpp">
+      <Filter>Pliki nagłówkowe\Classes\Lights</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\FragmentShader.frag">
       <Filter>Pliki źródłowe\Shaders</Filter>
     </None>
     <None Include="Shaders\VertexShader.vert">
+      <Filter>Pliki źródłowe\Shaders</Filter>
+    </None>
+    <None Include="Shaders\LightingFragmentShader.frag">
+      <Filter>Pliki źródłowe\Shaders</Filter>
+    </None>
+    <None Include="Shaders\LightingVertexShader.vert">
       <Filter>Pliki źródłowe\Shaders</Filter>
     </None>
   </ItemGroup>

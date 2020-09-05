@@ -2,6 +2,7 @@
 #include "Includes.hpp"
 #include "CameraController.hpp"
 #include "Shader.hpp"
+#include "LightManager.hpp"
 
 class Engine
 {
@@ -25,8 +26,11 @@ private:
 	// Pointer to CameraController
 	CameraController* p_controller = NULL;
 
+	// Light manager
+	LightManager* p_light_manager;
+
 	// Shader with classic lighting
-	Shader* shader_lighting;
+	Shader* p_lighting_shader;
 
 	// OGL objects
 	GLuint main_VAO_id;
@@ -35,9 +39,10 @@ private:
 	GLuint normals_VBO_id;
 
 
+
 	//// Methods
 
-	// Initialize GLFW library
+// Initialize GLFW library
 	bool initialize_GLFW();
 
 	// Initialize GLEW library

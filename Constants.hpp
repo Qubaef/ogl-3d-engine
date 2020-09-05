@@ -1,17 +1,22 @@
 ﻿#pragma once
 
 // Shader paths
-#define SHADER_PATH_VERTEX "Shaders/VertexShader.vert"
-#define SHADER_PATH_FRAGMENT "Shaders/FragmentShader.frag"
+constexpr auto SHADER_PATH_VERTEX = "Shaders/VertexShader.vert";
+constexpr auto SHADER_PATH_FRAGMENT = "Shaders/FragmentShader.frag";
+constexpr auto LIGHT_SHADER_PATH_VERTEX = "Shaders/LightingVertexShader.vert";
+constexpr auto LIGHT_SHADER_PATH_FRAGMENT = "Shaders/LightingFragmentShader.frag";
 
 // Exceptions messages
-#define EXCEPTION_MSG_INIT "Error while initializing program"
+constexpr auto EXCEPTION_MSG_INIT = "Error while initializing program";
 
 // Engine parameters
-#define SCREEN_NAME "Custom engine"
-#define SCREEN_W 1280
-#define SCREEN_H 720
-#define CAMERA_FOV 45
+constexpr auto SCREEN_NAME = "Custom engine";
+constexpr auto SCREEN_W = 1280;
+constexpr auto SCREEN_H = 720;
+constexpr auto CAMERA_FOV = 45;
 
-#define SECTOR_DENSITY 100
-#define SECTOR_SIZE 64
+constexpr auto SECTOR_DENSITY = 100;
+constexpr auto SECTOR_SIZE = 64;
+
+// changing the following, requires modification in the fragment shader
+constexpr auto MAX_POINT_LIGHTS_COUNT = 16;

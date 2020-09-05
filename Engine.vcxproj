@@ -132,6 +132,10 @@
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="InitializationException.cpp" />
+    <ClCompile Include="LightDirectional.cpp" />
+    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="LightManager.cpp" />
+    <ClCompile Include="LightPoint.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
@@ -141,10 +145,16 @@
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="Includes.hpp" />
     <ClInclude Include="InitializationException.hpp" />
+    <ClInclude Include="LightDirectional.hpp" />
+    <ClInclude Include="Light.hpp" />
+    <ClInclude Include="LightManager.hpp" />
+    <ClInclude Include="LightPoint.hpp" />
     <ClInclude Include="Shader.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\FragmentShader.frag" />
+    <None Include="Shaders\LightingFragmentShader.frag" />
+    <None Include="Shaders\LightingVertexShader.vert" />
     <None Include="Shaders\VertexShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

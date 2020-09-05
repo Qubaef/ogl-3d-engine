@@ -223,12 +223,8 @@ Engine::Engine()
 		throw InitializationException(EXCEPTION_MSG_INIT, "initialize_GLEW");
 	}
 
-	shader_lighting = new Shader(SHADER_PATH_VERTEX, SHADER_PATH_FRAGMENT);
-
-	// if (!initialize_shader(SHADER_PATH_VERTEX, SHADER_PATH_FRAGMENT))
-	// {
-	// 	throw InitializationException(EXCEPTION_MSG_INIT, "initialize_shader");
-	// }
+	p_lighting_shader = new Shader(LIGHT_SHADER_PATH_VERTEX, LIGHT_SHADER_PATH_FRAGMENT);
+	p_light_manager = new LightManager(p_lighting_shader);
 
 	initialize_camera_controller();
 	set_OGL_parameters();
@@ -242,21 +238,22 @@ Engine::Engine()
 int Engine::run()
 {
 	// Set lighting shader
-	shader_lighting->use();
-	shader_lighting->set_vec3("light.ambient", vec3(0.2f, 0.2f, 0.2f));
-	shader_lighting->set_vec3("light.diffuse", vec3(0.5f, 0.5f, 0.5f));
-	shader_lighting->set_vec3("light.specular", vec3(1.f, 1.f, 1.f));
-	shader_lighting->set_vec3("light.direction", vec3(-1.f, -1.0f, -1.f));
+	p_lighting_shader->use();
 
-	shader_lighting->set_vec3("material.ambient", vec3(0.24f, 0.19f, 0.07f));
-	shader_lighting->set_vec3("material.diffuse", vec3(0.75f, 0.6f, 0.22f));
-	shader_lighting->set_vec3("material.specular", vec3(0.62f, 0.55f, 0.36f));
-	shader_lighting->set_float("material.shininess", 1);
+	p_lighting_shader->set_vec3("material.ambient", vec3(0.24f, 0.19f, 0.07f));
+	p_lighting_shader->set_vec3("material.diffuse", vec3(0.75f, 0.6f, 0.22f));
+	p_lighting_shader->set_vec3("material.specular", vec3(0.62f, 0.55f, 0.36f));
+	p_lighting_shader->set_float("material.shininess", 1);
 
 	// Get a handles for our "MVP" uniform
-	GLuint MatrixID = glGetUniformLocation(shader_lighting->get_ID(), "MVP");
-	GLuint ViewMatrixID = glGetUniformLocation(shader_lighting->get_ID(), "V");
-	GLuint ModelMatrixID = glGetUniformLocation(shader_lighting->get_ID(), "M");
+	GLuint MatrixID = glGetUniformLocation(p_lighting_shader->get_ID(), "MVP");
+	GLuint ViewMatrixID = glGetUniformLocation(p_lighting_shader->get_ID(), "V");
+	GLuint ModelMatrixID = glGetUniformLocation(p_lighting_shader->get_ID(), "M");
+
+	// Get pointers to matrices
+	mat4* mvp = p_controller->getMVPMatrix();
+	mat4* V = p_controller->getViewMatrix();
+	mat4* M = p_controller->getModelMatrix();
 
 	// init vertex data
 	vec3 vertexData[SECTOR_DENSITY * SECTOR_DENSITY];
@@ -371,27 +368,28 @@ int Engine::run()
 	// enable attribute '1'
 	glEnableVertexAttribArray(1);
 
-
 	// Render loop
-
 	while (!glfwWindowShouldClose(p_window))
 	{
 		// Track time per frame value and print it's status
 		track_time_per_frame();
 
+		// Clear buffers
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		mat4* mvp = p_controller->getMVPMatrix();
-		mat4* V = p_controller->getViewMatrix();
-		mat4* M = p_controller->getModelMatrix();
 
 		// Send transformation to the currently bound shader, in the "MVP" uniform
 		// This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(*mvp)[0][0]);
 		glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &(*V)[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &(*M)[0][0]);
-		shader_lighting->set_mat3("M_inverted", mat3(transpose(inverse(*M))));
-		shader_lighting->set_vec3("view_pos", p_controller->getPosition());
+
+		// Send M_inverted for optimization purposes (it is better to calculate it on cpu)
+		p_lighting_shader->set_mat3("M_inverted", mat3(transpose(inverse(*M))));
+		// Send view position for specular component (TODO: check if can be done better)
+		p_lighting_shader->set_vec3("view_pos", p_controller->getPosition());
+
+		// Update lights in the scene
+		p_light_manager->update();
 
 		// Bind to vertices to perform draw operation
 		glBindVertexArray(vertices_VBO_id);
@@ -402,7 +400,6 @@ int Engine::run()
 			GL_UNSIGNED_INT,		// type
 			(void*)0				// element array buffer offset
 		);
-
 
 		// Swap buffers after the draw (idk why, apparently it is required)
 		glfwSwapBuffers(p_window);
@@ -425,10 +422,11 @@ int Engine::run()
 	glDeleteBuffers(1, &vertices_VBO_id);
 	glDeleteBuffers(1, &indices_VBO_id);
 	glDeleteBuffers(1, &normals_VBO_id);
-	glDeleteProgram(shader_lighting->get_ID());
+	glDeleteProgram(p_lighting_shader->get_ID());
 
 	// Cleanup dynamically allocated objects
-	delete shader_lighting;
+	delete p_lighting_shader;
+	delete p_light_manager;
 	delete p_controller;
 
 	// Close OpenGL window and terminate GLFW
