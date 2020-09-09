@@ -1,5 +1,5 @@
 #include "Includes.hpp"
-#include "CameraController.hpp"
+#include "FirstPersonCameraController.hpp"
 #include "Engine.hpp"
 
 int main()

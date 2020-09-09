@@ -84,7 +84,7 @@
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>C:\Users\qubae\Documents\c++_libs\OGL\lib\GL;C:\Users\qubae\Documents\c++_libs\OGL\lib\GLFW;</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <StackReserveSize>4194304</StackReserveSize>
+      <StackReserveSize>16777216 </StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -130,25 +130,31 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CameraController.cpp" />
+    <ClCompile Include="FirstPersonCameraController.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="InitializationException.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LightDirectional.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="LightPoint.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="OverviewCameraController.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraController.hpp" />
+    <ClInclude Include="FirstPersonCameraController.hpp" />
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="Includes.hpp" />
     <ClInclude Include="InitializationException.hpp" />
+    <ClInclude Include="InputManager.hpp" />
     <ClInclude Include="LightDirectional.hpp" />
     <ClInclude Include="Light.hpp" />
     <ClInclude Include="LightManager.hpp" />
     <ClInclude Include="LightPoint.hpp" />
+    <ClInclude Include="OverviewCameraController.hpp" />
     <ClInclude Include="Shader.hpp" />
   </ItemGroup>
   <ItemGroup>

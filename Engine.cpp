@@ -84,11 +84,14 @@ void Engine::initialize_OGL_objects()
 }
 
 
-void Engine::initialize_camera_controller()
+void Engine::initialize_user_control()
 {
-	// Initialize instance of CameraController
+	// Initialize InputManager
+	p_input_manager = new InputManager(p_window);
 
-	p_controller = new CameraController(p_window);
+	// Initialize instance of CameraController
+	//p_controller = new FirstPersonCameraController(p_window, p_input_manager);
+	p_controller = new OverviewCameraController(p_window, p_input_manager);
 }
 
 
@@ -96,9 +99,6 @@ void Engine::set_OGL_parameters()
 {
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(p_window, GLFW_STICKY_KEYS, GL_TRUE);
-
-	// Hide the mouse and enable unlimited movement
-	glfwSetInputMode(p_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
@@ -116,41 +116,6 @@ void Engine::set_OGL_parameters()
 
 	// Set default background color (will be replaced by skybox probably)
 	glClearColor(0.2f, 0.8f, 1.0f, 0.0f);
-}
-
-
-void Engine::process_input()
-{
-	if (glfwGetKey(p_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-	{
-		glfwSetWindowShouldClose(p_window, 1);
-		return;
-	}
-
-	// Detect 'p' click action
-
-	static bool p_clicked = false;
-
-	if (glfwGetKey(p_window, GLFW_KEY_P) == GLFW_PRESS && p_clicked == false)
-	{
-		// on 'P' key being pressed
-		p_clicked = true;
-
-		if (draw_mode == 0)
-		{
-			draw_mode = 1;
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		}
-		else if (draw_mode == 1)
-		{
-			draw_mode = 0;
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		}
-	}
-	else if (glfwGetKey(p_window, GLFW_KEY_P) != GLFW_PRESS && p_clicked == true)
-	{
-		p_clicked = false;
-	}
 }
 
 
@@ -203,7 +168,6 @@ bool Engine::check_errors(const char* location)
 }
 
 
-
 Engine::Engine()
 {
 	// Initialize engine components
@@ -226,7 +190,7 @@ Engine::Engine()
 	p_lighting_shader = new Shader(LIGHT_SHADER_PATH_VERTEX, LIGHT_SHADER_PATH_FRAGMENT);
 	p_light_manager = new LightManager(p_lighting_shader);
 
-	initialize_camera_controller();
+	initialize_user_control();
 	set_OGL_parameters();
 	initialize_OGL_objects();
 
@@ -407,11 +371,11 @@ int Engine::run()
 		// Process pending events
 		glfwPollEvents();
 
-		// Process non-camera related input
-		process_input();
-
 		// Update matrices according to user's input
 		p_controller->updateCamera();
+
+		// Process non-camera related input
+		p_input_manager->process_input(draw_mode);
 
 		// check for errors
 		assert(check_errors("render loop") == false);
@@ -428,6 +392,7 @@ int Engine::run()
 	delete p_lighting_shader;
 	delete p_light_manager;
 	delete p_controller;
+	delete p_input_manager;
 
 	// Close OpenGL window and terminate GLFW
 	glfwTerminate();

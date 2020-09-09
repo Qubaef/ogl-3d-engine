@@ -15,7 +15,7 @@ void LightManager::initialize_scene_lights()
 	// 	vec3(0.5f, 0.5f, 0.5f),
 	// 	vec3(1.f, 1.f, 1.f),
 	// 	vec3(5.f, 2.f, 5.f),
-	// 	1.0f,
+	// 	0.5f,
 	// 	0.09,
 	// 	0.032
 	// );
@@ -24,7 +24,7 @@ void LightManager::initialize_scene_lights()
 	// 	vec3(0.2f, 0.2f, 0.2f),
 	// 	vec3(0.5f, 0.5f, 0.5f),
 	// 	vec3(1.f, 1.f, 1.f),
-	// 	vec3(15.f, 2.f, 15.f),
+	// 	vec3(64.f, 2.f, 64.f),
 	// 	1.0f,
 	// 	0.09,
 	// 	0.032

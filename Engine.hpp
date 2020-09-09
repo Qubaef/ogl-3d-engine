@@ -1,8 +1,10 @@
 ﻿#pragma once
 #include "Includes.hpp"
-#include "CameraController.hpp"
+#include "FirstPersonCameraController.hpp"
+#include "OverviewCameraController.hpp"
 #include "Shader.hpp"
 #include "LightManager.hpp"
+#include "InputManager.hpp"
 
 class Engine
 {
@@ -26,8 +28,11 @@ private:
 	// Pointer to CameraController
 	CameraController* p_controller = NULL;
 
+	// Pointer to Input manager
+	InputManager* p_input_manager = NULL;
+
 	// Light manager
-	LightManager* p_light_manager;
+	LightManager* p_light_manager = NULL;
 
 	// Shader with classic lighting
 	Shader* p_lighting_shader;
@@ -38,11 +43,9 @@ private:
 	unsigned indices_VBO_id;
 	GLuint normals_VBO_id;
 
-
-
 	//// Methods
 
-// Initialize GLFW library
+	// Initialize GLFW library
 	bool initialize_GLFW();
 
 	// Initialize GLEW library
@@ -54,14 +57,11 @@ private:
 	// Initialize OGL objects
 	void initialize_OGL_objects();
 
-	// Initialize CameraController instance
-	void initialize_camera_controller();
+	// Initialize components responsible for user control
+	void initialize_user_control();
 
 	// Set OpenGL Engine parameters
 	void set_OGL_parameters();
-
-	// Process user's input
-	void process_input();
 
 	// Track time per frame and print status to Console
 	void track_time_per_frame();

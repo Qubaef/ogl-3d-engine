@@ -37,11 +37,14 @@
     <Filter Include="Pliki nagłówkowe\Classes\Lights">
       <UniqueIdentifier>{38bcae43-6ad6-4e75-8274-c585a41650ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki źródłowe\Classes\CameraControllers">
+      <UniqueIdentifier>{febb54d9-8d31-4371-be37-fdc496f72d20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Classes\CameraControllers">
+      <UniqueIdentifier>{5dc9929f-04ef-438f-a56c-39b6e985b0e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CameraController.cpp">
-      <Filter>Pliki źródłowe\Classes</Filter>
-    </ClCompile>
     <ClCompile Include="InitializationException.cpp">
       <Filter>Pliki źródłowe\Exceptions</Filter>
     </ClCompile>
@@ -66,11 +69,20 @@
     <ClCompile Include="LightManager.cpp">
       <Filter>Pliki źródłowe\Classes\Lights</Filter>
     </ClCompile>
+    <ClCompile Include="FirstPersonCameraController.cpp">
+      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraController.cpp">
+      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="OverviewCameraController.cpp">
+      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CameraController.hpp">
-      <Filter>Pliki nagłówkowe\Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Engine.hpp">
       <Filter>Pliki nagłówkowe\Classes</Filter>
     </ClInclude>
@@ -97,6 +109,18 @@
     </ClInclude>
     <ClInclude Include="LightDirectional.hpp">
       <Filter>Pliki nagłówkowe\Classes\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="FirstPersonCameraController.hpp">
+      <Filter>Pliki nagłówkowe\Classes\CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="OverviewCameraController.hpp">
+      <Filter>Pliki nagłówkowe\Classes\CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraController.hpp">
+      <Filter>Pliki nagłówkowe\Classes\CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.hpp">
+      <Filter>Pliki nagłówkowe\Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

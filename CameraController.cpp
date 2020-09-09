@@ -1,94 +1,70 @@
-#include "CameraController.hpp"
+﻿#include "CameraController.hpp"
 
-CameraController::CameraController(GLFWwindow* window)
+CameraController::CameraController(GLFWwindow* p_window, InputManager* p_input_manager, float mouse_sens) :
+	mouse_sensitivity(mouse_sens)
 {
-	// set initial values
-	this->window = window;
-	this->cameraPosition = vec3(2, 1, 2);
-	this->cameraDirection = vec3(1, 0, 1);
-	this->cameraUp = vec3(0, 1, 0);
+	// set pointer to window
+	this->p_window = p_window;
+	this->p_input_manager = p_input_manager;
 
-	// init matrices
+	// set initial values of camera
+	this->camera_position = vec3(2, 10, 2);
+	this->camera_direction = normalize(vec3(
+		cos(vertical_angle) * sin(horizontal_angle),
+		sin(vertical_angle),
+		cos(vertical_angle) * cos(horizontal_angle)));
+	this->camera_up = vec3(0, 1, 0);
+
+	generate_matrices();
+
+	// get time since of first init
+	this->last_time = glfwGetTime();
+}
+
+
+CameraController::CameraController(GLFWwindow* p_window, InputManager* p_input_manager, float mouse_sens, vec3 position, float vertical_angle, float horizontal_angle) :
+	mouse_sensitivity(mouse_sens)
+{
+	// set pointer to window
+	this->p_window = p_window;
+	this->p_input_manager = p_input_manager;
+
+	this->horizontal_angle = horizontal_angle;
+	this->vertical_angle = vertical_angle;
+
+	// set initial values of camera
+	this->camera_position = position;
+	this->camera_direction = vec3(
+		cos(vertical_angle) * sin(horizontal_angle),
+		sin(vertical_angle),
+		cos(vertical_angle) * cos(horizontal_angle));
+	this->camera_up = vec3(0, 1, 0);
+
+	generate_matrices();
+
+	// get time since of first init
+	this->last_time = glfwGetTime();
+}
+
+
+void CameraController::generate_matrices()
+{
+	// generate all MVP matrices matrices
 	updateProjection();
 	updateView();
 	updateModel();
 	updateMVP();
-
-	this->lastTime = glfwGetTime();		// get time since of first init
 }
 
 
-// update matrices accodring to user's input
-void CameraController::updateCamera()
+float CameraController::calculate_time()
 {
 	// calculate time since last frame
-	currentTime = glfwGetTime();
-	float deltaTime = currentTime - lastTime;
+	current_time = glfwGetTime();
+	float delta_time = current_time - last_time;
+	last_time = current_time;
 
-	// Get mouse position
-	double xpos, ypos;
-	glfwGetCursorPos(window, &xpos, &ypos);
-
-	// Reset mouse position for next frame
-	glfwSetCursorPos(window, SCREEN_W / 2, SCREEN_H / 2);
-
-	// Compute new orientation
-	horizontalAngle += mouseSensitivity / 1000 * float(SCREEN_W / 2 - xpos);
-	verticalAngle += mouseSensitivity / 1000 * float(SCREEN_H / 2 - ypos);
-
-	// restrict vertical rotation
-	if (verticalAngle > radians(89.f))
-	{
-		verticalAngle = radians(89.f);
-	}
-	else if (verticalAngle < radians(-89.f))
-	{
-		verticalAngle = radians(-89.f);
-	}
-
-	// Direction : Spherical coordinates to Cartesian coordinates conversion
-	cameraDirection = vec3(
-		cos(verticalAngle) * sin(horizontalAngle),
-		sin(verticalAngle),
-		cos(verticalAngle) * cos(horizontalAngle)
-	);
-
-	directionFlattened = glm::normalize(cameraDirection);
-	directionFlattened.y = 0;
-	directionFlattened = glm::normalize(directionFlattened);
-
-	// Right vector
-	cameraRight = normalize(cross(cameraDirection, cameraUp));
-
-	// Move forward
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		cameraPosition += directionFlattened * deltaTime * movementSpeed;
-	}
-	// Move backward
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		cameraPosition -= directionFlattened * deltaTime * movementSpeed;
-	}
-	// Move upwards
-	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-		cameraPosition += vec3(0, 1, 0) * deltaTime * movementSpeed;
-	}
-	// Move downwards
-	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-		cameraPosition -= vec3(0, 1, 0) * deltaTime * movementSpeed;
-	}
-	// Strafe right
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		cameraPosition += cameraRight * deltaTime * movementSpeed;
-	}
-	// Strafe left
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		cameraPosition -= cameraRight * deltaTime * movementSpeed;
-	}
-
-	updateView();
-	updateMVP();
-
-	lastTime = currentTime;
+	return delta_time;;
 }
 
 
@@ -108,9 +84,9 @@ void CameraController::updateView()
 {
 	// update View matrix
 	View = glm::lookAt(
-		cameraPosition,							// the position of your camera, in world space
-		cameraPosition + cameraDirection,		// where you want to look at, in world space
-		cameraUp								// up vector (0,1,0) on default
+		camera_position,						// the position of your camera, in world space
+		camera_position + camera_direction,		// where you want to look at, in world space
+		camera_up								// up vector (0,1,0) on default
 	);
 }
 
@@ -155,5 +131,5 @@ mat4* CameraController::getMVPMatrix()
 
 vec3& CameraController::getPosition()
 {
-	return cameraPosition;
+	return camera_position;
 }
