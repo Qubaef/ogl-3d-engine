@@ -1,10 +1,20 @@
 ﻿#pragma once
 #include "Includes.hpp"
+#include "Shader.hpp"
+
+// Cameras
 #include "FirstPersonCameraController.hpp"
 #include "OverviewCameraController.hpp"
-#include "Shader.hpp"
+
+// Terrains
+#include "FlatTerrain.hpp"
+#include "RandomTerrain.hpp"
+#include "WaterTerrain.hpp"
+
+// Managers
 #include "LightManager.hpp"
 #include "InputManager.hpp"
+
 
 class Engine
 {
@@ -28,6 +38,9 @@ private:
 	// Pointer to CameraController
 	CameraController* p_controller = NULL;
 
+	// Pointer to Terrain
+	Terrain* p_terrain = NULL;
+
 	// Pointer to Input manager
 	InputManager* p_input_manager = NULL;
 
@@ -35,13 +48,7 @@ private:
 	LightManager* p_light_manager = NULL;
 
 	// Shader with classic lighting
-	Shader* p_lighting_shader;
-
-	// OGL objects
-	GLuint main_VAO_id;
-	GLuint vertices_VBO_id;
-	unsigned indices_VBO_id;
-	GLuint normals_VBO_id;
+	Shader* p_lighting_shader = NULL;
 
 	//// Methods
 
@@ -54,11 +61,11 @@ private:
 	// Initialize Engine Window
 	bool initialize_window();
 
-	// Initialize OGL objects
-	void initialize_OGL_objects();
-
 	// Initialize components responsible for user control
 	void initialize_user_control();
+
+	// Initialize terrain
+	void initialize_terrain();
 
 	// Set OpenGL Engine parameters
 	void set_OGL_parameters();

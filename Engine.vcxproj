@@ -132,6 +132,7 @@
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="FirstPersonCameraController.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="FlatTerrain.cpp" />
     <ClCompile Include="InitializationException.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LightDirectional.cpp" />
@@ -140,13 +141,18 @@
     <ClCompile Include="LightPoint.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OverviewCameraController.cpp" />
+    <ClCompile Include="RandomTerrain.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="SimpleTerrain.cpp" />
+    <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="WaterTerrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraController.hpp" />
     <ClInclude Include="FirstPersonCameraController.hpp" />
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="Engine.hpp" />
+    <ClInclude Include="FlatTerrain.hpp" />
     <ClInclude Include="Includes.hpp" />
     <ClInclude Include="InitializationException.hpp" />
     <ClInclude Include="InputManager.hpp" />
@@ -155,7 +161,11 @@
     <ClInclude Include="LightManager.hpp" />
     <ClInclude Include="LightPoint.hpp" />
     <ClInclude Include="OverviewCameraController.hpp" />
+    <ClInclude Include="RandomTerrain.hpp" />
     <ClInclude Include="Shader.hpp" />
+    <ClInclude Include="SimpleTerrain.hpp" />
+    <ClInclude Include="Terrain.hpp" />
+    <ClInclude Include="WaterTerrain.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\FragmentShader.frag" />

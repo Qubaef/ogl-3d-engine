@@ -43,6 +43,12 @@
     <Filter Include="Pliki nagłówkowe\Classes\CameraControllers">
       <UniqueIdentifier>{5dc9929f-04ef-438f-a56c-39b6e985b0e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\Classes\Terrains">
+      <UniqueIdentifier>{10911a92-b656-4107-b3ec-8c3be1dac2b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Classes\Terrains">
+      <UniqueIdentifier>{af978c17-420a-4561-8d76-f7a379388ce3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InitializationException.cpp">
@@ -78,8 +84,23 @@
     <ClCompile Include="OverviewCameraController.cpp">
       <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
     </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+    </ClCompile>
+    <ClCompile Include="FlatTerrain.cpp">
+      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+    </ClCompile>
     <ClCompile Include="InputManager.cpp">
-      <Filter>Pliki źródłowe</Filter>
+      <Filter>Pliki źródłowe\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleTerrain.cpp">
+      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomTerrain.cpp">
+      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+    </ClCompile>
+    <ClCompile Include="WaterTerrain.cpp">
+      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +142,21 @@
     </ClInclude>
     <ClInclude Include="InputManager.hpp">
       <Filter>Pliki nagłówkowe\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.hpp">
+      <Filter>Pliki nagłówkowe\Classes\Terrains</Filter>
+    </ClInclude>
+    <ClInclude Include="FlatTerrain.hpp">
+      <Filter>Pliki nagłówkowe\Classes\Terrains</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleTerrain.hpp">
+      <Filter>Pliki nagłówkowe\Classes\Terrains</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomTerrain.hpp">
+      <Filter>Pliki nagłówkowe\Classes\Terrains</Filter>
+    </ClInclude>
+    <ClInclude Include="WaterTerrain.hpp">
+      <Filter>Pliki nagłówkowe\Classes\Terrains</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

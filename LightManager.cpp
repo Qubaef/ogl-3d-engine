@@ -4,10 +4,10 @@ void LightManager::initialize_scene_lights()
 {
 	// initialize directional ligth
 	directional_light = new LightDirectional(
-		vec3(0.2f, 0.2f, 0.2f),
-		vec3(0.5f, 0.5f, 0.5f),
+		vec3(0.3f, 0.3f, 0.3f),
+		vec3(0.7f, 0.7f, 0.7f),
 		vec3(1.f, 1.f, 1.f),
-		vec3(0.f, -1.0f, 0.f));
+		vec3(-1.f, -1.0f, -1.f));
 
 	//// Initialize point lights
 	// point_lights[0] = new LightPoint(
@@ -61,8 +61,8 @@ void LightManager::update()
 	//// Define Animations for specific lights in the scene
 
 	// Changing direction of directional light to simulate sunlight
-	mat4 rotation_matrix = rotate(mat4(1.0), radians(0.1f), vec3(1, 0, 0));
-	directional_light->set_direction(mat3(rotation_matrix) * directional_light->get_direction());
+	//mat4 rotation_matrix = rotate(mat4(1.0), radians(0.1f), vec3(1, 0, 0));
+	//directional_light->set_direction(mat3(rotation_matrix) * directional_light->get_direction());
 
 	//// Update lights to the uniforms
 	p_shader->use();

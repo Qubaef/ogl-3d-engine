@@ -75,7 +75,7 @@ vec3 calculate_dir_light(DirectionalLight light, vec3 normal, vec3 view_dir)
 	// Ambient
 	vec3 ambient = light.ambient * material.ambient;
 	// Diffuse
-	vec3 diffuse = light.diffuse * material.diffuse * max(dot(normalize(normal), normalize(light.direction)), 0.0) ;
+	vec3 diffuse = light.diffuse * material.diffuse * max(dot(normalize(normal), normalize(-light.direction)), 0.0) ;
 	// Specular
 	vec3 reflect_dir = reflect(normalize(light.direction), normalize(normal));
 	vec3 specular = light.specular * material.specular * pow(max(dot(view_dir, reflect_dir), 0.0), material.shininess);

@@ -33,6 +33,7 @@ void OverviewCameraController::updateCamera()
 		// calculate flat direction vector to prevent changing y coordinate while moving
 		vec3 flat_direction = camera_direction;
 		flat_direction.y = 0;
+		flat_direction = normalize(flat_direction);
 
 		float height_multiplier = camera_position.y;
 
@@ -61,8 +62,8 @@ void OverviewCameraController::updateCamera()
 		vec2 mouse_current_pos = InputManager::get_mouse_pos(p_window);
 
 		// Compute new orientation
-		horizontal_angle -= mouse_sensitivity / 100 * float(mouse_current_pos.x - mouse_last_pos.x);
-		vertical_angle += mouse_sensitivity / 100 * float(mouse_current_pos.y - mouse_last_pos.y);
+		horizontal_angle -= mouse_sensitivity / 300 * float(mouse_current_pos.x - mouse_last_pos.x);
+		vertical_angle += mouse_sensitivity / 300 * float(mouse_current_pos.y - mouse_last_pos.y);
 
 		// restrict vertical rotation
 		if (vertical_angle > radians(89.f))
@@ -88,7 +89,8 @@ void OverviewCameraController::updateCamera()
 		vec3 mid_point = camera_position + (camera_direction * k);
 		float dist = distance(mid_point, camera_position);
 
-		// Direction : Spherical coordinates to Cartesian coordinates conversion
+		// BUG: first camera rotate causes position 'jump'
+		// Position : Spherical coordinates to Cartesian coordinates conversion
 		camera_position = vec3(
 			mid_point.x + cos(vertical_angle) * sin(horizontal_angle) * dist,
 			mid_point.y + sin(vertical_angle) * dist,

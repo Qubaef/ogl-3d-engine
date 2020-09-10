@@ -64,7 +64,7 @@ float CameraController::calculate_time()
 	float delta_time = current_time - last_time;
 	last_time = current_time;
 
-	return delta_time;;
+	return delta_time;
 }
 
 

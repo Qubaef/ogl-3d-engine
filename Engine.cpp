@@ -66,24 +66,6 @@ bool Engine::initialize_window()
 }
 
 
-void Engine::initialize_OGL_objects()
-{
-	// Initialize OGL objects
-
-	// Init Vertex array object and set it as current
-	glGenVertexArrays(1, &main_VAO_id);
-
-	// Init vertex buffer
-	glGenBuffers(1, &vertices_VBO_id);
-
-	// Init indices buffer
-	glGenBuffers(1, &indices_VBO_id);
-
-	// Init normals buffer
-	glGenBuffers(1, &normals_VBO_id);
-}
-
-
 void Engine::initialize_user_control()
 {
 	// Initialize InputManager
@@ -92,6 +74,14 @@ void Engine::initialize_user_control()
 	// Initialize instance of CameraController
 	//p_controller = new FirstPersonCameraController(p_window, p_input_manager);
 	p_controller = new OverviewCameraController(p_window, p_input_manager);
+}
+
+
+void Engine::initialize_terrain()
+{
+	// p_terrain = new FlatTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY);
+	// p_terrain = new RandomTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY);
+	p_terrain = new WaterTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY);
 }
 
 
@@ -108,7 +98,7 @@ void Engine::set_OGL_parameters()
 
 
 	// Disable Vsync (requires time synchronization)
-	// glfwSwapInterval(0);
+	//glfwSwapInterval(0);
 
 	// Cull triangles which normal is not towards the camera (should be turned on for optimization)
 	glEnable(GL_CULL_FACE);
@@ -191,8 +181,8 @@ Engine::Engine()
 	p_light_manager = new LightManager(p_lighting_shader);
 
 	initialize_user_control();
+	initialize_terrain();
 	set_OGL_parameters();
-	initialize_OGL_objects();
 
 	// Initialize fields
 
@@ -204,10 +194,10 @@ int Engine::run()
 	// Set lighting shader
 	p_lighting_shader->use();
 
-	p_lighting_shader->set_vec3("material.ambient", vec3(0.24f, 0.19f, 0.07f));
-	p_lighting_shader->set_vec3("material.diffuse", vec3(0.75f, 0.6f, 0.22f));
-	p_lighting_shader->set_vec3("material.specular", vec3(0.62f, 0.55f, 0.36f));
-	p_lighting_shader->set_float("material.shininess", 1);
+	p_lighting_shader->set_vec3("material.ambient", vec3(0.f, 0.41f, 0.58f));
+	p_lighting_shader->set_vec3("material.diffuse", vec3(0.f, 0.61f, 0.78f));
+	p_lighting_shader->set_vec3("material.specular", vec3(0.6f, 0.6f, 0.6f));
+	p_lighting_shader->set_float("material.shininess", 256);
 
 	// Get a handles for our "MVP" uniform
 	GLuint MatrixID = glGetUniformLocation(p_lighting_shader->get_ID(), "MVP");
@@ -219,118 +209,6 @@ int Engine::run()
 	mat4* V = p_controller->getViewMatrix();
 	mat4* M = p_controller->getModelMatrix();
 
-	// init vertex data
-	vec3 vertexData[SECTOR_DENSITY * SECTOR_DENSITY];
-
-	for (int i = 0; i < SECTOR_DENSITY; i++)
-	{
-		for (int j = 0; j < SECTOR_DENSITY; j++)
-		{
-			vertexData[(j + i * (SECTOR_DENSITY))] = vec3(i * (float)SECTOR_SIZE / SECTOR_DENSITY, (float)std::rand() / RAND_MAX, j * (float)SECTOR_SIZE / SECTOR_DENSITY);
-			// vertexData[(j + i * (SECTOR_DENSITY))] = vec3(i * (float)SECTOR_SIZE / SECTOR_DENSITY, (-(i - 1)*(i - 1) - (j - 1) *(j - 1)) / 1000.0, j * (float)SECTOR_SIZE / SECTOR_DENSITY);
-			// vertexData[(j + i * (SECTOR_DENSITY))] = vec3(i * (float)SECTOR_SIZE / SECTOR_DENSITY, 0, j * (float)SECTOR_SIZE / SECTOR_DENSITY);
-		}
-	}
-
-
-	// init indices data
-	std::vector<unsigned int> indicesData;
-
-	for (int i = 0; i < SECTOR_DENSITY - 1; i++)
-	{
-		for (int j = 0; j < SECTOR_DENSITY - 1; j++)
-		{
-			indicesData.push_back(j + i * SECTOR_DENSITY);
-			indicesData.push_back(j + (i + 1) * SECTOR_DENSITY);
-			indicesData.push_back((j + 1) + i * SECTOR_DENSITY);
-
-			indicesData.push_back((j + 1) + i * SECTOR_DENSITY);
-			indicesData.push_back(j + (i + 1) * SECTOR_DENSITY);
-			indicesData.push_back((j + 1) + (i + 1) * SECTOR_DENSITY);
-		}
-	}
-
-	// init normals data
-	vec3 normalsData[SECTOR_DENSITY * SECTOR_DENSITY];
-
-	for (int i = 0; i < SECTOR_DENSITY; i++)
-	{
-		for (int j = 0; j < SECTOR_DENSITY; j++)
-		{
-			vec3 current = vertexData[(j + i * (SECTOR_DENSITY))];
-
-			// init normal vector
-			normalsData[(j + i * (SECTOR_DENSITY))] = vec3(0, 0, 0);
-
-
-			if (i > 0 && j < SECTOR_DENSITY - 1)
-			{
-				normalsData[(j + i * (SECTOR_DENSITY))] += cross((vertexData[((j + 1) + (i - 1) * (SECTOR_DENSITY))] - current), (current - vertexData[(j + (i - 1) * (SECTOR_DENSITY))]));
-			}
-
-			if (j > 0 && i < SECTOR_DENSITY - 1)
-			{
-				normalsData[(j + i * (SECTOR_DENSITY))] += cross((current - vertexData[((j - 1) + i * (SECTOR_DENSITY))]), (vertexData[((j - 1) + (i + 1) * (SECTOR_DENSITY))] - current));
-			}
-
-			if (i < SECTOR_DENSITY - 1 && j < SECTOR_DENSITY - 1)
-			{
-				normalsData[(j + i * (SECTOR_DENSITY))] += cross((current - vertexData[(j + (i + 1) * (SECTOR_DENSITY))]), (vertexData[((j + 1) + i * (SECTOR_DENSITY))] - current));
-			}
-
-			// normalize vector's length
-			if (length(normalsData[(j + i * (SECTOR_DENSITY))]) == 0)
-			{
-				normalsData[(j + i * (SECTOR_DENSITY))].y = 1;
-			}
-
-			normalsData[(j + i * (SECTOR_DENSITY))] = normalize(normalsData[(j + i * (SECTOR_DENSITY))]);
-		}
-	}
-
-	// Attributes setup and global VAO creation
-
-	// bind global VAO object
-	glBindVertexArray(vertices_VBO_id);
-
-	// select indices VBO (to perform VBO indexing)
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_VBO_id);
-	// bind indices VBO
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesData.size() * sizeof(unsigned int), &indicesData[0], GL_DYNAMIC_DRAW);
-
-	//// 1st vertex shader input attribute - normals
-	// select vertex VBO
-	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO_id);
-	// copy data to gpu memory (to VBO)
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_DYNAMIC_DRAW);
-	// redirect buffer to input of the shader
-	glVertexAttribPointer(
-		0,						// location in shader
-		3,						// size
-		GL_FLOAT,				// type
-		GL_FALSE,				// normalized
-		0,						// stride (space between following fragments)
-		(void*)0				// array buffer offset
-	);
-	// enable attribute '0'
-	glEnableVertexAttribArray(0);
-
-	// 2nd vertex shader input attribute - normals
-	// select normals VBO
-	glBindBuffer(GL_ARRAY_BUFFER, normals_VBO_id);
-	// copy data to gpu memory (to VBO)
-	glBufferData(GL_ARRAY_BUFFER, sizeof(normalsData), normalsData, GL_DYNAMIC_DRAW);
-	// redirect buffer to input of the shader
-	glVertexAttribPointer(
-		1,                      // location in shader
-		3,                      // size
-		GL_FLOAT,               // type
-		GL_FALSE,               // normalized
-		0,                      // stride (space between following fragments)
-		(void*)0                // array buffer offset
-	);
-	// enable attribute '1'
-	glEnableVertexAttribArray(1);
 
 	// Render loop
 	while (!glfwWindowShouldClose(p_window))
@@ -355,15 +233,8 @@ int Engine::run()
 		// Update lights in the scene
 		p_light_manager->update();
 
-		// Bind to vertices to perform draw operation
-		glBindVertexArray(vertices_VBO_id);
-
-		glDrawElements(
-			GL_TRIANGLES,			// mode
-			indicesData.size(),		// count
-			GL_UNSIGNED_INT,		// type
-			(void*)0				// element array buffer offset
-		);
+		// render terrain
+		p_terrain->render_terrain();
 
 		// Swap buffers after the draw (idk why, apparently it is required)
 		glfwSwapBuffers(p_window);
@@ -382,16 +253,13 @@ int Engine::run()
 	}
 
 	// Cleanup VBO and shader program
-	glDeleteVertexArrays(1, &main_VAO_id);
-	glDeleteBuffers(1, &vertices_VBO_id);
-	glDeleteBuffers(1, &indices_VBO_id);
-	glDeleteBuffers(1, &normals_VBO_id);
 	glDeleteProgram(p_lighting_shader->get_ID());
 
 	// Cleanup dynamically allocated objects
 	delete p_lighting_shader;
 	delete p_light_manager;
 	delete p_controller;
+	delete p_terrain;
 	delete p_input_manager;
 
 	// Close OpenGL window and terminate GLFW

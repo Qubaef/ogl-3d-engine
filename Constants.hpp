@@ -15,7 +15,7 @@ constexpr auto SCREEN_W = 1280;
 constexpr auto SCREEN_H = 720;
 constexpr auto CAMERA_FOV = 45;
 
-constexpr auto SECTOR_DENSITY = 200;
+constexpr auto SECTOR_DENSITY = 64;
 constexpr auto SECTOR_SIZE = 128;
 
 // changing the following, requires modification in the fragment shader
