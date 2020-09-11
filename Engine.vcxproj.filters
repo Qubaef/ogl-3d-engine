@@ -172,5 +172,8 @@
     <None Include="Shaders\LightingVertexShader.vert">
       <Filter>Pliki źródłowe\Shaders</Filter>
     </None>
+    <None Include="Shaders\WaterVertexShader.vert">
+      <Filter>Pliki źródłowe\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

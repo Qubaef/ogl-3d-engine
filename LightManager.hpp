@@ -10,7 +10,7 @@ class LightManager
 	const std::string point_lights_name = "point_lights";
 	const std::string point_lights_count_name = "point_lights_count";
 
-	Shader* p_shader;
+	std::vector<Shader*> shaders_vector;
 
 	int point_lights_count = 0;
 	LightPoint* point_lights[MAX_POINT_LIGHTS_COUNT] = { NULL };
@@ -20,10 +20,10 @@ class LightManager
 	void initialize_scene_lights();
 
 	// functions to update lights int the shader uniform
-	void update_directional_light() const;
-	void update_point_lights() const;
+	void update_directional_light(Shader* p_shader) const;
+	void update_point_lights(Shader* p_shader) const;
 
 public:
-	LightManager(Shader* p_shader);
+	LightManager(std::vector<Shader*> shaders_vector);
 	void update();
 };

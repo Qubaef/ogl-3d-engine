@@ -74,8 +74,8 @@ void CameraController::updateProjection()
 	Projection = perspective(
 		radians((float)CAMERA_FOV),				// FOV
 		(float)SCREEN_W / (float)SCREEN_H,		// aspect ratio
-		0.1f,									// near clipping plane
-		1000.f									// far clipping pane
+		1.f,									// near clipping plane
+		10000.f									// far clipping pane
 	);
 }
 

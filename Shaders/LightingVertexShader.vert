@@ -10,7 +10,6 @@ uniform mat3 M_inverted;
 
 out vec3 normal;
 out vec3 frag_pos;
-out vec3 fragment_color;
 
 void main() {
 
@@ -20,5 +19,4 @@ void main() {
 	// Calculate data for fragment shader
 	frag_pos = vec3(M * vec4(vertexPosition_modelspace, 1.0));
 	normal = M_inverted * vertexNormal_modelspace;
-	fragment_color = vec3(0.2f, 0.2f, 0.2f);
 }

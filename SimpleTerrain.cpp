@@ -1,7 +1,7 @@
 ﻿#include "SimpleTerrain.hpp"
 
-SimpleTerrain::SimpleTerrain(int start_pos_x, int start_pos_z, int terrain_size, int vertices_number)
-	: Terrain(start_pos_x, start_pos_z, terrain_size, vertices_number)
+SimpleTerrain::SimpleTerrain(int start_pos_x, int start_pos_z, int terrain_size, int vertices_number, Shader* p_shader, CameraController* p_camera_controller)
+	: Terrain(start_pos_x, start_pos_z, terrain_size, vertices_number, p_shader, p_camera_controller)
 {
 	initialize_OGL_objects();
 }
@@ -40,30 +40,30 @@ void SimpleTerrain::init_normals_data()
 			vec3 current = vertex_data[(j + i * (vertices_number))];
 
 			// init normal vector
-			normals_data[(j + i * (vertices_number))] = vec3(0, 0, 0);
+			vec3 normal = vec3(0, 0, 0);
 
 			if (i > 0 && j < vertices_number - 1)
 			{
-				normals_data[(j + i * (vertices_number))] += cross((vertex_data[((j + 1) + (i - 1) * (vertices_number))] - current), (current - vertex_data[(j + (i - 1) * (vertices_number))]));
+				normal += cross((vertex_data[((j + 1) + (i - 1) * (vertices_number))] - current), (current - vertex_data[(j + (i - 1) * (vertices_number))]));
 			}
 
-			if (j > 0 && i < SECTOR_DENSITY - 1)
+			if (j > 0 && i < vertices_number - 1)
 			{
-				normals_data[(j + i * (vertices_number))] += cross((current - vertex_data[((j - 1) + i * (vertices_number))]), (vertex_data[((j - 1) + (i + 1) * (vertices_number))] - current));
+				normal += cross((current - vertex_data[((j - 1) + i * (vertices_number))]), (vertex_data[((j - 1) + (i + 1) * (vertices_number))] - current));
 			}
 
-			if (i < SECTOR_DENSITY - 1 && j < SECTOR_DENSITY - 1)
+			if (i < vertices_number - 1 && j < vertices_number - 1)
 			{
-				normals_data[(j + i * (vertices_number))] += cross((current - vertex_data[(j + (i + 1) * (vertices_number))]), (vertex_data[((j + 1) + i * (vertices_number))] - current));
+				normal += cross((current - vertex_data[(j + (i + 1) * (vertices_number))]), (vertex_data[((j + 1) + i * (vertices_number))] - current));
 			}
 
 			// normalize vector's length
-			if (length(normals_data[(j + i * (vertices_number))]) == 0)
+			if (length(normal) == 0)
 			{
-				normals_data[(j + i * (vertices_number))].y = 1;
+				normal.y = 1;
 			}
 
-			normals_data[(j + i * (vertices_number))] = normalize(normals_data[(j + i * (vertices_number))]);
+			normals_data[(j + i * (vertices_number))] = normalize(normal);
 		}
 	}
 }
@@ -93,6 +93,7 @@ void SimpleTerrain::prepare_data()
 
 	// bind global VAO object
 	glBindVertexArray(main_VAO_id);
+	p_shader->use();
 
 	// select indices VBO (to perform VBO indexing)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_VBO_id);
@@ -132,6 +133,8 @@ void SimpleTerrain::prepare_data()
 	);
 	// enable attribute '1'
 	glEnableVertexAttribArray(1);
+
+	get_MVP_handles();
 }
 
 

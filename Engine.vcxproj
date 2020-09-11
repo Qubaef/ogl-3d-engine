@@ -172,6 +172,7 @@
     <None Include="Shaders\LightingFragmentShader.frag" />
     <None Include="Shaders\LightingVertexShader.vert" />
     <None Include="Shaders\VertexShader.vert" />
+    <None Include="Shaders\WaterVertexShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

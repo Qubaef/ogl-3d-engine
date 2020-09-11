@@ -102,7 +102,7 @@ void OverviewCameraController::updateCamera()
 
 	if (p_input_manager->if_mouse_scroll_moved())
 	{
-		camera_position += camera_direction * (float)(p_input_manager->get_mouse_scroll_y_offset() * mouse_sensitivity * 2);
+		camera_position += camera_direction * (float)(p_input_manager->get_mouse_scroll_y_offset() * mouse_sensitivity * 5);
 	}
 
 	updateView();

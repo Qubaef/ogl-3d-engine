@@ -7,7 +7,7 @@ void LightManager::initialize_scene_lights()
 		vec3(0.3f, 0.3f, 0.3f),
 		vec3(0.7f, 0.7f, 0.7f),
 		vec3(1.f, 1.f, 1.f),
-		vec3(-1.f, -1.0f, -1.f));
+		vec3(10.f, -1.f, 10.f));
 
 	//// Initialize point lights
 	// point_lights[0] = new LightPoint(
@@ -45,14 +45,18 @@ void LightManager::initialize_scene_lights()
 }
 
 
-LightManager::LightManager(Shader* p_shader)
+LightManager::LightManager(std::vector<Shader*> shaders_vector)
 {
-	this->p_shader = p_shader;
+	this->shaders_vector = shaders_vector;
 	initialize_scene_lights();
 
 	// Init unchangeable uniforms
-	p_shader->use();
-	p_shader->set_int(point_lights_count_name, point_lights_count);
+	for (Shader* p_shader : shaders_vector)
+	{
+		p_shader->use();
+		p_shader->set_int(point_lights_count_name, point_lights_count);
+	}
+
 }
 
 
@@ -61,17 +65,18 @@ void LightManager::update()
 	//// Define Animations for specific lights in the scene
 
 	// Changing direction of directional light to simulate sunlight
-	//mat4 rotation_matrix = rotate(mat4(1.0), radians(0.1f), vec3(1, 0, 0));
-	//directional_light->set_direction(mat3(rotation_matrix) * directional_light->get_direction());
+	// mat4 rotation_matrix = rotate(mat4(1.0), radians(0.1f), vec3(1, 0, 0));
+	// directional_light->set_direction(mat3(rotation_matrix) * directional_light->get_direction());
 
 	//// Update lights to the uniforms
-	p_shader->use();
-	update_directional_light();
-	update_point_lights();
+	for (Shader* p_shader : shaders_vector)
+	{
+		p_shader->use();
+		update_directional_light(p_shader);
+		update_point_lights(p_shader);
+	}
 }
-
-
-void LightManager::update_directional_light() const
+void LightManager::update_directional_light(Shader* p_shader) const
 {
 	p_shader->set_vec3(directional_light_name + ".ambient", directional_light->get_ambient());
 	p_shader->set_vec3(directional_light_name + ".diffuse", directional_light->get_diffuse());
@@ -80,7 +85,7 @@ void LightManager::update_directional_light() const
 }
 
 
-void LightManager::update_point_lights() const
+void LightManager::update_point_lights(Shader* p_shader) const
 {
 	for (int i = 0; i < point_lights_count; i++)
 	{

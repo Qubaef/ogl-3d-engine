@@ -49,6 +49,7 @@ private:
 
 	// Shader with classic lighting
 	Shader* p_lighting_shader = NULL;
+	Shader* p_water_shader = NULL;
 
 	//// Methods
 

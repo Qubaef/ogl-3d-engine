@@ -34,7 +34,6 @@ struct PointLight {
 //// Input from vertex shader
 in vec3 normal;
 in vec3 frag_pos;
-in vec3 fragment_color;
 
 //// Uniforms
 uniform vec3 view_pos;

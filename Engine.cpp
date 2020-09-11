@@ -54,6 +54,8 @@ bool Engine::initialize_window()
 {
 	// Open a window and create its OpenGL context
 
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+
 	p_window = glfwCreateWindow(SCREEN_W, SCREEN_H, SCREEN_NAME, NULL, NULL);
 
 	if (p_window == NULL) {
@@ -80,8 +82,8 @@ void Engine::initialize_user_control()
 void Engine::initialize_terrain()
 {
 	// p_terrain = new FlatTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY);
-	// p_terrain = new RandomTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY);
-	p_terrain = new WaterTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY);
+	p_terrain = new RandomTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
+	// p_terrain = new WaterTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_water_shader, p_controller);
 }
 
 
@@ -95,7 +97,6 @@ void Engine::set_OGL_parameters()
 
 	// Accept fragment if it is closer to the camera than the former one
 	glDepthFunc(GL_LESS);
-
 
 	// Disable Vsync (requires time synchronization)
 	//glfwSwapInterval(0);
@@ -177,8 +178,16 @@ Engine::Engine()
 		throw InitializationException(EXCEPTION_MSG_INIT, "initialize_GLEW");
 	}
 
+	// Initialize shaders
 	p_lighting_shader = new Shader(LIGHT_SHADER_PATH_VERTEX, LIGHT_SHADER_PATH_FRAGMENT);
-	p_light_manager = new LightManager(p_lighting_shader);
+	p_water_shader = new Shader(WATER_SHADER_PATH_VERTEX, LIGHT_SHADER_PATH_FRAGMENT);
+
+	// Gather all shaders, which are supposed to use given light configuration
+	// and pass them together as a vector to LightManager (which will properly set them up)
+	std::vector<Shader*> used_shaders_vector;
+	used_shaders_vector.push_back(p_lighting_shader);
+	used_shaders_vector.push_back(p_water_shader);
+	p_light_manager = new LightManager(used_shaders_vector);
 
 	initialize_user_control();
 	initialize_terrain();
@@ -191,25 +200,6 @@ Engine::Engine()
 
 int Engine::run()
 {
-	// Set lighting shader
-	p_lighting_shader->use();
-
-	p_lighting_shader->set_vec3("material.ambient", vec3(0.f, 0.41f, 0.58f));
-	p_lighting_shader->set_vec3("material.diffuse", vec3(0.f, 0.61f, 0.78f));
-	p_lighting_shader->set_vec3("material.specular", vec3(0.6f, 0.6f, 0.6f));
-	p_lighting_shader->set_float("material.shininess", 256);
-
-	// Get a handles for our "MVP" uniform
-	GLuint MatrixID = glGetUniformLocation(p_lighting_shader->get_ID(), "MVP");
-	GLuint ViewMatrixID = glGetUniformLocation(p_lighting_shader->get_ID(), "V");
-	GLuint ModelMatrixID = glGetUniformLocation(p_lighting_shader->get_ID(), "M");
-
-	// Get pointers to matrices
-	mat4* mvp = p_controller->getMVPMatrix();
-	mat4* V = p_controller->getViewMatrix();
-	mat4* M = p_controller->getModelMatrix();
-
-
 	// Render loop
 	while (!glfwWindowShouldClose(p_window))
 	{
@@ -219,26 +209,14 @@ int Engine::run()
 		// Clear buffers
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Send transformation to the currently bound shader, in the "MVP" uniform
-		// This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
-		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(*mvp)[0][0]);
-		glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &(*V)[0][0]);
-		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &(*M)[0][0]);
-
-		// Send M_inverted for optimization purposes (it is better to calculate it on cpu)
-		p_lighting_shader->set_mat3("M_inverted", mat3(transpose(inverse(*M))));
-		// Send view position for specular component (TODO: check if can be done better)
-		p_lighting_shader->set_vec3("view_pos", p_controller->getPosition());
-
-		// Update lights in the scene
+		// Update lights configuration in the scene (if some of them are moving)
 		p_light_manager->update();
 
-		// render terrain
+		// Render terrain using shader given to it during initialization
 		p_terrain->render_terrain();
 
 		// Swap buffers after the draw (idk why, apparently it is required)
 		glfwSwapBuffers(p_window);
-
 		// Process pending events
 		glfwPollEvents();
 
