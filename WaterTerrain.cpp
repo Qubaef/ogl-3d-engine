@@ -22,7 +22,7 @@ void WaterTerrain::generate_terrain()
 	{
 		for (int j = 0; j < vertices_number; j++)
 		{
-			vertex_data[(j + i * (vertices_number))] = vec3(i * (float)SECTOR_SIZE / vertices_number, 0, j * (float)SECTOR_SIZE / vertices_number);
+			vertex_data[(j + i * (vertices_number))] = vec3(start_pos_x + i * (float)SECTOR_SIZE / vertices_number, 0, start_pos_z + j * (float)SECTOR_SIZE / vertices_number);
 		}
 	}
 

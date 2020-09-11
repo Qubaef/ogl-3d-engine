@@ -18,8 +18,6 @@ OverviewCameraController::OverviewCameraController(GLFWwindow* p_window, InputMa
 
 void OverviewCameraController::updateCamera()
 {
-	float delta_time = calculate_time();
-
 	//// Process left mouse input
 	if (p_input_manager->if_l_mouse_pressed())
 	{
@@ -102,7 +100,20 @@ void OverviewCameraController::updateCamera()
 
 	if (p_input_manager->if_mouse_scroll_moved())
 	{
-		camera_position += camera_direction * (float)(p_input_manager->get_mouse_scroll_y_offset() * mouse_sensitivity * 5);
+		// Set height multiplier for non linear zooming
+		float height_multiplier = camera_position.y;
+
+		if (camera_position.y < 0)
+		{
+			height_multiplier = -height_multiplier;
+		}
+
+		if (height_multiplier < 1)
+		{
+			height_multiplier = 1;
+		}
+
+		camera_position += camera_direction * (float)(p_input_manager->get_mouse_scroll_y_offset() * mouse_sensitivity / 3 * height_multiplier);
 	}
 
 	updateView();

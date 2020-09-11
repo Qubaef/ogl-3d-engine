@@ -17,7 +17,7 @@ void RandomTerrain::generate_terrain()
 	{
 		for (int j = 0; j < vertices_number; j++)
 		{
-			vertex_data[(j + i * (SECTOR_DENSITY))] = vec3(i * (float)SECTOR_SIZE / SECTOR_DENSITY, (float)std::rand() / RAND_MAX, j * (float)SECTOR_SIZE / SECTOR_DENSITY);
+			vertex_data[(j + i * (SECTOR_DENSITY))] = vec3(start_pos_x + i * (float)SECTOR_SIZE / SECTOR_DENSITY, (float)std::rand() / RAND_MAX, start_pos_z + j * (float)SECTOR_SIZE / SECTOR_DENSITY);
 		}
 	}
 
