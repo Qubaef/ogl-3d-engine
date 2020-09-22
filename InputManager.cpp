@@ -1,4 +1,4 @@
-﻿#include "InputManager.hpp"
+﻿#include "InputManager.h"
 
 void InputManager::set_window_user_pointer()
 {

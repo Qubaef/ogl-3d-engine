@@ -1,4 +1,4 @@
-﻿#include "Engine.hpp"
+﻿#include "Engine.h"
 
 void Engine::set_draw_mode(int draw_mode)
 {
@@ -83,7 +83,8 @@ void Engine::initialize_terrain()
 {
 	// p_terrain = new FlatTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
 	// p_terrain = new RandomTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
-	p_terrain = new WaterTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_water_shader, p_controller);
+	// p_terrain = new WaterTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_water_shader, p_controller);
+	p_terrain = new DynamicTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
 }
 
 
@@ -99,7 +100,7 @@ void Engine::set_OGL_parameters()
 	glDepthFunc(GL_LESS);
 
 	// Disable Vsync (requires time synchronization)
-	//glfwSwapInterval(0);
+	glfwSwapInterval(0);
 
 	// Cull triangles which normal is not towards the camera (should be turned on for optimization)
 	glEnable(GL_CULL_FACE);

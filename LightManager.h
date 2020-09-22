@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "LightDirectional.hpp"
-#include "LightPoint.hpp"
-#include "Shader.hpp"
+#include "LightDirectional.h"
+#include "LightPoint.h"
+#include "Shader.h"
 
 class LightManager
 {

@@ -1,4 +1,4 @@
-﻿#include "RandomTerrain.hpp"
+﻿#include "RandomTerrain.h"
 
 RandomTerrain::RandomTerrain(int start_pos_x, int start_pos_z, int terrain_size, int vertices_number, Shader* p_shader, CameraController* p_camera_controller)
 	: SimpleTerrain(start_pos_x, start_pos_z, terrain_size, vertices_number, p_shader, p_camera_controller)

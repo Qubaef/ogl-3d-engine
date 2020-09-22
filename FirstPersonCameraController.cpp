@@ -1,4 +1,4 @@
-#include "FirstPersonCameraController.hpp"
+#include "FirstPersonCameraController.h"
 
 FirstPersonCameraController::FirstPersonCameraController(GLFWwindow* p_window, InputManager* p_input_manager) :
 	CameraController(p_window, p_input_manager, 0.8)

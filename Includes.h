@@ -9,10 +9,10 @@
 #include <thread>
 
 // File containing constant variables
-#include "Constants.hpp"
+#include "Constants.h"
 
 // Custom exceptions
-#include "InitializationException.hpp"
+#include "InitializationException.h"
 
 // Library includes
 #include <GL/glew.h>

@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "Includes.hpp"
-#include "CameraController.hpp"
-#include "Shader.hpp"
+#include "Includes.h"
+#include "CameraController.h"
+#include "Shader.h"
 
 class Terrain
 {

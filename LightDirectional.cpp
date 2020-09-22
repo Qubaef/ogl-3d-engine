@@ -1,4 +1,4 @@
-﻿#include "LightDirectional.hpp"
+﻿#include "LightDirectional.h"
 
 LightDirectional::LightDirectional(vec3 ambient, vec3 diffuse, vec3 specular, vec3 direction) :
 	Light(ambient, diffuse, specular), direction(direction)

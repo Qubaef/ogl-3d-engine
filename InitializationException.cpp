@@ -1,4 +1,4 @@
-﻿#include "InitializationException.hpp"
+﻿#include "InitializationException.h"
 
 InitializationException::InitializationException(const char* msg, const char* func_) :
 	std::exception(msg),

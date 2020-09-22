@@ -1,4 +1,4 @@
-﻿#include "Light.hpp"
+﻿#include "Light.h"
 
 Light::Light(vec3 ambient, vec3 diffuse, vec3 specular)
 {

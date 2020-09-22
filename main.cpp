@@ -1,6 +1,6 @@
-#include "Includes.hpp"
-#include "FirstPersonCameraController.hpp"
-#include "Engine.hpp"
+#include "Includes.h"
+#include "FirstPersonCameraController.h"
+#include "Engine.h"
 
 int main()
 {

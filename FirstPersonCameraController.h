@@ -1,6 +1,6 @@
 #pragma once
-#include "Includes.hpp"
-#include "CameraController.hpp"
+#include "Includes.h"
+#include "CameraController.h"
 
 class FirstPersonCameraController : public CameraController
 {

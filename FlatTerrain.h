@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "SimpleTerrain.hpp"
+#include "SimpleTerrain.h"
 
 class FlatTerrain : public SimpleTerrain
 {

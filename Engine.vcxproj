@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CameraController.cpp" />
+    <ClCompile Include="DynamicTerrain.cpp" />
     <ClCompile Include="FirstPersonCameraController.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="FlatTerrain.cpp" />
@@ -141,6 +142,9 @@
     <ClCompile Include="LightPoint.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OverviewCameraController.cpp" />
+    <ClCompile Include="Quad.cpp" />
+    <ClCompile Include="QuadPoint.cpp" />
+    <ClCompile Include="QuadTreeLOD.cpp" />
     <ClCompile Include="RandomTerrain.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleTerrain.cpp" />
@@ -148,24 +152,28 @@
     <ClCompile Include="WaterTerrain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CameraController.hpp" />
-    <ClInclude Include="FirstPersonCameraController.hpp" />
-    <ClInclude Include="Constants.hpp" />
-    <ClInclude Include="Engine.hpp" />
-    <ClInclude Include="FlatTerrain.hpp" />
-    <ClInclude Include="Includes.hpp" />
-    <ClInclude Include="InitializationException.hpp" />
-    <ClInclude Include="InputManager.hpp" />
-    <ClInclude Include="LightDirectional.hpp" />
-    <ClInclude Include="Light.hpp" />
-    <ClInclude Include="LightManager.hpp" />
-    <ClInclude Include="LightPoint.hpp" />
-    <ClInclude Include="OverviewCameraController.hpp" />
-    <ClInclude Include="RandomTerrain.hpp" />
-    <ClInclude Include="Shader.hpp" />
-    <ClInclude Include="SimpleTerrain.hpp" />
-    <ClInclude Include="Terrain.hpp" />
-    <ClInclude Include="WaterTerrain.hpp" />
+    <ClInclude Include="CameraController.h" />
+    <ClInclude Include="DynamicTerrain.h" />
+    <ClInclude Include="FirstPersonCameraController.h" />
+    <ClInclude Include="Constants.h" />
+    <ClInclude Include="Engine.h" />
+    <ClInclude Include="FlatTerrain.h" />
+    <ClInclude Include="Includes.h" />
+    <ClInclude Include="InitializationException.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="LightDirectional.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="LightManager.h" />
+    <ClInclude Include="LightPoint.h" />
+    <ClInclude Include="OverviewCameraController.h" />
+    <ClInclude Include="Quad.h" />
+    <ClInclude Include="QuadPoint.h" />
+    <ClInclude Include="QuadTreeLOD.h" />
+    <ClInclude Include="RandomTerrain.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="SimpleTerrain.h" />
+    <ClInclude Include="Terrain.h" />
+    <ClInclude Include="WaterTerrain.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\FragmentShader.frag" />

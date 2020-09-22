@@ -1,4 +1,4 @@
-﻿#include "LightPoint.hpp"
+﻿#include "LightPoint.h"
 
 LightPoint::LightPoint(vec3 ambient, vec3 diffuse, vec3 specular, vec3 position, float constant, float linear, float quadratic) :
 	Light(ambient, diffuse, specular), position(position), constant(constant), linear(linear), quadratic(quadratic)

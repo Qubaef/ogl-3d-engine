@@ -1,4 +1,4 @@
-﻿#include "CameraController.hpp"
+﻿#include "CameraController.h"
 
 CameraController::CameraController(GLFWwindow* p_window, InputManager* p_input_manager, float mouse_sens) :
 	mouse_sensitivity(mouse_sens)

@@ -1,4 +1,4 @@
-﻿#include "LightManager.hpp"
+﻿#include "LightManager.h"
 
 void LightManager::initialize_scene_lights()
 {

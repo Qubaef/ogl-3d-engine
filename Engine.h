@@ -1,19 +1,20 @@
 ﻿#pragma once
-#include "Includes.hpp"
-#include "Shader.hpp"
+#include "Includes.h"
+#include "Shader.h"
 
 // Cameras
-#include "FirstPersonCameraController.hpp"
-#include "OverviewCameraController.hpp"
+#include "FirstPersonCameraController.h"
+#include "OverviewCameraController.h"
 
 // Terrains
-#include "FlatTerrain.hpp"
-#include "RandomTerrain.hpp"
-#include "WaterTerrain.hpp"
+#include "FlatTerrain.h"
+#include "RandomTerrain.h"
+#include "WaterTerrain.h"
+#include "DynamicTerrain.h"
 
 // Managers
-#include "LightManager.hpp"
-#include "InputManager.hpp"
+#include "LightManager.h"
+#include "InputManager.h"
 
 
 class Engine

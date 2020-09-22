@@ -15,9 +15,14 @@ constexpr auto SCREEN_NAME = "Custom engine";
 constexpr auto SCREEN_W = 1280;
 constexpr auto SCREEN_H = 720;
 constexpr auto CAMERA_FOV = 45;
+constexpr auto LOD_LEVEL = 50;
 
-constexpr auto SECTOR_DENSITY = 1024;
-constexpr auto SECTOR_SIZE = 2048;
+constexpr auto SECTOR_DENSITY = 33;
+constexpr auto SECTOR_SIZE = 16;
+
+// TODO: implement default world slicing to decrease lod range
+constexpr auto SECTOR_SLICES = 16;
+
 
 // changing the following, requires modification in the fragment shader
 constexpr auto MAX_POINT_LIGHTS_COUNT = 16;

@@ -1,4 +1,4 @@
-﻿#include "SimpleTerrain.hpp"
+﻿#include "SimpleTerrain.h"
 
 SimpleTerrain::SimpleTerrain(int start_pos_x, int start_pos_z, int terrain_size, int vertices_number, Shader* p_shader, CameraController* p_camera_controller)
 	: Terrain(start_pos_x, start_pos_z, terrain_size, vertices_number, p_shader, p_camera_controller)

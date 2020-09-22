@@ -1,4 +1,4 @@
-﻿#include "OverviewCameraController.hpp"
+﻿#include "OverviewCameraController.h"
 
 OverviewCameraController::OverviewCameraController(GLFWwindow* p_window, InputManager* p_input_manager) :
 	CameraController(p_window, p_input_manager, 0.8)

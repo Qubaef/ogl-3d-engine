@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Light.hpp"
+#include "Light.h"
 
 class LightDirectional : public Light
 {

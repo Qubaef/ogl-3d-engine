@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "Includes.hpp"
-#include "InputManager.hpp"
+#include "Includes.h"
+#include "InputManager.h"
 
 class CameraController
 {
