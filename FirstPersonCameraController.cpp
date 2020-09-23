@@ -28,24 +28,24 @@ void FirstPersonCameraController::updateCamera()
 	glfwSetCursorPos(p_window, SCREEN_W / 2, SCREEN_H / 2);
 
 	// Compute new orientation
-	horizontal_angle += mouse_sensitivity / 1000 * float(SCREEN_W / 2 - mouse_pos.x);
-	vertical_angle += mouse_sensitivity / 1000 * float(SCREEN_H / 2 - mouse_pos.y);
+	initial_horizontal_angle += mouse_sensitivity / 1000 * float(SCREEN_W / 2 - mouse_pos.x);
+	initial_vertical_angle += mouse_sensitivity / 1000 * float(SCREEN_H / 2 - mouse_pos.y);
 
 	// restrict vertical rotation
-	if (vertical_angle > radians(89.f))
+	if (initial_vertical_angle > radians(89.f))
 	{
-		vertical_angle = radians(89.f);
+		initial_vertical_angle = radians(89.f);
 	}
-	else if (vertical_angle < radians(-89.f))
+	else if (initial_vertical_angle < radians(-89.f))
 	{
-		vertical_angle = radians(-89.f);
+		initial_vertical_angle = radians(-89.f);
 	}
 
 	// Direction : Spherical coordinates to Cartesian coordinates conversion
 	camera_direction = vec3(
-		cos(vertical_angle) * sin(horizontal_angle),
-		sin(vertical_angle),
-		cos(vertical_angle) * cos(horizontal_angle)
+		cos(initial_vertical_angle) * sin(initial_horizontal_angle),
+		sin(initial_vertical_angle),
+		cos(initial_vertical_angle) * cos(initial_horizontal_angle)
 	);
 
 	direction_flattened = glm::normalize(camera_direction);

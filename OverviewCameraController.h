@@ -4,6 +4,12 @@
 
 class OverviewCameraController : public CameraController
 {
+	float horizontal_angle;
+	float vertical_angle;
+	
+	void calculate_angles();
+	vec3 calculate_midpoint();
+
 public:
 	// functions
 	OverviewCameraController(GLFWwindow* p_window, InputManager* p_input_manager);

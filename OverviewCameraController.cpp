@@ -5,6 +5,9 @@ OverviewCameraController::OverviewCameraController(GLFWwindow* p_window, InputMa
 {
 	// Show the mouse
 	glfwSetInputMode(p_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
+	// Calculate real angles values
+	calculate_angles();
 }
 
 
@@ -13,7 +16,47 @@ OverviewCameraController::OverviewCameraController(GLFWwindow* p_window, InputMa
 {
 	// Show the mouse
 	glfwSetInputMode(p_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
+	// Calculate real angles values
+	calculate_angles();
 }
+
+
+void OverviewCameraController::calculate_angles()
+{
+	// Convert initial angles to the ones relative to the mid point (to avoid weird jump at the start)
+	vec3 mid_point = calculate_midpoint();
+	float dist = distance(mid_point, camera_position);
+
+	// calculate vertical angle by inverting the equation
+	vertical_angle = asin((camera_position.y - mid_point.y) / dist);
+
+	// calculate values for x and z horizon angles
+	float horiz_z_val = (camera_position.z - mid_point.z) / (cos(initial_vertical_angle) * dist);
+	float horiz_x_val = (camera_position.x - mid_point.x) / (cos(initial_vertical_angle) * dist);
+
+	// find common angle which matches both horizon_z and horizon_x value, using atan2 function
+	horizontal_angle = atan2(horiz_z_val, horiz_x_val);
+}
+
+
+
+vec3 OverviewCameraController::calculate_midpoint()
+{
+	// Calculate mid point, around which rotation will be performed
+	float k;
+	if (camera_direction.y != 0)
+	{
+		k = -(camera_position.y / camera_direction.y);
+	}
+	else
+	{
+		k = 10;
+	}
+
+	return camera_position + (camera_direction * k);
+}
+
 
 
 void OverviewCameraController::updateCamera()
@@ -73,21 +116,9 @@ void OverviewCameraController::updateCamera()
 			vertical_angle = radians(-89.f);
 		}
 
-		// Calculate mid point, around which rotation will be performed
-		float k;
-		if (camera_direction.y != 0)
-		{
-			k = -(camera_position.y / camera_direction.y);
-		}
-		else
-		{
-			k = 10;
-		}
-
-		vec3 mid_point = camera_position + (camera_direction * k);
+		vec3 mid_point = calculate_midpoint();
 		float dist = distance(mid_point, camera_position);
 
-		// BUG: first camera rotate causes position 'jump'
 		// Position : Spherical coordinates to Cartesian coordinates conversion
 		camera_position = vec3(
 			mid_point.x + cos(vertical_angle) * sin(horizontal_angle) * dist,

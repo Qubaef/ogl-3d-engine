@@ -11,8 +11,8 @@ protected:
 
 	const float mouse_sensitivity = 0.8;
 
-	float horizontal_angle = 0.5;
-	float vertical_angle = -0.5;
+	float initial_horizontal_angle = radians(45.f);
+	float initial_vertical_angle = radians(-20.f);
 
 	double last_time;
 	double current_time;

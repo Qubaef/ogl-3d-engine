@@ -10,9 +10,9 @@ CameraController::CameraController(GLFWwindow* p_window, InputManager* p_input_m
 	// set initial values of camera
 	this->camera_position = vec3(2, 10, 2);
 	this->camera_direction = normalize(vec3(
-		cos(vertical_angle) * sin(horizontal_angle),
-		sin(vertical_angle),
-		cos(vertical_angle) * cos(horizontal_angle)));
+		cos(initial_vertical_angle) * sin(initial_horizontal_angle),
+		sin(initial_vertical_angle),
+		cos(initial_vertical_angle) * cos(initial_horizontal_angle)));
 	this->camera_up = vec3(0, 1, 0);
 
 	generate_matrices();
@@ -29,8 +29,8 @@ CameraController::CameraController(GLFWwindow* p_window, InputManager* p_input_m
 	this->p_window = p_window;
 	this->p_input_manager = p_input_manager;
 
-	this->horizontal_angle = horizontal_angle;
-	this->vertical_angle = vertical_angle;
+	this->initial_horizontal_angle = horizontal_angle;
+	this->initial_vertical_angle = vertical_angle;
 
 	// set initial values of camera
 	this->camera_position = position;

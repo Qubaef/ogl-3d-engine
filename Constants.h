@@ -17,11 +17,8 @@ constexpr auto SCREEN_H = 720;
 constexpr auto CAMERA_FOV = 45;
 constexpr auto LOD_LEVEL = 50;
 
-constexpr auto SECTOR_DENSITY = 33;
-constexpr auto SECTOR_SIZE = 16;
-
-// TODO: implement default world slicing to decrease lod range
-constexpr auto SECTOR_SLICES = 16;
+constexpr auto SECTOR_DENSITY = 65;
+constexpr auto SECTOR_SIZE = 32;
 
 
 // changing the following, requires modification in the fragment shader

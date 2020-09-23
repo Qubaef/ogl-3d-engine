@@ -25,11 +25,8 @@ void QuadTreeLOD::quad_step(std::vector<unsigned>& indices, vec3& camera_positio
 	{
 		// Initialize memory containers
 
-		std::vector<QuadPoint> corners_points;
-		corners_points.reserve(4);
-
-		std::vector<QuadPoint> sides_points;
-		sides_points.reserve(4);
+		QuadPoint* corners_points[4];
+		QuadPoint* sides_points[4];
 
 		// Calculate mid point
 		int curr_i = ml + (tm - tl);
@@ -38,30 +35,30 @@ void QuadTreeLOD::quad_step(std::vector<unsigned>& indices, vec3& camera_positio
 		// Calculate corners
 		// top left
 		curr_i = tl;
-		corners_points.emplace_back(vec2(mesh_array[curr_i].x, mesh_array[curr_i].z), curr_i, camera_position, lod_level);
+		corners_points[0] = new QuadPoint(vec2(mesh_array[curr_i].x, mesh_array[curr_i].z), curr_i, camera_position, lod_level);
 		// top right
 		curr_i = tr;
-		corners_points.emplace_back(vec2(mesh_array[curr_i].x, mesh_array[curr_i].z), curr_i, camera_position, lod_level);
+		corners_points[1] = new QuadPoint(vec2(mesh_array[curr_i].x, mesh_array[curr_i].z), curr_i, camera_position, lod_level);
 		// bot left
 		curr_i = bl;
-		corners_points.emplace_back(vec2(mesh_array[curr_i].x, mesh_array[curr_i].z), curr_i, camera_position, lod_level);
+		corners_points[2] = new QuadPoint(vec2(mesh_array[curr_i].x, mesh_array[curr_i].z), curr_i, camera_position, lod_level);
 		// bot right
 		curr_i = br;
-		corners_points.emplace_back(vec2(mesh_array[curr_i].x, mesh_array[curr_i].z), curr_i, camera_position, lod_level);
+		corners_points[3] = new QuadPoint(vec2(mesh_array[curr_i].x, mesh_array[curr_i].z), curr_i, camera_position, lod_level);
 
 		// Calculate sides
 		// top
 		curr_i = tm;
-		sides_points.emplace_back(vec2(mesh_array[curr_i].x, mesh_array[curr_i].z), curr_i, camera_position, lod_level);
+		sides_points[0] = new QuadPoint(vec2(mesh_array[curr_i].x, mesh_array[curr_i].z), curr_i, camera_position, lod_level);
 		// right
 		curr_i = mr;
-		sides_points.emplace_back(vec2(mesh_array[curr_i].x, mesh_array[curr_i].z), curr_i, camera_position, lod_level);
+		sides_points[1] = new QuadPoint(vec2(mesh_array[curr_i].x, mesh_array[curr_i].z), curr_i, camera_position, lod_level);
 		// bot
 		curr_i = bm;
-		sides_points.emplace_back(vec2(mesh_array[curr_i].x, mesh_array[curr_i].z), curr_i, camera_position, lod_level);
+		sides_points[2] = new QuadPoint(vec2(mesh_array[curr_i].x, mesh_array[curr_i].z), curr_i, camera_position, lod_level);
 		// left
 		curr_i = ml;
-		sides_points.emplace_back(vec2(mesh_array[curr_i].x, mesh_array[curr_i].z), curr_i, camera_position, lod_level);
+		sides_points[3] = new QuadPoint(vec2(mesh_array[curr_i].x, mesh_array[curr_i].z), curr_i, camera_position, lod_level);
 
 		// Init quad
 		Quad quad(indices, corners_points, sides_points, mid_point);
@@ -69,25 +66,32 @@ void QuadTreeLOD::quad_step(std::vector<unsigned>& indices, vec3& camera_positio
 		// check top left quad
 		if (quad.split_top_left())
 		{
-			quad_step(indices, camera_position, corners_points[0].index, sides_points[0].index, sides_points[3].index, mid_point.index);
+			quad_step(indices, camera_position, corners_points[0]->index, sides_points[0]->index, sides_points[3]->index, mid_point.index);
 		}
 
 		// check top right quad
 		if (quad.split_top_right())
 		{
-			quad_step(indices, camera_position, sides_points[0].index, corners_points[1].index, mid_point.index, sides_points[1].index);
+			quad_step(indices, camera_position, sides_points[0]->index, corners_points[1]->index, mid_point.index, sides_points[1]->index);
 		}
 
 		// check bottom left quad
 		if (quad.split_bot_left())
 		{
-			quad_step(indices, camera_position, sides_points[3].index, mid_point.index, corners_points[2].index, sides_points[2].index);
+			quad_step(indices, camera_position, sides_points[3]->index, mid_point.index, corners_points[2]->index, sides_points[2]->index);
 		}
 
 		// check bottom right quad
 		if (quad.split_bot_right())
 		{
-			quad_step(indices, camera_position, mid_point.index, sides_points[1].index, sides_points[2].index, corners_points[3].index);
+			quad_step(indices, camera_position, mid_point.index, sides_points[1]->index, sides_points[2]->index, corners_points[3]->index);
+		}
+
+		// delete initialized objects after using them
+		for (int i = 0; i < 4; i++)
+		{
+			delete corners_points[i];
+			delete sides_points[i];
 		}
 	}
 	else

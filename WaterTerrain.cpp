@@ -97,7 +97,7 @@ void WaterTerrain::render_terrain()
 	// Bind to VAO to perform draw operation
 	glBindVertexArray(main_VAO_id);
 
-	// Send view position for specular component (TODO: check if can be done better)
+	// Send view position for specular component
 	p_shader->set_vec3("view_pos", p_camera_controller->getPosition());
 	p_shader->set_float("time", glfwGetTime());
 

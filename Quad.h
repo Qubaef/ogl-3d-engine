@@ -1,22 +1,23 @@
 ﻿#pragma once
 #include "QuadPoint.h"
 
+// TODO: add circle to square collision detection to perform better LOD
+
 class Quad
 {
 	// Original vector of indices, which will be eventually filled
 	std::vector<unsigned>& indices;
 
 	// Points which are part of quad
-	// TODO: for optimization, it might be better to replace them with arrays or just variables
-	std::vector<QuadPoint> corners_points;
-	std::vector<QuadPoint> sides_points;
+	QuadPoint** corners_points;
+	QuadPoint** sides_points;
 	QuadPoint mid_point;
 
 	// Fill indices vertex with smallest rectangles in the range of the quad
 	void fill_all();
 
 public:
-	Quad(std::vector<unsigned>& indices, std::vector<QuadPoint>& corners_points, std::vector<QuadPoint>& sides_points, QuadPoint& mid_point);
+	Quad(std::vector<unsigned>& indices, QuadPoint* corners_points[], QuadPoint* sides_points[], QuadPoint& mid_point);
 
 	// Methods to validate children of the quad
 	// These methods are filling indices buffer if required
