@@ -1,23 +1,12 @@
 ﻿#pragma once
 #include "Includes.h"
+#include "InputState.h"
 
 class InputManager
 {
 	GLFWwindow* p_window;
 
-	vec2 mouse_last_pos;
-
-	bool l_mouse_pressed;
-	vec2 l_mouse_click_pos;
-	vec2 l_mouse_release_pos;
-
-	bool r_mouse_pressed;
-	vec2 r_mouse_click_pos;
-	vec2 r_mouse_release_pos;
-
-	bool mouse_scroll_moved;
-	vec2 mouse_scroll_position;
-	double mouse_scroll_y_offset;
+	InputState input_state;
 
 	// Set custom user pointer, to make binding possible
 	void set_window_user_pointer();
@@ -29,29 +18,22 @@ class InputManager
 public:
 	InputManager(GLFWwindow* p_window);
 
-	// Process user's input
-	void process_input(int& draw_mode);
+	// Process user's input which happens every frame (mouse_pos)
+	// and ESC key, which closes app and should be checked processed no matter the case
+	InputState& process_input();
 
-	// Get mouse packed to vec2
-	static vec2 get_mouse_pos(GLFWwindow* p_window);
+	// Register event for key of given number
+	void register_key_event(int glfw_key_number);
 
 	// Mouse scroll event
 	void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 	// Mouse button click event
 	void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
+	// Reset mouse position to given one
+	void reset_mouse_pos(int xpos, int ypos);
+
 	// Getters
-	vec2 get_mouse_last_pos() const;
-
-	bool if_l_mouse_pressed() const;
-	vec2 get_l_mouse_click_pos() const;
-	vec2 get_l_mouse_release_pos() const;
-
-	bool if_r_mouse_pressed() const;
-	vec2 get_r_mouse_click_pos() const;
-	vec2 get_r_mouse_release_pos() const;
-
-	bool if_mouse_scroll_moved();
-	vec2 get_mouse_scroll_position() const;
-	double get_mouse_scroll_y_offset() const;
+	InputState& get_input_state();
+	vec2 get_mouse_pos();
 };

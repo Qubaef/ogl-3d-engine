@@ -29,152 +29,109 @@ void InputManager::bind_mouse_click_event()
 InputManager::InputManager(GLFWwindow* p_window) :
 	p_window(p_window)
 {
-	l_mouse_pressed = false;
-	r_mouse_pressed = false;
-	mouse_scroll_moved = false;
-
 	// Set custom user pointer, to make binding possible
 	set_window_user_pointer();
 
-	// Bind scroll mouse
+	// Bind scroll mouse event
 	bind_scroll_event();
-	// Bind mouse click
+	// Bind mouse click event
 	bind_mouse_click_event();
 }
 
-void InputManager::process_input(int& draw_mode)
+InputState& InputManager::process_input()
 {
 	// Process escape button click (which closes the program)
 	if (glfwGetKey(p_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
 		glfwSetWindowShouldClose(p_window, 1);
-		return;
 	}
 
 	// Update mouse current pos
-	mouse_last_pos = get_mouse_pos(p_window);
+	input_state.mouse_pos_prev = input_state.mouse_pos;
+	input_state.mouse_pos = get_mouse_pos();
 
-	// Detect 'p' click action and change polygon mode accordingly
-
-	static bool p_clicked = false;
-
-	if (glfwGetKey(p_window, GLFW_KEY_P) == GLFW_PRESS && p_clicked == false)
+	// Process keyboard inputs
+	for (auto& keyState : input_state.keysStates)
 	{
-		// on 'P' key being pressed
-		p_clicked = true;
-
-		if (draw_mode == 0)
+		if (glfwGetKey(p_window, keyState.first) == GLFW_PRESS)
 		{
-			draw_mode = 1;
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			if (keyState.second == InputState::NOT_PRESSED)
+			{
+				keyState.second = InputState::JUST_PRESSED;
+			}
+			else
+			{
+				keyState.second = InputState::HOLD_PRESSED;
+			}
 		}
-		else if (draw_mode == 1)
+		else if (glfwGetKey(p_window, keyState.first) == GLFW_RELEASE && keyState.second != InputState::NOT_PRESSED)
 		{
-			draw_mode = 0;
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			keyState.second = InputState::NOT_PRESSED;
 		}
 	}
-	else if (glfwGetKey(p_window, GLFW_KEY_P) != GLFW_PRESS && p_clicked == true)
-	{
-		p_clicked = false;
-	}
+
+	return input_state;
 }
 
-vec2 InputManager::get_mouse_pos(GLFWwindow* p_window)
+void InputManager::register_key_event(int glfw_key_number)
 {
-	double x_pos, y_pos;
-	glfwGetCursorPos(p_window, &x_pos, &y_pos);
-	return vec2(x_pos, y_pos);
+	input_state.register_key(glfw_key_number);
 }
 
 
 void InputManager::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-	mouse_scroll_moved = true;
-	mouse_scroll_y_offset = yoffset;
-	mouse_scroll_position = get_mouse_pos(p_window);
+	input_state.mouse_scroll_moved = true;
+	input_state.mouse_scroll_y_offset = yoffset;
+	input_state.mouse_scroll_position = get_mouse_pos();
 }
 
 void InputManager::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+	if (button == GLFW_MOUSE_BUTTON_LEFT)
 	{
-		l_mouse_pressed = true;
-		l_mouse_click_pos = get_mouse_pos(p_window);
+		if (action == GLFW_PRESS)
+		{
+			input_state.l_mouse_pressed = true;
+			input_state.l_mouse_click_pos = get_mouse_pos();
+		}
+		else if (action == GLFW_RELEASE)
+		{
+			input_state.l_mouse_pressed = false;
+			input_state.l_mouse_release_pos = get_mouse_pos();
+		}
 	}
-	else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+	else if (button == GLFW_MOUSE_BUTTON_RIGHT)
 	{
-		l_mouse_pressed = false;
-		l_mouse_release_pos = get_mouse_pos(p_window);
-	}
-	else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
-	{
-		r_mouse_pressed = true;
-		r_mouse_click_pos = get_mouse_pos(p_window);
-	}
-	else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE)
-	{
-		r_mouse_pressed = false;
-		r_mouse_release_pos = get_mouse_pos(p_window);
-	}
-}
-
-vec2 InputManager::get_mouse_last_pos() const
-{
-	return mouse_last_pos;
-}
-
-bool InputManager::if_l_mouse_pressed() const
-{
-	return l_mouse_pressed;
-}
-
-vec2 InputManager::get_l_mouse_click_pos() const
-{
-	return l_mouse_click_pos;
-}
-
-vec2 InputManager::get_l_mouse_release_pos() const
-{
-	return l_mouse_release_pos;
-}
-
-
-bool InputManager::if_r_mouse_pressed() const
-{
-	return r_mouse_pressed;
-}
-
-vec2 InputManager::get_r_mouse_click_pos() const
-{
-	return r_mouse_click_pos;
-}
-
-vec2 InputManager::get_r_mouse_release_pos() const
-{
-	return r_mouse_release_pos;
-}
-
-
-bool InputManager::if_mouse_scroll_moved()
-{
-	if (mouse_scroll_moved)
-	{
-		mouse_scroll_moved = false;
-		return true;
-	}
-	else
-	{
-		return false;
+		if (action == GLFW_PRESS)
+		{
+			input_state.r_mouse_pressed = true;
+			input_state.r_mouse_click_pos = get_mouse_pos();
+		}
+		else if (action == GLFW_RELEASE)
+		{
+			input_state.r_mouse_pressed = false;
+			input_state.r_mouse_release_pos = get_mouse_pos();
+		}
 	}
 }
 
-vec2 InputManager::get_mouse_scroll_position() const
+
+void InputManager::reset_mouse_pos(int xpos, int ypos)
 {
-	return mouse_scroll_position;
+	glfwSetCursorPos(p_window, xpos, ypos);
 }
 
-double InputManager::get_mouse_scroll_y_offset() const
+
+
+InputState& InputManager::get_input_state()
 {
-	return mouse_scroll_y_offset;
+	return input_state;
+}
+
+vec2 InputManager::get_mouse_pos()
+{
+	double x_pos, y_pos;
+	glfwGetCursorPos(p_window, &x_pos, &y_pos);
+	return vec2(x_pos, y_pos);
 }

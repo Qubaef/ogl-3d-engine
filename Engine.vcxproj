@@ -22,32 +22,32 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{C3C7D30C-6E2F-4787-A34B-B0676C7986F0}</ProjectGuid>
     <RootNamespace>Engine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -76,14 +76,14 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\qubae\Documents\c++_libs\OGL\include;C:\Users\qubae\Documents\c++_libs\OGL\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Qubaef\cpp-libs\GL\glm-9.8.8;C:\Users\Qubaef\cpp-libs\GL\glfw-3.3.2\include;C:\Users\Qubaef\cpp-libs\GL\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>Includes.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>C:\Users\qubae\Documents\c++_libs\OGL\lib\GL;C:\Users\qubae\Documents\c++_libs\OGL\lib\GLFW;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Qubaef\cpp-libs\GL\glew-2.1.0\lib\Release\Win32\;C:\Users\Qubaef\cpp-libs\GL\glfw-3.3.2\lib-vc2017\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <StackReserveSize>16777216 </StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
@@ -93,9 +93,14 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Qubaef\cpp-libs\GL\glm-9.8.8;C:\Users\Qubaef\cpp-libs\GL\glfw-3.3.2\include;C:\Users\Qubaef\cpp-libs\GL\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>C:\Users\Qubaef\cpp-libs\GL\glew-2.1.0\lib\Release\x64\;C:\Users\Qubaef\cpp-libs\GL\glfw-3.3.2\lib-vc2017\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib</AdditionalDependencies>
+      <AdditionalOptions>/VERBOSE:LIB %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -161,6 +166,7 @@
     <ClInclude Include="Includes.h" />
     <ClInclude Include="InitializationException.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="InputState.h" />
     <ClInclude Include="LightDirectional.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightManager.h" />

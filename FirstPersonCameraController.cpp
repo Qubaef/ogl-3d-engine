@@ -5,6 +5,8 @@ FirstPersonCameraController::FirstPersonCameraController(GLFWwindow* p_window, I
 {
 	// Hide the mouse and enable unlimited movement
 	glfwSetInputMode(p_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+	registerInput();
 }
 
 
@@ -13,19 +15,38 @@ FirstPersonCameraController::FirstPersonCameraController(GLFWwindow* p_window, I
 {
 	// Hide the mouse and enable unlimited movement
 	glfwSetInputMode(p_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+	registerInput();
+}
+
+
+void FirstPersonCameraController::registerInput()
+{
+	CameraController::registerInput();
+
+	p_input_manager->register_key_event(GLFW_KEY_W);
+	p_input_manager->register_key_event(GLFW_KEY_S);
+	p_input_manager->register_key_event(GLFW_KEY_A);
+	p_input_manager->register_key_event(GLFW_KEY_D);
+	p_input_manager->register_key_event(GLFW_KEY_SPACE);
+	p_input_manager->register_key_event(GLFW_KEY_LEFT_SHIFT);
 }
 
 
 // Update matrices according to user's input
 void FirstPersonCameraController::updateCamera()
 {
+	// Process default input
+	defaultInput();
+	InputState& inputState = p_input_manager->get_input_state();
+
 	float delta_time = calculate_time();
 
 	// Get mouse position
-	vec2 mouse_pos = InputManager::get_mouse_pos(p_window);
+	vec2 mouse_pos = p_input_manager->get_mouse_pos();
 
 	// Reset mouse position for next frame
-	glfwSetCursorPos(p_window, SCREEN_W / 2, SCREEN_H / 2);
+	p_input_manager->reset_mouse_pos(SCREEN_W / 2, SCREEN_H / 2);
 
 	// Compute new orientation
 	initial_horizontal_angle += mouse_sensitivity / 1000 * float(SCREEN_W / 2 - mouse_pos.x);
@@ -59,27 +80,27 @@ void FirstPersonCameraController::updateCamera()
 	vec3 movement_vector = vec3(0, 0, 0);
 
 	// Move forward
-	if (glfwGetKey(p_window, GLFW_KEY_W) == GLFW_PRESS) {
+	if (inputState.if_key_pressed(GLFW_KEY_W) != InputState::NOT_PRESSED) {
 		movement_vector += direction_flattened * delta_time;
 	}
 	// Move backward
-	if (glfwGetKey(p_window, GLFW_KEY_S) == GLFW_PRESS) {
+	if (inputState.if_key_pressed(GLFW_KEY_S) != InputState::NOT_PRESSED) {
 		movement_vector -= direction_flattened * delta_time;
 	}
 	// Move upwards
-	if (glfwGetKey(p_window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+	if (inputState.if_key_pressed(GLFW_KEY_SPACE) != InputState::NOT_PRESSED) {
 		movement_vector += vec3(0, 1, 0) * delta_time;
 	}
 	// Move downwards
-	if (glfwGetKey(p_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+	if (inputState.if_key_pressed(GLFW_KEY_LEFT_SHIFT) != InputState::NOT_PRESSED) {
 		movement_vector -= vec3(0, 1, 0) * delta_time;
 	}
 	// Strafe right
-	if (glfwGetKey(p_window, GLFW_KEY_D) == GLFW_PRESS) {
+	if (inputState.if_key_pressed(GLFW_KEY_D) != InputState::NOT_PRESSED) {
 		movement_vector += camera_right * delta_time;
 	}
 	// Strafe left
-	if (glfwGetKey(p_window, GLFW_KEY_A) == GLFW_PRESS) {
+	if (inputState.if_key_pressed(GLFW_KEY_A) != InputState::NOT_PRESSED) {
 		movement_vector -= camera_right * delta_time;
 	}
 

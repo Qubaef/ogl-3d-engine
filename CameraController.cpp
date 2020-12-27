@@ -16,11 +16,14 @@ CameraController::CameraController(GLFWwindow* p_window, InputManager* p_input_m
 	this->camera_up = vec3(0, 1, 0);
 
 	generate_matrices();
+	registerInput();
+
+	// Set default DrawMode
+	draw_mode = FILLED;
 
 	// get time since of first init
 	this->last_time = glfwGetTime();
 }
-
 
 CameraController::CameraController(GLFWwindow* p_window, InputManager* p_input_manager, float mouse_sens, vec3 position, float vertical_angle, float horizontal_angle) :
 	mouse_sensitivity(mouse_sens)
@@ -41,6 +44,10 @@ CameraController::CameraController(GLFWwindow* p_window, InputManager* p_input_m
 	this->camera_up = vec3(0, 1, 0);
 
 	generate_matrices();
+	registerInput();
+
+	// Set default DrawMode
+	draw_mode = FILLED;
 
 	// get time since of first init
 	this->last_time = glfwGetTime();
@@ -56,7 +63,6 @@ void CameraController::generate_matrices()
 	updateMVP();
 }
 
-
 float CameraController::calculate_time()
 {
 	// calculate time since last frame
@@ -65,6 +71,20 @@ float CameraController::calculate_time()
 	last_time = current_time;
 
 	return delta_time;
+}
+
+void CameraController::toggleDrawMode()
+{
+	if (draw_mode == FILLED)
+	{
+		draw_mode = WIREFRAME;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else
+	{
+		draw_mode = FILLED;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 }
 
 
@@ -79,7 +99,6 @@ void CameraController::updateProjection()
 	);
 }
 
-
 void CameraController::updateView()
 {
 	// update View matrix
@@ -90,13 +109,11 @@ void CameraController::updateView()
 	);
 }
 
-
 void CameraController::updateModel()
 {
 	// update model matrix
 	Model = mat4(1.0f);
 }
-
 
 void CameraController::updateMVP()
 {
@@ -105,29 +122,41 @@ void CameraController::updateMVP()
 }
 
 
+void CameraController::registerInput()
+{
+	p_input_manager->register_key_event(GLFW_KEY_P);
+}
+
+void CameraController::defaultInput()
+{
+	InputState& inputState = p_input_manager->get_input_state();
+
+	if (inputState.if_key_pressed(GLFW_KEY_P) == InputState::JUST_PRESSED)
+	{
+		toggleDrawMode();
+	}
+}
+
+
 mat4* CameraController::getProjectionMatrix()
 {
 	return &Projection;
 }
-
 
 mat4* CameraController::getViewMatrix()
 {
 	return &View;
 }
 
-
 mat4* CameraController::getModelMatrix()
 {
 	return &Model;
 }
 
-
 mat4* CameraController::getMVPMatrix()
 {
 	return &MVP;
 }
-
 
 vec3& CameraController::getPosition()
 {

@@ -39,8 +39,6 @@ void OverviewCameraController::calculate_angles()
 	horizontal_angle = atan2(horiz_z_val, horiz_x_val);
 }
 
-
-
 vec3 OverviewCameraController::calculate_midpoint()
 {
 	// Calculate mid point, around which rotation will be performed
@@ -58,17 +56,27 @@ vec3 OverviewCameraController::calculate_midpoint()
 }
 
 
+void OverviewCameraController::registerInput()
+{
+	CameraController::registerInput();
+}
+
 
 void OverviewCameraController::updateCamera()
 {
+	// Process default input
+	defaultInput();
+
+	InputState& inputState = p_input_manager->get_input_state();
+
 	//// Process left mouse input
-	if (p_input_manager->if_l_mouse_pressed())
+	if (inputState.l_mouse_pressed)
 	{
 		// Get mouse last position
-		vec2 mouse_last_pos = p_input_manager->get_mouse_last_pos();
+		vec2 mouse_last_pos = inputState.mouse_pos;
 
 		// Get mouse current position
-		vec2 mouse_current_pos = InputManager::get_mouse_pos(p_window);
+		vec2 mouse_current_pos = p_input_manager->get_mouse_pos();
 
 		// Move along direction vector
 		// calculate flat direction vector to prevent changing y coordinate while moving
@@ -94,13 +102,13 @@ void OverviewCameraController::updateCamera()
 
 
 	//// Process right mouse input
-	if (p_input_manager->if_r_mouse_pressed())
+	if (inputState.r_mouse_pressed)
 	{
 		// Get mouse last position
-		vec2 mouse_last_pos = p_input_manager->get_mouse_last_pos();
+		vec2 mouse_last_pos = inputState.mouse_pos;
 
 		// Get mouse current position
-		vec2 mouse_current_pos = InputManager::get_mouse_pos(p_window);
+		vec2 mouse_current_pos = p_input_manager->get_mouse_pos();
 
 		// Compute new orientation
 		horizontal_angle -= mouse_sensitivity / 300 * float(mouse_current_pos.x - mouse_last_pos.x);
@@ -129,7 +137,7 @@ void OverviewCameraController::updateCamera()
 		camera_direction = normalize(mid_point - camera_position);
 	}
 
-	if (p_input_manager->if_mouse_scroll_moved())
+	if (inputState.if_mouse_scroll_moved())
 	{
 		// Set height multiplier for non linear zooming
 		float height_multiplier = camera_position.y;
@@ -144,7 +152,7 @@ void OverviewCameraController::updateCamera()
 			height_multiplier = 1;
 		}
 
-		camera_position += camera_direction * (float)(p_input_manager->get_mouse_scroll_y_offset() * mouse_sensitivity / 3 * height_multiplier);
+		camera_position += camera_direction * (float)(inputState.mouse_scroll_y_offset * mouse_sensitivity / 3 * height_multiplier);
 	}
 
 	updateView();

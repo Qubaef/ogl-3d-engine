@@ -55,6 +55,9 @@
     <Filter Include="Pliki źródłowe\Classes\Terrains\DynamicQuadtreeLOD">
       <UniqueIdentifier>{63b7bb85-c92a-4d55-b5f1-2f3ae2360ce7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\Data Structures">
+      <UniqueIdentifier>{bf1d1afd-a415-47e0-b1e3-a748104fa8f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InitializationException.cpp">
@@ -96,9 +99,6 @@
     <ClCompile Include="FlatTerrain.cpp">
       <Filter>Pliki źródłowe\Classes\Terrains</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Pliki źródłowe\Classes</Filter>
-    </ClCompile>
     <ClCompile Include="SimpleTerrain.cpp">
       <Filter>Pliki źródłowe\Classes\Terrains</Filter>
     </ClCompile>
@@ -119,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="QuadPoint.cpp">
       <Filter>Pliki źródłowe\Classes\Terrains\DynamicQuadtreeLOD</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,9 +155,6 @@
     <ClInclude Include="Engine.h">
       <Filter>Pliki nagłówkowe\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Pliki nagłówkowe\Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Pliki nagłówkowe\Classes</Filter>
     </ClInclude>
@@ -186,6 +186,12 @@
       <Filter>Pliki nagłówkowe\Classes\CameraControllers</Filter>
     </ClInclude>
     <ClInclude Include="CameraController.h">
+      <Filter>Pliki nagłówkowe\Classes\CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="InputState.h">
+      <Filter>Pliki nagłówkowe\Data Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
       <Filter>Pliki nagłówkowe\Classes\CameraControllers</Filter>
     </ClInclude>
   </ItemGroup>

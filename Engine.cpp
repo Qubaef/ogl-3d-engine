@@ -74,21 +74,22 @@ void Engine::initialize_user_control()
 	p_input_manager = new InputManager(p_window);
 
 	// Initialize instance of CameraController
-	//p_controller = new FirstPersonCameraController(p_window, p_input_manager);
-	p_controller = new OverviewCameraController(p_window, p_input_manager);
+	p_controller = new FirstPersonCameraController(p_window, p_input_manager);
+	// p_controller = new OverviewCameraController(p_window, p_input_manager);
 }
 
 
 void Engine::initialize_terrain()
 {
 	// p_terrain = new FlatTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
-	// p_terrain = new RandomTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
-	p_terrain = new WaterTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_water_shader, p_controller);
+	p_terrain = new RandomTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
+	// p_terrain = new WaterTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_water_shader, p_controller);
 	// p_terrain = new DynamicTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
 }
 
 
 void Engine::set_OGL_parameters()
+
 {
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(p_window, GLFW_STICKY_KEYS, GL_TRUE);
@@ -99,7 +100,7 @@ void Engine::set_OGL_parameters()
 	// Accept fragment if it is closer to the camera than the former one
 	glDepthFunc(GL_LESS);
 
-	// Disable Vsync (requires time synchronization)
+	// Disable Vsync (enabling requires time synchronization)
 	glfwSwapInterval(0);
 
 	// Cull triangles which normal is not towards the camera (should be turned on for optimization)
@@ -111,27 +112,30 @@ void Engine::set_OGL_parameters()
 }
 
 
-void Engine::track_time_per_frame()
+void Engine::track_time()
 {
-	if (processed_frames > -1) {
-		// Regular call of the function
-		current_time = glfwGetTime();
-		processed_frames++;
+	// Get frame timestamp
+	double current_time = glfwGetTime();
 
-		// If last printf() was more than 1 sec ago, print status and reset timer
-		if (current_time - last_time >= 1.0) {
-			printf("%f ms/frame : %d fps \n", 1000.0 / double(processed_frames), processed_frames);
-			processed_frames = 0;
-			last_time = current_time;
-		}
-	}
-	else
-	{
-		// First call of the function
-		last_time = glfwGetTime();
-		processed_frames = 0;
+	// Calculate last frame duration and update variables
+	time.delta_time_frame = current_time - time.last_time_frame;
+	time.last_time_frame = current_time;
+	time.processed_frames++;
+
+	// If last printf() was more than 1 sec ago, print status and reset print timer
+	if (current_time - time.last_time_print >= 1.0) {
+		print_time_info();
+		time.processed_frames = 0;
+		time.last_time_print = current_time;
 	}
 }
+
+
+void Engine::print_time_info()
+{
+	printf("%f ms/frame : %d fps \n", 1000.0 / double(time.processed_frames), time.processed_frames);
+}
+
 
 
 bool Engine::check_errors(const char* location)
@@ -195,7 +199,6 @@ Engine::Engine()
 	set_OGL_parameters();
 
 	// Initialize fields
-
 }
 
 
@@ -205,7 +208,7 @@ int Engine::run()
 	while (!glfwWindowShouldClose(p_window))
 	{
 		// Track time per frame value and print it's status
-		track_time_per_frame();
+		track_time();
 
 		// Clear buffers
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -224,8 +227,8 @@ int Engine::run()
 		// Update matrices according to user's input
 		p_controller->updateCamera();
 
-		// Process non-camera related input
-		p_input_manager->process_input(draw_mode);
+		// Process user input
+		p_input_manager->process_input();
 
 		// check for errors
 		assert(check_errors("render loop") == false);
@@ -244,4 +247,10 @@ int Engine::run()
 	// Close OpenGL window and terminate GLFW
 	glfwTerminate();
 	return 0;
+}
+
+
+double Engine::get_last_frame_time()
+{
+	return time.delta_time_frame;
 }

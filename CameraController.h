@@ -17,6 +17,12 @@ protected:
 	double last_time;
 	double current_time;
 
+	enum DrawMode
+	{
+		FILLED,
+		WIREFRAME
+	} draw_mode;
+
 	vec3 camera_position;
 	vec3 camera_direction;
 	vec3 camera_up;
@@ -38,12 +44,17 @@ protected:
 
 	void generate_matrices();
 	float calculate_time();
+	void toggleDrawMode();
 
 public:
 
 	// Each CameraController should provide it's own implementation of updateCamera method
 	// updateCamera is being called every execution of render loop in the Engine
 	virtual void updateCamera() = 0;
+
+	// Process input common for all CameraControllers
+	virtual void registerInput();
+	void defaultInput();
 
 	mat4* getProjectionMatrix();
 	mat4* getViewMatrix();

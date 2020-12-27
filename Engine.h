@@ -28,10 +28,25 @@ private:
 	int draw_mode = 1;
 	void set_draw_mode(int draw_mode);
 
-	// Variables to track time per frame value
-	double last_time;
-	double current_time;
-	int processed_frames = -1;
+	struct Time
+	{
+		// Variables to track time per frame value
+		double last_time_print;
+		int processed_frames;
+
+		// Variables to track time since last frame
+		double last_time_frame;
+		double delta_time_frame;
+
+		Time()
+		{
+			// First call of the function
+			last_time_print = glfwGetTime();
+			last_time_frame = last_time_print;
+			processed_frames = 0;
+			delta_time_frame = 0;
+		}
+	} time;
 
 	// Pointer to window handle
 	GLFWwindow* p_window = NULL;
@@ -72,8 +87,11 @@ private:
 	// Set OpenGL Engine parameters
 	void set_OGL_parameters();
 
-	// Track time per frame and print status to Console
-	void track_time_per_frame();
+
+	// Track time in Engine
+	void track_time();
+	// Print message about fps and avg time per frame
+	void print_time_info();
 
 	// Check for ogl errors
 	bool check_errors(const char* location);
@@ -83,4 +101,7 @@ public:
 
 	// Start execution of the render loop
 	int run();
+
+	// Get last frame delta_time
+	double get_last_frame_time();
 };
