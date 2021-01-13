@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "Includes.h"
-#include "Shader.h"
 
 // Cameras
 #include "FirstPersonCameraController.h"
@@ -15,6 +14,7 @@
 // Managers
 #include "LightManager.h"
 #include "InputManager.h"
+#include "ShaderManager.h"
 
 
 class Engine

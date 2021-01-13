@@ -16,14 +16,8 @@
     <Filter Include="Pliki źródłowe\Classes">
       <UniqueIdentifier>{2fa0a9d7-7304-4515-9107-20f9b138173e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pliki nagłówkowe\Classes">
-      <UniqueIdentifier>{01653171-a80f-46c8-b58a-52c97ba217d4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Pliki nagłówkowe\Preprocessor">
       <UniqueIdentifier>{2bad9452-8ec7-4402-bd88-010b59c3a5c8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki nagłówkowe\Exceptions">
-      <UniqueIdentifier>{2673a223-7640-4226-8c66-d99f78d9b404}</UniqueIdentifier>
     </Filter>
     <Filter Include="Pliki źródłowe\Exceptions">
       <UniqueIdentifier>{ff6d7cfe-6e5d-4f76-8801-5d31d3295c67}</UniqueIdentifier>
@@ -34,29 +28,20 @@
     <Filter Include="Pliki źródłowe\Classes\Lights">
       <UniqueIdentifier>{0b49947f-a2d7-47de-a0cc-67c8d165b680}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pliki nagłówkowe\Classes\Lights">
-      <UniqueIdentifier>{38bcae43-6ad6-4e75-8274-c585a41650ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Pliki źródłowe\Classes\CameraControllers">
       <UniqueIdentifier>{febb54d9-8d31-4371-be37-fdc496f72d20}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pliki nagłówkowe\Classes\CameraControllers">
-      <UniqueIdentifier>{5dc9929f-04ef-438f-a56c-39b6e985b0e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki nagłówkowe\Classes\Terrains">
-      <UniqueIdentifier>{10911a92-b656-4107-b3ec-8c3be1dac2b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Pliki źródłowe\Classes\Terrains">
       <UniqueIdentifier>{af978c17-420a-4561-8d76-f7a379388ce3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki nagłówkowe\Classes\Terrains\DynamicQuadtreeLOD">
-      <UniqueIdentifier>{3d559768-cfcb-4148-9804-849b9aefcc25}</UniqueIdentifier>
     </Filter>
     <Filter Include="Pliki źródłowe\Classes\Terrains\DynamicQuadtreeLOD">
       <UniqueIdentifier>{63b7bb85-c92a-4d55-b5f1-2f3ae2360ce7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Pliki nagłówkowe\Data Structures">
       <UniqueIdentifier>{bf1d1afd-a415-47e0-b1e3-a748104fa8f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Shaders\ShadersGLSL">
+      <UniqueIdentifier>{041adffb-a6c5-460e-8c82-19404efa0e0f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -68,9 +53,6 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Pliki źródłowe\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>Pliki źródłowe\Classes\Lights</Filter>
@@ -123,93 +105,102 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>Pliki źródłowe\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Pliki źródłowe\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Quad.h">
-      <Filter>Pliki nagłówkowe\Classes\Terrains\DynamicQuadtreeLOD</Filter>
-    </ClInclude>
-    <ClInclude Include="QuadPoint.h">
-      <Filter>Pliki nagłówkowe\Classes\Terrains\DynamicQuadtreeLOD</Filter>
-    </ClInclude>
-    <ClInclude Include="QuadTreeLOD.h">
-      <Filter>Pliki nagłówkowe\Classes\Terrains\DynamicQuadtreeLOD</Filter>
-    </ClInclude>
-    <ClInclude Include="DynamicTerrain.h">
-      <Filter>Pliki nagłówkowe\Classes\Terrains</Filter>
-    </ClInclude>
-    <ClInclude Include="FlatTerrain.h">
-      <Filter>Pliki nagłówkowe\Classes\Terrains</Filter>
-    </ClInclude>
-    <ClInclude Include="RandomTerrain.h">
-      <Filter>Pliki nagłówkowe\Classes\Terrains</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleTerrain.h">
-      <Filter>Pliki nagłówkowe\Classes\Terrains</Filter>
-    </ClInclude>
-    <ClInclude Include="Terrain.h">
-      <Filter>Pliki nagłówkowe\Classes\Terrains</Filter>
-    </ClInclude>
-    <ClInclude Include="WaterTerrain.h">
-      <Filter>Pliki nagłówkowe\Classes\Terrains</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine.h">
-      <Filter>Pliki nagłówkowe\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Pliki nagłówkowe\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="InitializationException.h">
-      <Filter>Pliki nagłówkowe\Exceptions</Filter>
-    </ClInclude>
     <ClInclude Include="Constants.h">
       <Filter>Pliki nagłówkowe\Preprocessor</Filter>
     </ClInclude>
     <ClInclude Include="Includes.h">
       <Filter>Pliki nagłówkowe\Preprocessor</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Pliki nagłówkowe\Classes\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="LightDirectional.h">
-      <Filter>Pliki nagłówkowe\Classes\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="LightManager.h">
-      <Filter>Pliki nagłówkowe\Classes\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="LightPoint.h">
-      <Filter>Pliki nagłówkowe\Classes\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="OverviewCameraController.h">
-      <Filter>Pliki nagłówkowe\Classes\CameraControllers</Filter>
-    </ClInclude>
-    <ClInclude Include="FirstPersonCameraController.h">
-      <Filter>Pliki nagłówkowe\Classes\CameraControllers</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraController.h">
-      <Filter>Pliki nagłówkowe\Classes\CameraControllers</Filter>
-    </ClInclude>
     <ClInclude Include="InputState.h">
       <Filter>Pliki nagłówkowe\Data Structures</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>Pliki źródłowe\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraController.h">
+      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="FirstPersonCameraController.h">
+      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    </ClInclude>
     <ClInclude Include="InputManager.h">
-      <Filter>Pliki nagłówkowe\Classes\CameraControllers</Filter>
+      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="OverviewCameraController.h">
+      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="LightDirectional.h">
+      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="LightManager.h">
+      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="LightPoint.h">
+      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicTerrain.h">
+      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+    </ClInclude>
+    <ClInclude Include="FlatTerrain.h">
+      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomTerrain.h">
+      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleTerrain.h">
+      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+    </ClInclude>
+    <ClInclude Include="WaterTerrain.h">
+      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+    </ClInclude>
+    <ClInclude Include="Quad.h">
+      <Filter>Pliki źródłowe\Classes\Terrains\DynamicQuadtreeLOD</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadPoint.h">
+      <Filter>Pliki źródłowe\Classes\Terrains\DynamicQuadtreeLOD</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTreeLOD.h">
+      <Filter>Pliki źródłowe\Classes\Terrains\DynamicQuadtreeLOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Pliki źródłowe\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="InitializationException.h">
+      <Filter>Pliki źródłowe\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Pliki źródłowe\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\FragmentShader.frag">
-      <Filter>Pliki źródłowe\Shaders</Filter>
-    </None>
-    <None Include="Shaders\VertexShader.vert">
-      <Filter>Pliki źródłowe\Shaders</Filter>
+      <Filter>Pliki źródłowe\Shaders\ShadersGLSL</Filter>
     </None>
     <None Include="Shaders\LightingFragmentShader.frag">
-      <Filter>Pliki źródłowe\Shaders</Filter>
+      <Filter>Pliki źródłowe\Shaders\ShadersGLSL</Filter>
     </None>
     <None Include="Shaders\LightingVertexShader.vert">
-      <Filter>Pliki źródłowe\Shaders</Filter>
+      <Filter>Pliki źródłowe\Shaders\ShadersGLSL</Filter>
     </None>
     <None Include="Shaders\WaterVertexShader.vert">
-      <Filter>Pliki źródłowe\Shaders</Filter>
+      <Filter>Pliki źródłowe\Shaders\ShadersGLSL</Filter>
+    </None>
+    <None Include="Shaders\VertexShader.vert">
+      <Filter>Pliki źródłowe\Shaders\ShadersGLSL</Filter>
     </None>
   </ItemGroup>
 </Project>

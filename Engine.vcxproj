@@ -152,6 +152,7 @@
     <ClCompile Include="QuadTreeLOD.cpp" />
     <ClCompile Include="RandomTerrain.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="SimpleTerrain.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="WaterTerrain.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="QuadTreeLOD.h" />
     <ClInclude Include="RandomTerrain.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="SimpleTerrain.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="WaterTerrain.h" />

@@ -82,9 +82,9 @@ void Engine::initialize_user_control()
 void Engine::initialize_terrain()
 {
 	// p_terrain = new FlatTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
-	p_terrain = new RandomTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
+	// p_terrain = new RandomTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
 	// p_terrain = new WaterTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_water_shader, p_controller);
-	// p_terrain = new DynamicTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
+	p_terrain = new DynamicTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
 }
 
 
