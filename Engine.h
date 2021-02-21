@@ -5,11 +5,15 @@
 #include "FirstPersonCameraController.h"
 #include "OverviewCameraController.h"
 
+// SkyBox
+#include "Skybox.h"
+
 // Terrains
 #include "FlatTerrain.h"
 #include "RandomTerrain.h"
 #include "WaterTerrain.h"
 #include "DynamicTerrain.h"
+#include "SimplexTerrainChunk.h"
 
 // Managers
 #include "LightManager.h"
@@ -57,6 +61,9 @@ private:
 	// Pointer to Terrain
 	Terrain* p_terrain = NULL;
 
+	// Pointer to Skybox
+	Skybox* p_skybox = NULL;
+
 	// Pointer to Input manager
 	InputManager* p_input_manager = NULL;
 
@@ -66,6 +73,7 @@ private:
 	// Shader with classic lighting
 	Shader* p_lighting_shader = NULL;
 	Shader* p_water_shader = NULL;
+	Shader* p_skybox_shader = NULL;
 
 	//// Methods
 
@@ -83,6 +91,9 @@ private:
 
 	// Initialize terrain
 	void initialize_terrain();
+
+	// Initialize skybox
+	void initialize_skybox();
 
 	// Set OpenGL Engine parameters
 	void set_OGL_parameters();

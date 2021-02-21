@@ -56,7 +56,6 @@ LightManager::LightManager(std::vector<Shader*> shaders_vector)
 		p_shader->use();
 		p_shader->set_int(point_lights_count_name, point_lights_count);
 	}
-
 }
 
 

@@ -37,11 +37,11 @@
     <Filter Include="Pliki źródłowe\Classes\Terrains\DynamicQuadtreeLOD">
       <UniqueIdentifier>{63b7bb85-c92a-4d55-b5f1-2f3ae2360ce7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pliki nagłówkowe\Data Structures">
-      <UniqueIdentifier>{bf1d1afd-a415-47e0-b1e3-a748104fa8f9}</UniqueIdentifier>
+    <Filter Include="Pliki nagłówkowe\Classes\Skybox">
+      <UniqueIdentifier>{d1885358-223f-488e-919b-6000980471ad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pliki źródłowe\Shaders\ShadersGLSL">
-      <UniqueIdentifier>{041adffb-a6c5-460e-8c82-19404efa0e0f}</UniqueIdentifier>
+    <Filter Include="Pliki źródłowe\Classes\Skybox">
+      <UniqueIdentifier>{021b54a1-e9ab-48fe-b44c-f5d5982e8858}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -102,14 +102,14 @@
     <ClCompile Include="QuadPoint.cpp">
       <Filter>Pliki źródłowe\Classes\Terrains\DynamicQuadtreeLOD</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Pliki źródłowe\Classes\Skybox</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderManager.cpp">
-      <Filter>Pliki źródłowe\Shaders</Filter>
+    <ClCompile Include="SimplexNoise.cpp">
+      <Filter>Pliki źródłowe\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Pliki źródłowe\Shaders</Filter>
+    <ClCompile Include="SimplexTerrainChunk.cpp">
+      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +185,15 @@
     <ClInclude Include="Shader.h">
       <Filter>Pliki źródłowe\Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>Pliki nagłówkowe\Classes\Skybox</Filter>
+    </ClInclude>
+    <ClInclude Include="SimplexNoise.h">
+      <Filter>Pliki nagłówkowe\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="SimplexTerrainChunk.h">
+      <Filter>Pliki nagłówkowe\Classes\Terrains</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\FragmentShader.frag">
@@ -201,6 +210,12 @@
     </None>
     <None Include="Shaders\VertexShader.vert">
       <Filter>Pliki źródłowe\Shaders\ShadersGLSL</Filter>
+    </None>
+    <None Include="SkyBoxFragmentShader.frag">
+      <Filter>Pliki źródłowe\Shaders</Filter>
+    </None>
+    <None Include="SkyBoxVertexShader.vert">
+      <Filter>Pliki źródłowe\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

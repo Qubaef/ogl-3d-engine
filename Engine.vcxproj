@@ -77,13 +77,13 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\Qubaef\cpp-libs\GL\glm-9.8.8;C:\Users\Qubaef\cpp-libs\GL\glfw-3.3.2\include;C:\Users\Qubaef\cpp-libs\GL\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>Includes.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>C:\Users\Qubaef\cpp-libs\GL\glew-2.1.0\lib\Release\Win32\;C:\Users\Qubaef\cpp-libs\GL\glfw-3.3.2\lib-vc2017\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <StackReserveSize>16777216 </StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
@@ -93,14 +93,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Qubaef\cpp-libs\GL\glm-9.8.8;C:\Users\Qubaef\cpp-libs\GL\glfw-3.3.2\include;C:\Users\Qubaef\cpp-libs\GL\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\qubaef\cpp-libs\GL\glew-2.1.0\include;C:\Users\qubaef\cpp-libs\GL\glfw-3.3.2\include;C:\Users\qubaef\cpp-libs\GL\glm-9.8.8;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>C:\Users\Qubaef\cpp-libs\GL\glew-2.1.0\lib\Release\x64\;C:\Users\Qubaef\cpp-libs\GL\glfw-3.3.2\lib-vc2017\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib</AdditionalDependencies>
-      <AdditionalOptions>/VERBOSE:LIB %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>C:\Users\qubaef\cpp-libs\GL\glfw-3.3.2\lib-vc2017;C:\Users\qubaef\cpp-libs\GL\glew-2.1.0\lib\Release\Win32\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -154,6 +152,9 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="SimpleTerrain.cpp" />
+    <ClCompile Include="SimplexNoise.cpp" />
+    <ClCompile Include="SimplexTerrainChunk.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="WaterTerrain.cpp" />
   </ItemGroup>
@@ -180,6 +181,9 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="SimpleTerrain.h" />
+    <ClInclude Include="SimplexNoise.h" />
+    <ClInclude Include="SimplexTerrainChunk.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="WaterTerrain.h" />
   </ItemGroup>
@@ -189,6 +193,8 @@
     <None Include="Shaders\LightingVertexShader.vert" />
     <None Include="Shaders\VertexShader.vert" />
     <None Include="Shaders\WaterVertexShader.vert" />
+    <None Include="SkyBoxFragmentShader.frag" />
+    <None Include="SkyBoxVertexShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

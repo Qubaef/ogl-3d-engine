@@ -125,6 +125,7 @@ void OverviewCameraController::updateCamera()
 		}
 
 		vec3 mid_point = calculate_midpoint();
+		// printf_s("x: %f z: %f\n", mid_point.x, mid_point.z);
 		float dist = distance(mid_point, camera_position);
 
 		// Position : Spherical coordinates to Cartesian coordinates conversion

@@ -74,8 +74,8 @@ void Engine::initialize_user_control()
 	p_input_manager = new InputManager(p_window);
 
 	// Initialize instance of CameraController
-	p_controller = new FirstPersonCameraController(p_window, p_input_manager);
-	// p_controller = new OverviewCameraController(p_window, p_input_manager);
+	// p_controller = new FirstPersonCameraController(p_window, p_input_manager);
+	p_controller = new OverviewCameraController(p_window, p_input_manager);
 }
 
 
@@ -84,12 +84,19 @@ void Engine::initialize_terrain()
 	// p_terrain = new FlatTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
 	// p_terrain = new RandomTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
 	// p_terrain = new WaterTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_water_shader, p_controller);
-	p_terrain = new DynamicTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
+	// p_terrain = new DynamicTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
+	p_terrain = new SimplexTerrainChunk(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
+
+}
+
+
+void Engine::initialize_skybox()
+{
+	p_skybox = new Skybox("skybox_1", p_skybox_shader, p_controller);
 }
 
 
 void Engine::set_OGL_parameters()
-
 {
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(p_window, GLFW_STICKY_KEYS, GL_TRUE);
@@ -135,7 +142,6 @@ void Engine::print_time_info()
 {
 	printf("%f ms/frame : %d fps \n", 1000.0 / double(time.processed_frames), time.processed_frames);
 }
-
 
 
 bool Engine::check_errors(const char* location)
@@ -186,6 +192,7 @@ Engine::Engine()
 	// Initialize shaders
 	p_lighting_shader = new Shader(LIGHT_SHADER_PATH_VERTEX, LIGHT_SHADER_PATH_FRAGMENT);
 	p_water_shader = new Shader(WATER_SHADER_PATH_VERTEX, LIGHT_SHADER_PATH_FRAGMENT);
+	// p_skybox_shader = new Shader(SKYBOX_SHADER_PATH_VERTEX, SKYBOX_SHADER_PATH_FRAGMENT);
 
 	// Gather all shaders, which are supposed to use given light configuration
 	// and pass them together as a vector to LightManager (which will properly set them up)
@@ -196,6 +203,7 @@ Engine::Engine()
 
 	initialize_user_control();
 	initialize_terrain();
+	initialize_skybox();
 	set_OGL_parameters();
 
 	// Initialize fields
@@ -218,6 +226,10 @@ int Engine::run()
 
 		// Render terrain using shader given to it during initialization
 		p_terrain->render_terrain();
+
+		// Render skybox using its own shader
+		// Render it last and use depth buffer to optimize process and skip redundant fragments
+		// p_skybox->render();
 
 		// Swap buffers after the draw (idk why, apparently it is required)
 		glfwSwapBuffers(p_window);
