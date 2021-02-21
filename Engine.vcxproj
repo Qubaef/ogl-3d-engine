@@ -143,7 +143,6 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="LightPoint.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="OverviewCameraController.cpp" />
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="QuadPoint.cpp" />

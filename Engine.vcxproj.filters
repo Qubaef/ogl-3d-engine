@@ -37,9 +37,6 @@
     <Filter Include="Pliki źródłowe\Classes\Terrains\DynamicQuadtreeLOD">
       <UniqueIdentifier>{63b7bb85-c92a-4d55-b5f1-2f3ae2360ce7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pliki nagłówkowe\Classes\Skybox">
-      <UniqueIdentifier>{d1885358-223f-488e-919b-6000980471ad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Pliki źródłowe\Classes\Skybox">
       <UniqueIdentifier>{021b54a1-e9ab-48fe-b44c-f5d5982e8858}</UniqueIdentifier>
     </Filter>
@@ -50,9 +47,6 @@
     </ClCompile>
     <ClCompile Include="Engine.cpp">
       <Filter>Pliki źródłowe\Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>Pliki źródłowe\Classes\Lights</Filter>
@@ -105,10 +99,19 @@
     <ClCompile Include="Skybox.cpp">
       <Filter>Pliki źródłowe\Classes\Skybox</Filter>
     </ClCompile>
-    <ClCompile Include="SimplexNoise.cpp">
-      <Filter>Pliki źródłowe\Classes</Filter>
-    </ClCompile>
     <ClCompile Include="SimplexTerrainChunk.cpp">
+      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Pliki źródłowe\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>Pliki źródłowe\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="SimplexNoise.cpp">
       <Filter>Pliki źródłowe\Classes\Terrains</Filter>
     </ClCompile>
   </ItemGroup>
@@ -118,9 +121,6 @@
     </ClInclude>
     <ClInclude Include="Includes.h">
       <Filter>Pliki nagłówkowe\Preprocessor</Filter>
-    </ClInclude>
-    <ClInclude Include="InputState.h">
-      <Filter>Pliki nagłówkowe\Data Structures</Filter>
     </ClInclude>
     <ClInclude Include="ShaderManager.h">
       <Filter>Pliki źródłowe\Shaders</Filter>
@@ -186,35 +186,38 @@
       <Filter>Pliki źródłowe\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="Skybox.h">
-      <Filter>Pliki nagłówkowe\Classes\Skybox</Filter>
+      <Filter>Pliki źródłowe\Classes\Skybox</Filter>
     </ClInclude>
     <ClInclude Include="SimplexNoise.h">
-      <Filter>Pliki nagłówkowe\Classes</Filter>
+      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+    </ClInclude>
+    <ClInclude Include="InputState.h">
+      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
     </ClInclude>
     <ClInclude Include="SimplexTerrainChunk.h">
-      <Filter>Pliki nagłówkowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\FragmentShader.frag">
-      <Filter>Pliki źródłowe\Shaders\ShadersGLSL</Filter>
-    </None>
-    <None Include="Shaders\LightingFragmentShader.frag">
-      <Filter>Pliki źródłowe\Shaders\ShadersGLSL</Filter>
-    </None>
-    <None Include="Shaders\LightingVertexShader.vert">
-      <Filter>Pliki źródłowe\Shaders\ShadersGLSL</Filter>
-    </None>
-    <None Include="Shaders\WaterVertexShader.vert">
-      <Filter>Pliki źródłowe\Shaders\ShadersGLSL</Filter>
-    </None>
-    <None Include="Shaders\VertexShader.vert">
-      <Filter>Pliki źródłowe\Shaders\ShadersGLSL</Filter>
-    </None>
     <None Include="SkyBoxFragmentShader.frag">
       <Filter>Pliki źródłowe\Shaders</Filter>
     </None>
     <None Include="SkyBoxVertexShader.vert">
+      <Filter>Pliki źródłowe\Shaders</Filter>
+    </None>
+    <None Include="Shaders\FragmentShader.frag">
+      <Filter>Pliki źródłowe\Shaders</Filter>
+    </None>
+    <None Include="Shaders\LightingFragmentShader.frag">
+      <Filter>Pliki źródłowe\Shaders</Filter>
+    </None>
+    <None Include="Shaders\LightingVertexShader.vert">
+      <Filter>Pliki źródłowe\Shaders</Filter>
+    </None>
+    <None Include="Shaders\VertexShader.vert">
+      <Filter>Pliki źródłowe\Shaders</Filter>
+    </None>
+    <None Include="Shaders\WaterVertexShader.vert">
       <Filter>Pliki źródłowe\Shaders</Filter>
     </None>
   </ItemGroup>

@@ -266,3 +266,25 @@ double Engine::get_last_frame_time()
 {
 	return time.delta_time_frame;
 }
+
+
+int main()
+{
+	// Entry point of the program
+	Engine* p_engine;
+
+	// Initialize Engine
+	try
+	{
+		p_engine = new Engine();
+	}
+	catch (InitializationException& e) {
+		printf("%s in %s\n", e.what(), e.get_func());
+		return -1;
+	}
+
+	// Runtime phase
+	p_engine->run();
+
+	return 0;
+}
