@@ -16,9 +16,9 @@ Shader::Shader(const char* vertex_file_path, const char* fragment_file_path)
 		VertexShaderStream.close();
 	}
 	else {
-		printf("Impossible to open %s.\n", vertex_file_path);
+		fprintf(stderr, "Impossible to open %s.\n", vertex_file_path);
 		getchar();
-		throw InitializationException(EXCEPTION_MSG_INIT, "Shader initialization");
+		throw InitializationException("Impossible to open vertex shader.", "Shader");
 	}
 
 	// Read the Fragment Shader code from the file
@@ -31,9 +31,9 @@ Shader::Shader(const char* vertex_file_path, const char* fragment_file_path)
 		FragmentShaderStream.close();
 	}
 	else {
-		printf("Impossible to open %s.\n", fragment_file_path);
+		fprintf(stderr, "Impossible to open %s.\n", fragment_file_path);
 		getchar();
-		throw InitializationException(EXCEPTION_MSG_INIT, "Shader initialization");
+		throw InitializationException("Impossible to open fragment shader.", "Shader");
 	}
 
 	GLint Result = GL_FALSE;
@@ -51,8 +51,8 @@ Shader::Shader(const char* vertex_file_path, const char* fragment_file_path)
 	if (InfoLogLength > 0) {
 		std::vector<char> VertexShaderErrorMessage(InfoLogLength + 1);
 		glGetShaderInfoLog(vertex_shader_id, InfoLogLength, NULL, &VertexShaderErrorMessage[0]);
-		printf("%s\n", &VertexShaderErrorMessage[0]);
-		throw InitializationException(EXCEPTION_MSG_INIT, "Shader initialization");
+		fprintf(stderr, "%s\n", &VertexShaderErrorMessage[0]);
+		throw InitializationException("Vertex shader compilation error.", "Shader");
 	}
 
 	// Compile Fragment Shader
@@ -67,8 +67,8 @@ Shader::Shader(const char* vertex_file_path, const char* fragment_file_path)
 	if (InfoLogLength > 0) {
 		std::vector<char> FragmentShaderErrorMessage(InfoLogLength + 1);
 		glGetShaderInfoLog(fragment_shader_id, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
-		printf("%s\n", &FragmentShaderErrorMessage[0]);
-		throw InitializationException(EXCEPTION_MSG_INIT, "Shader initialization");
+		fprintf(stderr, "%s\n", &FragmentShaderErrorMessage[0]);
+		throw InitializationException("Fragment shader compilation error.", "Shader initialization");
 	}
 
 	// Link the program
@@ -84,8 +84,8 @@ Shader::Shader(const char* vertex_file_path, const char* fragment_file_path)
 	if (InfoLogLength > 0) {
 		std::vector<char> ProgramErrorMessage(InfoLogLength + 1);
 		glGetProgramInfoLog(ID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
-		printf("%s\n", &ProgramErrorMessage[0]);
-		throw InitializationException(EXCEPTION_MSG_INIT, "Shader initialization");
+		fprintf(stderr, "%s\n", &ProgramErrorMessage[0]);
+		throw InitializationException("Shader linking error.", "Shader initialization");
 	}
 
 	printf("Shaders successfully compiled.\n");

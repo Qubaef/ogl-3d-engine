@@ -159,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraController.h" />
+    <ClInclude Include="ConstProperties.h" />
     <ClInclude Include="DynamicTerrain.h" />
     <ClInclude Include="FirstPersonCameraController.h" />
     <ClInclude Include="Constants.h" />

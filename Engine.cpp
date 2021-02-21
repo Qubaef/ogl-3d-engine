@@ -1,112 +1,63 @@
 ﻿#include "Engine.h"
 
+//// OpenGL initialization phase methods
 
-bool Engine::initialize_GLFW()
+void Engine::startPhaseOpenGlInit()
+{
+	initialize_GLFW();
+	initialize_window();
+	initialize_GLEW();
+	setDefaultOglParameters();
+}
+
+void Engine::initialize_GLFW()
 {
 	// Initialise GLFW
-
 	glewExperimental = true;												// Needed for core profile
 
 	if (!glfwInit())
 	{
-		fprintf(stderr, "Failed to initialize GLFW\n");
-		return false;
+		throw InitializationException("Failed to initialize GLFW.", "initialize_GLFW");
 	}
 
 	glfwWindowHint(GLFW_SAMPLES, 4);									// 4x antialiasing
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);						// We want OpenGL 4
 	// glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);					// To make MacOS happy; should not be needed
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);		// We don't want the old OpenGL
-
-	return true;
 }
 
+void Engine::initialize_window()
+{
+	// Open a window and create its OpenGL context
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 
-bool Engine::initialize_GLEW()
+	EngineWindowPtr = glfwCreateWindow(constProperties.windowWidth, constProperties.windowHeight,
+		constProperties.windowName, NULL, NULL);
+
+	if (EngineWindowPtr == NULL) {
+		glfwTerminate();
+		throw InitializationException("Failed to open GLFW window.", "initialize_window");
+	}
+}
+
+void Engine::initialize_GLEW()
 {
 	// Initialise GLEW
-
 	if (EngineWindowPtr == NULL)
 	{
-		fprintf(stderr, "Window was not properly initialized.\n");
 		glfwTerminate();
-		return false;
+		throw InitializationException("Window was not properly initialized.", "initialize_GLEW");
 	}
 
 	glfwMakeContextCurrent(EngineWindowPtr);
 
 	if (glewInit() != GLEW_OK) {
-		fprintf(stderr, "Failed to initialize GLEW\n");
 		glfwTerminate();
-		return false;
+		throw InitializationException("Failed to initialize GLEW", "initialize_GLEW");
 	}
-
-	return true;
 }
 
-
-bool Engine::initialize_window()
-{
-	// Open a window and create its OpenGL context
-
-	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
-
-	EngineWindowPtr = glfwCreateWindow(SCREEN_W, SCREEN_H, SCREEN_NAME, NULL, NULL);
-
-	if (EngineWindowPtr == NULL) {
-		fprintf(stderr, "Failed to open GLFW window.\n");
-		glfwTerminate();
-		return false;
-	}
-
-	return true;
-}
-
-
-void Engine::setDefaultsRenderProperties()
-{
-	renderProperties.modeWireframe = false;
-}
-
-
-void Engine::setDefaultsTimeProperties()
-{
-	timeProperties.last_time_print = glfwGetTime();
-	timeProperties.last_time_frame = timeProperties.last_time_print;
-	timeProperties.processed_frames = 0;
-	timeProperties.delta_time_frame = 0;
-}
-
-
-void Engine::initialize_user_control()
-{
-	// Initialize InputManager
-	p_input_manager = new InputManager(EngineWindowPtr);
-
-	// Initialize instance of CameraController
-	// EngineControllerPtr = new FirstPersonCameraController(EngineWindowPtr, p_input_manager);
-	EngineControllerPtr = new OverviewCameraController(EngineWindowPtr, p_input_manager);
-}
-
-
-void Engine::initialize_terrain()
-{
-	// p_terrain = new FlatTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, EngineControllerPtr);
-	// p_terrain = new RandomTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, EngineControllerPtr);
-	// p_terrain = new WaterTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_water_shader, EngineControllerPtr);
-	// p_terrain = new DynamicTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, EngineControllerPtr);
-	p_terrain = new SimplexTerrainChunk(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, EngineControllerPtr);
-
-}
-
-
-void Engine::initialize_skybox()
-{
-	p_skybox = new Skybox("skybox_1", p_skybox_shader, EngineControllerPtr);
-}
-
-
-void Engine::set_OGL_parameters()
+void Engine::setDefaultOglParameters()
 {
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(EngineWindowPtr, GLFW_STICKY_KEYS, GL_TRUE);
@@ -129,32 +80,107 @@ void Engine::set_OGL_parameters()
 }
 
 
-void Engine::track_time()
+//// Engine preparation phase methods
+
+void Engine::startPhaseEnginePrep()
+{
+	//// Set default Engine properties
+	setDefaultsRenderProperties();
+	setDefaultsTimeProperties();
+
+	//// TODO: Initialize task qeue
+
+	//// TODO: Initialize workers threads
+
+	//// TODO: Initialzie user control thread
+
+	//// TODO: Load user data
+
+	//// TODO: Cleanup and move the following
+	
+	// Initialize shaders
+	p_lighting_shader = new Shader(LIGHT_SHADER_PATH_VERTEX, LIGHT_SHADER_PATH_FRAGMENT);
+	p_water_shader = new Shader(WATER_SHADER_PATH_VERTEX, LIGHT_SHADER_PATH_FRAGMENT);
+	// p_skybox_shader = new Shader(SKYBOX_SHADER_PATH_VERTEX, SKYBOX_SHADER_PATH_FRAGMENT);
+
+	// Gather all shaders, which are supposed to use given light configuration
+	// and pass them together as a vector to LightManager (which will properly set them up)
+	std::vector<Shader*> used_shaders_vector;
+	used_shaders_vector.push_back(p_lighting_shader);
+	used_shaders_vector.push_back(p_water_shader);
+	p_light_manager = new LightManager(used_shaders_vector);
+
+	initialize_user_control();
+	initialize_terrain();
+	initialize_skybox();
+}
+
+void Engine::setDefaultsRenderProperties()
+{
+
+}
+
+void Engine::setDefaultsTimeProperties()
+{
+	timeProperties.lastPrintTimestamp = glfwGetTime();
+	timeProperties.lastFrameTimestamp = timeProperties.lastPrintTimestamp;
+	timeProperties.printInterval = 1.0;
+	timeProperties.processedFramesNumber = 0;
+	timeProperties.lastFrameDelta = 0;
+}
+
+void Engine::initialize_user_control()
+{
+	// Initialize InputManager
+	p_input_manager = new InputManager(EngineWindowPtr);
+
+	// Initialize instance of CameraController
+	// EngineControllerPtr = new FirstPersonCameraController(EngineWindowPtr, p_input_manager);
+	EngineControllerPtr = new OverviewCameraController(EngineWindowPtr, p_input_manager);
+}
+
+void Engine::initialize_terrain()
+{
+	// p_terrain = new FlatTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, EngineControllerPtr);
+	// p_terrain = new RandomTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, EngineControllerPtr);
+	// p_terrain = new WaterTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_water_shader, EngineControllerPtr);
+	// p_terrain = new DynamicTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, EngineControllerPtr);
+	p_terrain = new SimplexTerrainChunk(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, EngineControllerPtr);
+
+}
+
+void Engine::initialize_skybox()
+{
+	p_skybox = new Skybox("skybox_1", p_skybox_shader, EngineControllerPtr);
+}
+
+
+//// Runtime phase methods
+
+void Engine::saveTimestep()
 {
 	// Get frame timestamp
-	double current_time = glfwGetTime();
+	const double currentTimestamp = glfwGetTime();
 
 	// Calculate last frame duration and update variables
-	timeProperties.delta_time_frame = current_time - timeProperties.last_time_frame;
-	timeProperties.last_time_frame = current_time;
-	timeProperties.processed_frames++;
+	timeProperties.lastFrameDelta = currentTimestamp - timeProperties.lastFrameTimestamp;
+	timeProperties.lastFrameTimestamp = currentTimestamp;
+	timeProperties.processedFramesNumber++;
 
 	// If last printf() was more than 1 sec ago, print status and reset print timer
-	if (current_time - timeProperties.last_time_print >= 1.0) {
-		print_time_info();
-		timeProperties.processed_frames = 0;
-		timeProperties.last_time_print = current_time;
+	if (currentTimestamp - timeProperties.lastPrintTimestamp >= 1.0) {
+		printTimePerFrameInfo();
+		timeProperties.processedFramesNumber = 0;
+		timeProperties.lastPrintTimestamp = currentTimestamp;
 	}
 }
 
-
-void Engine::print_time_info()
+void Engine::printTimePerFrameInfo()
 {
-	printf("%f ms/frame : %d fps \n", 1000.0 / double(timeProperties.processed_frames), timeProperties.processed_frames);
+	printf("%f ms/frame : %d fps \n", 1000.0 / double(timeProperties.processedFramesNumber), timeProperties.processedFramesNumber);
 }
 
-
-bool Engine::check_errors(const char* location)
+bool Engine::checkOglErrors(const char* location)
 {
 	GLenum errorCode;
 	bool result = false;
@@ -180,65 +206,49 @@ bool Engine::check_errors(const char* location)
 }
 
 
+//// Public interface methods
+
 Engine::Engine()
 {
-	// Initialize engine components
-
-	if (!initialize_GLFW())
+	try
 	{
-		throw InitializationException(EXCEPTION_MSG_INIT, "initialize_GLFW");
+		// Start OpenGL Initialization Phase
+		startPhaseOpenGlInit();
+	} catch (InitializationException& e) {
+		fprintf(stderr, "Exception: %s\n Message: %s\n, Location: %s\n", e.get_type(), e.get_msg(), e.get_func());
+		return;
 	}
-
-	if (!initialize_window())
-	{
-		throw InitializationException(EXCEPTION_MSG_INIT, "initialize_window");
-	}
-
-	if (!initialize_GLEW())
-	{
-		throw InitializationException(EXCEPTION_MSG_INIT, "initialize_GLEW");
-	}
-
-	// Initialize shaders
-	p_lighting_shader = new Shader(LIGHT_SHADER_PATH_VERTEX, LIGHT_SHADER_PATH_FRAGMENT);
-	p_water_shader = new Shader(WATER_SHADER_PATH_VERTEX, LIGHT_SHADER_PATH_FRAGMENT);
-	// p_skybox_shader = new Shader(SKYBOX_SHADER_PATH_VERTEX, SKYBOX_SHADER_PATH_FRAGMENT);
-
-	// Gather all shaders, which are supposed to use given light configuration
-	// and pass them together as a vector to LightManager (which will properly set them up)
-	std::vector<Shader*> used_shaders_vector;
-	used_shaders_vector.push_back(p_lighting_shader);
-	used_shaders_vector.push_back(p_water_shader);
-	p_light_manager = new LightManager(used_shaders_vector);
-
-	initialize_user_control();
-	initialize_terrain();
-	initialize_skybox();
-	set_OGL_parameters();
-
-	// Initialize fields
+	
+	// Start Engine Preparation Phase
+	startPhaseEnginePrep();
 }
 
 
 RenderProperties& Engine::getRenderProperties()
 {
-	return this->renderProperties;
+	return renderProperties;
 }
 
 
 TimeProperties& Engine::getTimeProperties()
 {
-	return this->timeProperties;
+	return timeProperties;
 }
 
 
-int Engine::runtimeStart()
+ConstProperties& Engine::getConstProperties()
+{
+	return constProperties;
+}
+
+
+int Engine::startPhaseRuntime()
 {
 	// Render loop
 	while (!glfwWindowShouldClose(EngineWindowPtr))
 	{
 		// Track time per frame value and print it's status
-		track_time();
+		saveTimestep();
 
 		// Clear buffers
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -265,7 +275,7 @@ int Engine::runtimeStart()
 		p_input_manager->process_input();
 
 		// check for errors
-		assert(check_errors("render loop") == false);
+		assert(checkOglErrors("render loop") == false);
 	}
 
 	// Cleanup VBO and shader program
@@ -284,29 +294,15 @@ int Engine::runtimeStart()
 }
 
 
-double Engine::get_last_frame_time()
-{
-	return this->timeProperties.delta_time_frame;
-}
-
+//// Program entry-point
 
 int main()
 {
 	// Entry point of the program
-	Engine* p_engine;
-
-	// Initialize Engine
-	try
-	{
-		p_engine = new Engine();
-	}
-	catch (InitializationException& e) {
-		printf("%s in %s\n", e.what(), e.get_func());
-		return -1;
-	}
+	Engine* enginePtr = new Engine();
 
 	// Runtime phase
-	p_engine->runtimeStart();
+	enginePtr->startPhaseRuntime();
 
 	return 0;
 }

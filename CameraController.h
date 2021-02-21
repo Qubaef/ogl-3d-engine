@@ -6,6 +6,7 @@ class CameraController
 {
 protected:
 	// Variables
+	
 	GLFWwindow* p_window;
 	InputManager* p_input_manager;
 

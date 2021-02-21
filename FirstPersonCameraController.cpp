@@ -45,9 +45,11 @@ void FirstPersonCameraController::updateCamera()
 	// Get mouse position
 	vec2 mouse_pos = p_input_manager->get_mouse_pos();
 
+	// TODO: replace constexprs with const properties of the engine
 	// Reset mouse position for next frame
 	p_input_manager->reset_mouse_pos(SCREEN_W / 2, SCREEN_H / 2);
 
+	// TODO: replace constexprs with const properties of the engine
 	// Compute new orientation
 	initial_horizontal_angle += mouse_sensitivity / 1000 * float(SCREEN_W / 2 - mouse_pos.x);
 	initial_vertical_angle += mouse_sensitivity / 1000 * float(SCREEN_H / 2 - mouse_pos.y);

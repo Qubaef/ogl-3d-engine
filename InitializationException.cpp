@@ -11,3 +11,14 @@ const char* InitializationException::get_func() const
 {
 	return func;
 }
+
+const char* InitializationException::get_msg() const
+{
+	return msg;
+}
+
+const char* InitializationException::get_type() const
+{
+	return type;
+}
+

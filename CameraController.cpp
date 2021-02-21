@@ -91,6 +91,7 @@ void CameraController::toggleDrawMode()
 void CameraController::updateProjection()
 {
 	// update Projection matrix
+	// TODO: replace constexprs with const properties of the engine
 	Projection = perspective(
 		radians((float)CAMERA_FOV),				// FOV
 		(float)SCREEN_W / (float)SCREEN_H,		// aspect ratio

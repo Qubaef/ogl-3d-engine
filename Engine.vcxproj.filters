@@ -206,6 +206,9 @@
     <ClInclude Include="TimeProperties.h">
       <Filter>Pliki źródłowe\Engine properties</Filter>
     </ClInclude>
+    <ClInclude Include="ConstProperties.h">
+      <Filter>Pliki źródłowe\Engine properties</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SkyBoxFragmentShader.frag">

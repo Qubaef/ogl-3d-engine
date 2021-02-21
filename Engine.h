@@ -24,6 +24,7 @@
 // Engine properties
 #include "RenderProperties.h"
 #include "TimeProperties.h"
+#include "ConstProperties.h"
 
 
 class Engine
@@ -34,6 +35,7 @@ private:
 	// =====================================================
 	RenderProperties renderProperties;
 	TimeProperties timeProperties;
+	ConstProperties constProperties;
 
 	// =====================================================
 	// ==================== Engine's mandatory variables
@@ -69,19 +71,28 @@ private:
 	// =====================================================
 
 	//// OpenGL initialization phase methods
-	// TODO:
-	// Initialize GLFW library
-	bool initialize_GLFW();
-	// TODO:
-	// Initialize GLEW library
-	bool initialize_GLEW();
-	// TODO:
-	// Initialize Engine Window
-	bool initialize_window();
 
+	// Start OpenGl Initialization Phase
+	void startPhaseOpenGlInit();
 	
+	// Initialize GLFW library
+	void initialize_GLFW();
+
+	// Initialize Engine Window
+	void initialize_window();
+
+	// Initialize GLEW library
+	void initialize_GLEW();
+
+	// Set OpenGL Engine parameters
+	void setDefaultOglParameters();
+
+
 	//// Engine preparation phase methods
 
+	// Start Engine Preparation Phase
+	void startPhaseEnginePrep();
+	
 	// Set default values of RenderProperties
 	// [Note: not a constructor, cause default value sometimes requires library call]
 	void setDefaultsRenderProperties();
@@ -99,22 +110,19 @@ private:
 	// TODO:
 	// Initialize skybox
 	void initialize_skybox();
-	// TODO:
-	// Set OpenGL Engine parameters
-	void set_OGL_parameters();
 
 
 	//// Runtime phase methods
 
-	// TODO: review
+
 	// Track time in Engine
-	void track_time();
-	// TODO: review
+	void saveTimestep();
+
 	// Print message about fps and avg time per frame
-	void print_time_info();
+	void printTimePerFrameInfo();
 
 	// Check for ogl errors
-	bool check_errors(const char* location);
+	static bool checkOglErrors(const char* location);
 
 public:
 	// =====================================================
@@ -129,10 +137,9 @@ public:
 	// Returns global engine's render properties
 	TimeProperties& getTimeProperties();
 
-	// Start runtime phase of the engine
-	int runtimeStart();
+	// Returns global engine's render properties
+	ConstProperties& getConstProperties();
 
-	// TODO: remove
-	// Get last frame delta_time
-	double get_last_frame_time();
+	// Start Runtime Phase
+	int startPhaseRuntime();
 };

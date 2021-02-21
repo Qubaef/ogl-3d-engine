@@ -12,11 +12,7 @@ constexpr auto LIGHT_SHADER_PATH_FRAGMENT = "Shaders/LightingFragmentShader.frag
 constexpr auto SKYBOX_SHADER_PATH_VERTEX = "Shaders/SkyBoxVertexShader.vert";
 constexpr auto SKYBOX_SHADER_PATH_FRAGMENT = "Shaders/SkyBoxFragmentShader.frag";
 
-// Exceptions messages
-constexpr auto EXCEPTION_MSG_INIT = "Error while initializing program";
-
 // Engine parameters
-constexpr auto SCREEN_NAME = "Custom engine";
 constexpr auto SCREEN_W = 1280;
 constexpr auto SCREEN_H = 720;
 constexpr auto CAMERA_FOV = 45;
