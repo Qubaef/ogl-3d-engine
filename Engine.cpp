@@ -1,10 +1,5 @@
 ﻿#include "Engine.h"
 
-void Engine::set_draw_mode(int draw_mode)
-{
-	this->draw_mode = draw_mode;
-}
-
 
 bool Engine::initialize_GLFW()
 {
@@ -31,14 +26,14 @@ bool Engine::initialize_GLEW()
 {
 	// Initialise GLEW
 
-	if (p_window == NULL)
+	if (EngineWindowPtr == NULL)
 	{
 		fprintf(stderr, "Window was not properly initialized.\n");
 		glfwTerminate();
 		return false;
 	}
 
-	glfwMakeContextCurrent(p_window);
+	glfwMakeContextCurrent(EngineWindowPtr);
 
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
@@ -56,9 +51,9 @@ bool Engine::initialize_window()
 
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 
-	p_window = glfwCreateWindow(SCREEN_W, SCREEN_H, SCREEN_NAME, NULL, NULL);
+	EngineWindowPtr = glfwCreateWindow(SCREEN_W, SCREEN_H, SCREEN_NAME, NULL, NULL);
 
-	if (p_window == NULL) {
+	if (EngineWindowPtr == NULL) {
 		fprintf(stderr, "Failed to open GLFW window.\n");
 		glfwTerminate();
 		return false;
@@ -68,38 +63,53 @@ bool Engine::initialize_window()
 }
 
 
+void Engine::setDefaultsRenderProperties()
+{
+	renderProperties.modeWireframe = false;
+}
+
+
+void Engine::setDefaultsTimeProperties()
+{
+	timeProperties.last_time_print = glfwGetTime();
+	timeProperties.last_time_frame = timeProperties.last_time_print;
+	timeProperties.processed_frames = 0;
+	timeProperties.delta_time_frame = 0;
+}
+
+
 void Engine::initialize_user_control()
 {
 	// Initialize InputManager
-	p_input_manager = new InputManager(p_window);
+	p_input_manager = new InputManager(EngineWindowPtr);
 
 	// Initialize instance of CameraController
-	// p_controller = new FirstPersonCameraController(p_window, p_input_manager);
-	p_controller = new OverviewCameraController(p_window, p_input_manager);
+	// EngineControllerPtr = new FirstPersonCameraController(EngineWindowPtr, p_input_manager);
+	EngineControllerPtr = new OverviewCameraController(EngineWindowPtr, p_input_manager);
 }
 
 
 void Engine::initialize_terrain()
 {
-	// p_terrain = new FlatTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
-	// p_terrain = new RandomTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
-	// p_terrain = new WaterTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_water_shader, p_controller);
-	// p_terrain = new DynamicTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
-	p_terrain = new SimplexTerrainChunk(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, p_controller);
+	// p_terrain = new FlatTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, EngineControllerPtr);
+	// p_terrain = new RandomTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, EngineControllerPtr);
+	// p_terrain = new WaterTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_water_shader, EngineControllerPtr);
+	// p_terrain = new DynamicTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, EngineControllerPtr);
+	p_terrain = new SimplexTerrainChunk(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, EngineControllerPtr);
 
 }
 
 
 void Engine::initialize_skybox()
 {
-	p_skybox = new Skybox("skybox_1", p_skybox_shader, p_controller);
+	p_skybox = new Skybox("skybox_1", p_skybox_shader, EngineControllerPtr);
 }
 
 
 void Engine::set_OGL_parameters()
 {
 	// Ensure we can capture the escape key being pressed below
-	glfwSetInputMode(p_window, GLFW_STICKY_KEYS, GL_TRUE);
+	glfwSetInputMode(EngineWindowPtr, GLFW_STICKY_KEYS, GL_TRUE);
 
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
@@ -125,22 +135,22 @@ void Engine::track_time()
 	double current_time = glfwGetTime();
 
 	// Calculate last frame duration and update variables
-	time.delta_time_frame = current_time - time.last_time_frame;
-	time.last_time_frame = current_time;
-	time.processed_frames++;
+	timeProperties.delta_time_frame = current_time - timeProperties.last_time_frame;
+	timeProperties.last_time_frame = current_time;
+	timeProperties.processed_frames++;
 
 	// If last printf() was more than 1 sec ago, print status and reset print timer
-	if (current_time - time.last_time_print >= 1.0) {
+	if (current_time - timeProperties.last_time_print >= 1.0) {
 		print_time_info();
-		time.processed_frames = 0;
-		time.last_time_print = current_time;
+		timeProperties.processed_frames = 0;
+		timeProperties.last_time_print = current_time;
 	}
 }
 
 
 void Engine::print_time_info()
 {
-	printf("%f ms/frame : %d fps \n", 1000.0 / double(time.processed_frames), time.processed_frames);
+	printf("%f ms/frame : %d fps \n", 1000.0 / double(timeProperties.processed_frames), timeProperties.processed_frames);
 }
 
 
@@ -210,10 +220,22 @@ Engine::Engine()
 }
 
 
-int Engine::run()
+RenderProperties& Engine::getRenderProperties()
+{
+	return this->renderProperties;
+}
+
+
+TimeProperties& Engine::getTimeProperties()
+{
+	return this->timeProperties;
+}
+
+
+int Engine::runtimeStart()
 {
 	// Render loop
-	while (!glfwWindowShouldClose(p_window))
+	while (!glfwWindowShouldClose(EngineWindowPtr))
 	{
 		// Track time per frame value and print it's status
 		track_time();
@@ -232,12 +254,12 @@ int Engine::run()
 		// p_skybox->render();
 
 		// Swap buffers after the draw (idk why, apparently it is required)
-		glfwSwapBuffers(p_window);
+		glfwSwapBuffers(EngineWindowPtr);
 		// Process pending events
 		glfwPollEvents();
 
 		// Update matrices according to user's input
-		p_controller->updateCamera();
+		EngineControllerPtr->updateCamera();
 
 		// Process user input
 		p_input_manager->process_input();
@@ -252,7 +274,7 @@ int Engine::run()
 	// Cleanup dynamically allocated objects
 	delete p_lighting_shader;
 	delete p_light_manager;
-	delete p_controller;
+	delete EngineControllerPtr;
 	delete p_terrain;
 	delete p_input_manager;
 
@@ -264,7 +286,7 @@ int Engine::run()
 
 double Engine::get_last_frame_time()
 {
-	return time.delta_time_frame;
+	return this->timeProperties.delta_time_frame;
 }
 
 
@@ -284,7 +306,7 @@ int main()
 	}
 
 	// Runtime phase
-	p_engine->run();
+	p_engine->runtimeStart();
 
 	return 0;
 }

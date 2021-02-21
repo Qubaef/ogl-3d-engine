@@ -40,6 +40,9 @@
     <Filter Include="Pliki źródłowe\Classes\Skybox">
       <UniqueIdentifier>{021b54a1-e9ab-48fe-b44c-f5d5982e8858}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki źródłowe\Engine properties">
+      <UniqueIdentifier>{a542e1f6-4455-4677-84b6-36efda4b60a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InitializationException.cpp">
@@ -196,6 +199,12 @@
     </ClInclude>
     <ClInclude Include="SimplexTerrainChunk.h">
       <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderProperties.h">
+      <Filter>Pliki źródłowe\Engine properties</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeProperties.h">
+      <Filter>Pliki źródłowe\Engine properties</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

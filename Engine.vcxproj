@@ -177,6 +177,7 @@
     <ClInclude Include="QuadPoint.h" />
     <ClInclude Include="QuadTreeLOD.h" />
     <ClInclude Include="RandomTerrain.h" />
+    <ClInclude Include="RenderProperties.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="SimpleTerrain.h" />
@@ -184,6 +185,7 @@
     <ClInclude Include="SimplexTerrainChunk.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Terrain.h" />
+    <ClInclude Include="TimeProperties.h" />
     <ClInclude Include="WaterTerrain.h" />
   </ItemGroup>
   <ItemGroup>
