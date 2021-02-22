@@ -65,7 +65,7 @@ void LightManager::update()
 
 	// Changing direction of directional light to simulate sunlight
 	// mat4 rotation_matrix = rotate(mat4(1.0), radians(0.1f), vec3(1, 0, 0));
-	// directional_light->set_direction(mat3(rotation_matrix) * directional_light->get_direction());
+	// directional_light->setDirection(mat3(rotation_matrix) * directional_light->getDirection());
 
 	//// Update lights to the uniforms
 	for (Shader* p_shader : shaders_vector)
@@ -77,10 +77,10 @@ void LightManager::update()
 }
 void LightManager::update_directional_light(Shader* p_shader) const
 {
-	p_shader->set_vec3(directional_light_name + ".ambient", directional_light->get_ambient());
-	p_shader->set_vec3(directional_light_name + ".diffuse", directional_light->get_diffuse());
-	p_shader->set_vec3(directional_light_name + ".specular", directional_light->get_specular());
-	p_shader->set_vec3(directional_light_name + ".direction", directional_light->get_direction());
+	p_shader->set_vec3(directional_light_name + ".ambient", directional_light->getColorAmbient());
+	p_shader->set_vec3(directional_light_name + ".diffuse", directional_light->getColorDiffuse());
+	p_shader->set_vec3(directional_light_name + ".specular", directional_light->getColorSpecular());
+	p_shader->set_vec3(directional_light_name + ".direction", directional_light->getDirection());
 }
 
 
@@ -90,12 +90,12 @@ void LightManager::update_point_lights(Shader* p_shader) const
 	{
 		std::string current_name = point_lights_name + '[' + static_cast<char>(i + 48) + ']';
 
-		p_shader->set_vec3(current_name + ".ambient", point_lights[i]->get_ambient());
-		p_shader->set_vec3(current_name + ".diffuse", point_lights[i]->get_diffuse());
-		p_shader->set_vec3(current_name + ".specular", point_lights[i]->get_specular());
-		p_shader->set_vec3(current_name + ".position", point_lights[i]->get_position());
-		p_shader->set_float(current_name + ".constant", point_lights[i]->get_constant());
-		p_shader->set_float(current_name + ".linear", point_lights[i]->get_linear());
-		p_shader->set_float(current_name + ".quadratic", point_lights[i]->get_quadratic());
+		p_shader->set_vec3(current_name + ".ambient", point_lights[i]->getColorAmbient());
+		p_shader->set_vec3(current_name + ".diffuse", point_lights[i]->getColorDiffuse());
+		p_shader->set_vec3(current_name + ".specular", point_lights[i]->getColorSpecular());
+		p_shader->set_vec3(current_name + ".position", point_lights[i]->getPosition());
+		p_shader->set_float(current_name + ".constant", point_lights[i]->getConstant());
+		p_shader->set_float(current_name + ".linear", point_lights[i]->getLinear());
+		p_shader->set_float(current_name + ".quadratic", point_lights[i]->getQuadratic());
 	}
 }

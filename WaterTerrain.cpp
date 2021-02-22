@@ -84,7 +84,7 @@ void WaterTerrain::set_material()
 	p_shader->use();
 	p_shader->set_vec3("material.ambient", vec3(0.f, 0.41f, 0.58f));
 	p_shader->set_vec3("material.diffuse", vec3(0.f, 0.61f, 0.78f));
-	p_shader->set_vec3("material.specular", vec3(0.6f, 0.6f, 0.6f));
+	p_shader->set_vec3("material.colorSpecular", vec3(0.6f, 0.6f, 0.6f));
 	p_shader->set_float("material.shininess", 128);
 }
 
@@ -97,7 +97,7 @@ void WaterTerrain::render_terrain()
 	// Bind to VAO to perform draw operation
 	glBindVertexArray(main_VAO_id);
 
-	// Send view position for specular component
+	// Send view position for colorSpecular component
 	p_shader->set_vec3("view_pos", p_camera_controller->getPosition());
 	p_shader->set_float("time", glfwGetTime());
 

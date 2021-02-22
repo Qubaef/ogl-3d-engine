@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="DynamicTerrain.cpp" />
+    <ClCompile Include="EntityType.cpp" />
     <ClCompile Include="FirstPersonCameraController.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="FlatTerrain.cpp" />
@@ -143,11 +144,13 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="LightPoint.cpp" />
+    <ClCompile Include="LightsManager.cpp" />
     <ClCompile Include="OverviewCameraController.cpp" />
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="QuadPoint.cpp" />
     <ClCompile Include="QuadTreeLOD.cpp" />
     <ClCompile Include="RandomTerrain.cpp" />
+    <ClCompile Include="RenderedEntityType.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="SimpleTerrain.cpp" />
@@ -161,6 +164,7 @@
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="ConstProperties.h" />
     <ClInclude Include="DynamicTerrain.h" />
+    <ClInclude Include="EntityType.h" />
     <ClInclude Include="FirstPersonCameraController.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Engine.h" />
@@ -173,11 +177,13 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="LightPoint.h" />
+    <ClInclude Include="LightsManager.h" />
     <ClInclude Include="OverviewCameraController.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="QuadPoint.h" />
     <ClInclude Include="QuadTreeLOD.h" />
     <ClInclude Include="RandomTerrain.h" />
+    <ClInclude Include="RenderedEntityType.h" />
     <ClInclude Include="RenderProperties.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
@@ -185,6 +191,7 @@
     <ClInclude Include="SimplexNoise.h" />
     <ClInclude Include="SimplexTerrainChunk.h" />
     <ClInclude Include="Skybox.h" />
+    <ClInclude Include="Task.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="TimeProperties.h" />
     <ClInclude Include="WaterTerrain.h" />

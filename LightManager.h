@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 #include "LightDirectional.h"
 #include "LightPoint.h"
 #include "Shader.h"

@@ -1,26 +1,37 @@
 ﻿#include "Light.h"
 
-Light::Light(vec3 ambient, vec3 diffuse, vec3 specular)
+Light::Light(bool enabled, vec3 colorAmbient, vec3 colorDiffuse, vec3 colorSpecular) :
+	enabled(enabled), colorAmbient(colorAmbient), colorDiffuse(colorDiffuse), colorSpecular(colorSpecular)
 {
-	this->ambient = ambient;
-	this->diffuse = diffuse;
-	this->specular = specular;
 }
 
 
-vec3 Light::get_ambient() const
+vec3 Light::getColorAmbient() const
 {
-	return ambient;
+	return colorAmbient;
 }
 
 
-vec3 Light::get_diffuse() const
+vec3 Light::getColorDiffuse() const
 {
-	return diffuse;
+	return colorDiffuse;
 }
 
 
-vec3 Light::get_specular() const
+vec3 Light::getColorSpecular() const
 {
-	return specular;
+	return colorSpecular;
 }
+
+
+bool Light::ifEnabled() const
+{
+	return enabled;
+}
+
+
+void Light::setEnabled(bool newEnabled)
+{
+	enabled = newEnabled;
+}
+

@@ -110,7 +110,7 @@ void DynamicTerrain::set_material()
 	p_shader->use();
 	p_shader->set_vec3("material.ambient", vec3(0.35f, 0.3f, 0.254f));
 	p_shader->set_vec3("material.diffuse", vec3(0.45f, 0.4f, 0.354f));
-	p_shader->set_vec3("material.specular", vec3(0.55f, 0.5f, 0.454f));
+	p_shader->set_vec3("material.colorSpecular", vec3(0.55f, 0.5f, 0.454f));
 	p_shader->set_float("material.shininess", 1);
 }
 
@@ -215,7 +215,7 @@ void DynamicTerrain::render_terrain()
 	// Bind to VAO to perform draw operation
 	glBindVertexArray(main_VAO_id);
 
-	// Send view position for specular component
+	// Send view position for colorSpecular component
 	p_shader->set_vec3("view_pos", p_camera_controller->getPosition());
 
 	glDrawElements(

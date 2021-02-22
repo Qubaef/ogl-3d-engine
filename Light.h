@@ -4,14 +4,21 @@
 class Light
 {
 protected:
-	vec3 ambient;
-	vec3 diffuse;
-	vec3 specular;
+	vec3 colorAmbient;
+	vec3 colorDiffuse;
+	vec3 colorSpecular;
 
-	Light(vec3 ambient, vec3 diffuse, vec3 specular);
+	bool enabled;
+
+	Light(bool enabled, vec3 colorAmbient, vec3 colorDiffuse, vec3 colorSpecular);
 
 public:
-	vec3 get_ambient() const;
-	vec3 get_diffuse() const;
-	vec3 get_specular() const;
+	// Fields getters
+	vec3 getColorAmbient() const;
+	vec3 getColorDiffuse() const;
+	vec3 getColorSpecular() const;
+	bool ifEnabled() const;
+
+	// Change enabled field to given value
+	void setEnabled(bool newEnabled);
 };

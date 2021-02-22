@@ -1,5 +1,17 @@
 ﻿#pragma once
+#ifndef ENGINE_H
+#define ENGINE_H
+
 #include "Includes.h"
+
+// Obligatory engine includes
+#include "EntityType.h"
+
+class LightsManager;
+#include "LightsManager.h"
+
+// Entities
+
 
 // Cameras
 #include "FirstPersonCameraController.h"
@@ -43,11 +55,19 @@ private:
 	// [Note: dot in separate container to optimize the references]
 
 	// Pointer to window handle
-	GLFWwindow* EngineWindowPtr = NULL;
+	GLFWwindow* engineWindowPtr = NULL;
 
+	// Main container keeping references to all EntityTypes used in the engine
+	std::vector<EntityType*> entitiesTypesList;
+
+	// User-defined manager that supports lights logic - lights could be defined in various ways
+	// The reference to the manager is supposed to be accessible from RenderEntityType, so share the same global lights info
+	LightsManager* lightsManagerPtr;
+
+	
 	// TODO: change the structure of variables below
 	// Pointer to CameraController
-	CameraController* EngineControllerPtr = NULL;
+	CameraController* engineControllerPtr = NULL;
 
 	// Pointer to Terrain
 	Terrain* p_terrain = NULL;
@@ -100,6 +120,10 @@ private:
 	// Set default values of TimeProperties
 	// [Note: not a constructor, cause default value sometimes requires library call]
 	void setDefaultsTimeProperties();
+
+	// Attach and initialize all user-defined entity types classes used in the engine
+	// [User defined]
+	void initializeEntityTypes();
 	
 	// TODO:
 	// Initialize components responsible for user control
@@ -143,3 +167,5 @@ public:
 	// Start Runtime Phase
 	int startPhaseRuntime();
 };
+
+#endif

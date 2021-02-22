@@ -31,10 +31,10 @@ void Engine::initialize_window()
 	// Open a window and create its OpenGL context
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 
-	EngineWindowPtr = glfwCreateWindow(constProperties.windowWidth, constProperties.windowHeight,
+	engineWindowPtr = glfwCreateWindow(constProperties.windowWidth, constProperties.windowHeight,
 		constProperties.windowName, NULL, NULL);
 
-	if (EngineWindowPtr == NULL) {
+	if (engineWindowPtr == NULL) {
 		glfwTerminate();
 		throw InitializationException("Failed to open GLFW window.", "initialize_window");
 	}
@@ -43,13 +43,13 @@ void Engine::initialize_window()
 void Engine::initialize_GLEW()
 {
 	// Initialise GLEW
-	if (EngineWindowPtr == NULL)
+	if (engineWindowPtr == NULL)
 	{
 		glfwTerminate();
 		throw InitializationException("Window was not properly initialized.", "initialize_GLEW");
 	}
 
-	glfwMakeContextCurrent(EngineWindowPtr);
+	glfwMakeContextCurrent(engineWindowPtr);
 
 	if (glewInit() != GLEW_OK) {
 		glfwTerminate();
@@ -60,7 +60,7 @@ void Engine::initialize_GLEW()
 void Engine::setDefaultOglParameters()
 {
 	// Ensure we can capture the escape key being pressed below
-	glfwSetInputMode(EngineWindowPtr, GLFW_STICKY_KEYS, GL_TRUE);
+	glfwSetInputMode(engineWindowPtr, GLFW_STICKY_KEYS, GL_TRUE);
 
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
@@ -88,13 +88,16 @@ void Engine::startPhaseEnginePrep()
 	setDefaultsRenderProperties();
 	setDefaultsTimeProperties();
 
+	//// Attach and initialize all user-defined entities
+	initializeEntityTypes();
+
 	//// TODO: Initialize task qeue
 
 	//// TODO: Initialize workers threads
 
 	//// TODO: Initialzie user control thread
 
-	//// TODO: Load user data
+	
 
 	//// TODO: Cleanup and move the following
 	
@@ -105,14 +108,14 @@ void Engine::startPhaseEnginePrep()
 
 	// Gather all shaders, which are supposed to use given light configuration
 	// and pass them together as a vector to LightManager (which will properly set them up)
-	std::vector<Shader*> used_shaders_vector;
-	used_shaders_vector.push_back(p_lighting_shader);
-	used_shaders_vector.push_back(p_water_shader);
-	p_light_manager = new LightManager(used_shaders_vector);
+	// std::vector<Shader*> used_shaders_vector;
+	// used_shaders_vector.push_back(p_lighting_shader);
+	// used_shaders_vector.push_back(p_water_shader);
+	// p_light_manager = new LightManager(used_shaders_vector);
 
-	initialize_user_control();
-	initialize_terrain();
-	initialize_skybox();
+	// initialize_user_control();
+	// initialize_terrain();
+	// initialize_skybox();
 }
 
 void Engine::setDefaultsRenderProperties()
@@ -129,29 +132,39 @@ void Engine::setDefaultsTimeProperties()
 	timeProperties.lastFrameDelta = 0;
 }
 
+void Engine::initializeEntityTypes()
+{
+	//// User defined
+	//// Attach and initialize all EntityTypes objects used in the the engine
+	//// EntityType object must be added to EntitiesTypesList
+
+	
+}
+
+
 void Engine::initialize_user_control()
 {
 	// Initialize InputManager
-	p_input_manager = new InputManager(EngineWindowPtr);
+	p_input_manager = new InputManager(engineWindowPtr);
 
 	// Initialize instance of CameraController
-	// EngineControllerPtr = new FirstPersonCameraController(EngineWindowPtr, p_input_manager);
-	EngineControllerPtr = new OverviewCameraController(EngineWindowPtr, p_input_manager);
+	// engineControllerPtr = new FirstPersonCameraController(engineWindowPtr, p_input_manager);
+	engineControllerPtr = new OverviewCameraController(engineWindowPtr, p_input_manager);
 }
 
 void Engine::initialize_terrain()
 {
-	// p_terrain = new FlatTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, EngineControllerPtr);
-	// p_terrain = new RandomTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, EngineControllerPtr);
-	// p_terrain = new WaterTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_water_shader, EngineControllerPtr);
-	// p_terrain = new DynamicTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, EngineControllerPtr);
-	p_terrain = new SimplexTerrainChunk(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, EngineControllerPtr);
+	// p_terrain = new FlatTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, engineControllerPtr);
+	// p_terrain = new RandomTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, engineControllerPtr);
+	// p_terrain = new WaterTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_water_shader, engineControllerPtr);
+	// p_terrain = new DynamicTerrain(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, engineControllerPtr);
+	p_terrain = new SimplexTerrainChunk(0, 0, SECTOR_SIZE, SECTOR_DENSITY, p_lighting_shader, engineControllerPtr);
 
 }
 
 void Engine::initialize_skybox()
 {
-	p_skybox = new Skybox("skybox_1", p_skybox_shader, EngineControllerPtr);
+	p_skybox = new Skybox("skybox_1", p_skybox_shader, engineControllerPtr);
 }
 
 
@@ -168,7 +181,7 @@ void Engine::saveTimestep()
 	timeProperties.processedFramesNumber++;
 
 	// If last printf() was more than 1 sec ago, print status and reset print timer
-	if (currentTimestamp - timeProperties.lastPrintTimestamp >= 1.0) {
+	if (currentTimestamp - timeProperties.lastPrintTimestamp >= timeProperties.printInterval) {
 		printTimePerFrameInfo();
 		timeProperties.processedFramesNumber = 0;
 		timeProperties.lastPrintTimestamp = currentTimestamp;
@@ -245,7 +258,7 @@ ConstProperties& Engine::getConstProperties()
 int Engine::startPhaseRuntime()
 {
 	// Render loop
-	while (!glfwWindowShouldClose(EngineWindowPtr))
+	while (!glfwWindowShouldClose(engineWindowPtr))
 	{
 		// Track time per frame value and print it's status
 		saveTimestep();
@@ -253,29 +266,31 @@ int Engine::startPhaseRuntime()
 		// Clear buffers
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		// TODO: Clear queue and fill it with new sets of tasks
+
 		// Update lights configuration in the scene (if some of them are moving)
-		p_light_manager->update();
+		// p_light_manager->update();
 
 		// Render terrain using shader given to it during initialization
-		p_terrain->render_terrain();
+		// p_terrain->render_terrain();
 
 		// Render skybox using its own shader
 		// Render it last and use depth buffer to optimize process and skip redundant fragments
 		// p_skybox->render();
 
 		// Swap buffers after the draw (idk why, apparently it is required)
-		glfwSwapBuffers(EngineWindowPtr);
+		glfwSwapBuffers(engineWindowPtr);
 		// Process pending events
 		glfwPollEvents();
 
 		// Update matrices according to user's input
-		EngineControllerPtr->updateCamera();
+		// engineControllerPtr->updateCamera();
 
 		// Process user input
-		p_input_manager->process_input();
+		// p_input_manager->process_input();
 
-		// check for errors
-		assert(checkOglErrors("render loop") == false);
+		// Check for OpenGl rendering errors
+		assert(checkOglErrors("runtimeLoop") == false);
 	}
 
 	// Cleanup VBO and shader program
@@ -284,7 +299,7 @@ int Engine::startPhaseRuntime()
 	// Cleanup dynamically allocated objects
 	delete p_lighting_shader;
 	delete p_light_manager;
-	delete EngineControllerPtr;
+	delete engineControllerPtr;
 	delete p_terrain;
 	delete p_input_manager;
 

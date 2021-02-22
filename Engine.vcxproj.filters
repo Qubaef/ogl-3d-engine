@@ -31,17 +31,26 @@
     <Filter Include="Pliki źródłowe\Classes\CameraControllers">
       <UniqueIdentifier>{febb54d9-8d31-4371-be37-fdc496f72d20}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pliki źródłowe\Classes\Terrains">
-      <UniqueIdentifier>{af978c17-420a-4561-8d76-f7a379388ce3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Classes\Terrains\DynamicQuadtreeLOD">
-      <UniqueIdentifier>{63b7bb85-c92a-4d55-b5f1-2f3ae2360ce7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Pliki źródłowe\Classes\Skybox">
       <UniqueIdentifier>{021b54a1-e9ab-48fe-b44c-f5d5982e8858}</UniqueIdentifier>
     </Filter>
     <Filter Include="Pliki źródłowe\Engine properties">
       <UniqueIdentifier>{a542e1f6-4455-4677-84b6-36efda4b60a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Classes\Data processing pipeline">
+      <UniqueIdentifier>{aaea24b7-2df9-42d7-9a3c-cefb369d4b9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Classes\Entities">
+      <UniqueIdentifier>{9ebafd40-5592-47db-8a04-c56f1fe7a15b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Classes\Entities\User-defined">
+      <UniqueIdentifier>{b2cc7870-12df-45cb-b09d-0bba5ab65782}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Classes\Entities\User-defined\Terrains">
+      <UniqueIdentifier>{af978c17-420a-4561-8d76-f7a379388ce3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Classes\Entities\User-defined\Terrains\DynamicQuadtreeLOD">
+      <UniqueIdentifier>{63b7bb85-c92a-4d55-b5f1-2f3ae2360ce7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -73,37 +82,37 @@
       <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
     </ClCompile>
     <ClCompile Include="Terrain.cpp">
-      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClCompile>
     <ClCompile Include="FlatTerrain.cpp">
-      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClCompile>
     <ClCompile Include="SimpleTerrain.cpp">
-      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClCompile>
     <ClCompile Include="RandomTerrain.cpp">
-      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClCompile>
     <ClCompile Include="WaterTerrain.cpp">
-      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClCompile>
     <ClCompile Include="DynamicTerrain.cpp">
-      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClCompile>
     <ClCompile Include="QuadTreeLOD.cpp">
-      <Filter>Pliki źródłowe\Classes\Terrains\DynamicQuadtreeLOD</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains\DynamicQuadtreeLOD</Filter>
     </ClCompile>
     <ClCompile Include="Quad.cpp">
-      <Filter>Pliki źródłowe\Classes\Terrains\DynamicQuadtreeLOD</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains\DynamicQuadtreeLOD</Filter>
     </ClCompile>
     <ClCompile Include="QuadPoint.cpp">
-      <Filter>Pliki źródłowe\Classes\Terrains\DynamicQuadtreeLOD</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains\DynamicQuadtreeLOD</Filter>
     </ClCompile>
     <ClCompile Include="Skybox.cpp">
       <Filter>Pliki źródłowe\Classes\Skybox</Filter>
     </ClCompile>
     <ClCompile Include="SimplexTerrainChunk.cpp">
-      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Pliki źródłowe\Shaders</Filter>
@@ -115,7 +124,16 @@
       <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
     </ClCompile>
     <ClCompile Include="SimplexNoise.cpp">
-      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityType.cpp">
+      <Filter>Pliki źródłowe\Classes\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderedEntityType.cpp">
+      <Filter>Pliki źródłowe\Classes\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="LightsManager.cpp">
+      <Filter>Pliki źródłowe\Classes\Lights</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -153,31 +171,31 @@
       <Filter>Pliki źródłowe\Classes\Lights</Filter>
     </ClInclude>
     <ClInclude Include="DynamicTerrain.h">
-      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClInclude>
     <ClInclude Include="FlatTerrain.h">
-      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClInclude>
     <ClInclude Include="RandomTerrain.h">
-      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClInclude>
     <ClInclude Include="SimpleTerrain.h">
-      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClInclude>
     <ClInclude Include="Terrain.h">
-      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClInclude>
     <ClInclude Include="WaterTerrain.h">
-      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClInclude>
     <ClInclude Include="Quad.h">
-      <Filter>Pliki źródłowe\Classes\Terrains\DynamicQuadtreeLOD</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains\DynamicQuadtreeLOD</Filter>
     </ClInclude>
     <ClInclude Include="QuadPoint.h">
-      <Filter>Pliki źródłowe\Classes\Terrains\DynamicQuadtreeLOD</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains\DynamicQuadtreeLOD</Filter>
     </ClInclude>
     <ClInclude Include="QuadTreeLOD.h">
-      <Filter>Pliki źródłowe\Classes\Terrains\DynamicQuadtreeLOD</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains\DynamicQuadtreeLOD</Filter>
     </ClInclude>
     <ClInclude Include="Engine.h">
       <Filter>Pliki źródłowe\Classes</Filter>
@@ -192,13 +210,13 @@
       <Filter>Pliki źródłowe\Classes\Skybox</Filter>
     </ClInclude>
     <ClInclude Include="SimplexNoise.h">
-      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClInclude>
     <ClInclude Include="InputState.h">
       <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
     </ClInclude>
     <ClInclude Include="SimplexTerrainChunk.h">
-      <Filter>Pliki źródłowe\Classes\Terrains</Filter>
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClInclude>
     <ClInclude Include="RenderProperties.h">
       <Filter>Pliki źródłowe\Engine properties</Filter>
@@ -208,6 +226,18 @@
     </ClInclude>
     <ClInclude Include="ConstProperties.h">
       <Filter>Pliki źródłowe\Engine properties</Filter>
+    </ClInclude>
+    <ClInclude Include="Task.h">
+      <Filter>Pliki źródłowe\Classes\Data processing pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityType.h">
+      <Filter>Pliki źródłowe\Classes\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderedEntityType.h">
+      <Filter>Pliki źródłowe\Classes\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="LightsManager.h">
+      <Filter>Pliki źródłowe\Classes\Lights</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

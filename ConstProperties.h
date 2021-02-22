@@ -12,4 +12,7 @@ struct ConstProperties
 	const unsigned cameraFov = 45;
 	const float cameraNearClipping = 5.f;
 	const float cameraFarClipping = 100000.f;
+
+	// Lights properties
+	const int maxPointLightsNumber = 16;
 };
