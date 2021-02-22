@@ -298,7 +298,6 @@ int Engine::startPhaseRuntime()
 
 	// Cleanup dynamically allocated objects
 	delete p_lighting_shader;
-	delete p_light_manager;
 	delete engineControllerPtr;
 	delete p_terrain;
 	delete p_input_manager;

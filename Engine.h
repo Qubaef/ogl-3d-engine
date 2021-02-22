@@ -28,7 +28,6 @@ class LightsManager;
 #include "SimplexTerrainChunk.h"
 
 // Managers
-#include "LightManager.h"
 #include "InputManager.h"
 #include "ShaderManager.h"
 
@@ -60,6 +59,8 @@ private:
 	// Main container keeping references to all EntityTypes used in the engine
 	std::vector<EntityType*> entitiesTypesList;
 
+	// Queue storing 
+
 	// User-defined manager that supports lights logic - lights could be defined in various ways
 	// The reference to the manager is supposed to be accessible from RenderEntityType, so share the same global lights info
 	LightsManager* lightsManagerPtr;
@@ -77,9 +78,6 @@ private:
 
 	// Pointer to Input manager
 	InputManager* p_input_manager = NULL;
-
-	// Light manager
-	LightManager* p_light_manager = NULL;
 
 	// Shader with classic lighting
 	Shader* p_lighting_shader = NULL;

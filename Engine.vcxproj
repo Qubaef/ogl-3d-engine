@@ -151,6 +151,7 @@
     <ClCompile Include="QuadTreeLOD.cpp" />
     <ClCompile Include="RandomTerrain.cpp" />
     <ClCompile Include="RenderedEntityType.cpp" />
+    <ClCompile Include="SafeTaskQueue.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="SimpleTerrain.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="RandomTerrain.h" />
     <ClInclude Include="RenderedEntityType.h" />
     <ClInclude Include="RenderProperties.h" />
+    <ClInclude Include="SafeTaskQueue.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="SimpleTerrain.h" />

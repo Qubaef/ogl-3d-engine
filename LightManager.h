@@ -6,6 +6,8 @@
 
 class LightManager
 {
+	// TODO: Remove, cause unused
+	
 	// Variable names connected with fragment shader names
 	const std::string directional_light_name = "dir_light";
 	const std::string point_lights_name = "point_lights";

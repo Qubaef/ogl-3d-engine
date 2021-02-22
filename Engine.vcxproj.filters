@@ -34,12 +34,6 @@
     <Filter Include="Pliki źródłowe\Classes\Skybox">
       <UniqueIdentifier>{021b54a1-e9ab-48fe-b44c-f5d5982e8858}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pliki źródłowe\Engine properties">
-      <UniqueIdentifier>{a542e1f6-4455-4677-84b6-36efda4b60a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Classes\Data processing pipeline">
-      <UniqueIdentifier>{aaea24b7-2df9-42d7-9a3c-cefb369d4b9f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Pliki źródłowe\Classes\Entities">
       <UniqueIdentifier>{9ebafd40-5592-47db-8a04-c56f1fe7a15b}</UniqueIdentifier>
     </Filter>
@@ -52,13 +46,19 @@
     <Filter Include="Pliki źródłowe\Classes\Entities\User-defined\Terrains\DynamicQuadtreeLOD">
       <UniqueIdentifier>{63b7bb85-c92a-4d55-b5f1-2f3ae2360ce7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki źródłowe\Classes\Engine">
+      <UniqueIdentifier>{554a4fec-19c6-4143-a29d-32b5b438f0f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Classes\Engine\Engine properties">
+      <UniqueIdentifier>{a542e1f6-4455-4677-84b6-36efda4b60a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Classes\Engine\Data processing pipeline">
+      <UniqueIdentifier>{aaea24b7-2df9-42d7-9a3c-cefb369d4b9f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InitializationException.cpp">
       <Filter>Pliki źródłowe\Exceptions</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine.cpp">
-      <Filter>Pliki źródłowe\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>Pliki źródłowe\Classes\Lights</Filter>
@@ -135,6 +135,12 @@
     <ClCompile Include="LightsManager.cpp">
       <Filter>Pliki źródłowe\Classes\Lights</Filter>
     </ClCompile>
+    <ClCompile Include="SafeTaskQueue.cpp">
+      <Filter>Pliki źródłowe\Classes\Engine\Data processing pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Pliki źródłowe\Classes\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h">
@@ -197,9 +203,6 @@
     <ClInclude Include="QuadTreeLOD.h">
       <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains\DynamicQuadtreeLOD</Filter>
     </ClInclude>
-    <ClInclude Include="Engine.h">
-      <Filter>Pliki źródłowe\Classes</Filter>
-    </ClInclude>
     <ClInclude Include="InitializationException.h">
       <Filter>Pliki źródłowe\Exceptions</Filter>
     </ClInclude>
@@ -219,16 +222,16 @@
       <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClInclude>
     <ClInclude Include="RenderProperties.h">
-      <Filter>Pliki źródłowe\Engine properties</Filter>
+      <Filter>Pliki źródłowe\Classes\Engine\Engine properties</Filter>
     </ClInclude>
     <ClInclude Include="TimeProperties.h">
-      <Filter>Pliki źródłowe\Engine properties</Filter>
+      <Filter>Pliki źródłowe\Classes\Engine\Engine properties</Filter>
     </ClInclude>
     <ClInclude Include="ConstProperties.h">
-      <Filter>Pliki źródłowe\Engine properties</Filter>
+      <Filter>Pliki źródłowe\Classes\Engine\Engine properties</Filter>
     </ClInclude>
     <ClInclude Include="Task.h">
-      <Filter>Pliki źródłowe\Classes\Data processing pipeline</Filter>
+      <Filter>Pliki źródłowe\Classes\Engine\Data processing pipeline</Filter>
     </ClInclude>
     <ClInclude Include="EntityType.h">
       <Filter>Pliki źródłowe\Classes\Entities</Filter>
@@ -238,6 +241,12 @@
     </ClInclude>
     <ClInclude Include="LightsManager.h">
       <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="SafeTaskQueue.h">
+      <Filter>Pliki źródłowe\Classes\Engine\Data processing pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Pliki źródłowe\Classes\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
