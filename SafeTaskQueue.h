@@ -4,80 +4,67 @@
 #include <queue>
 #include <condition_variable>
 #include <mutex>
+#include <thread>
+#include <chrono>
 
 // Own includes
+#include "HeadersOgl.h"
 #include "Task.h"
+
 
 class SafeTaskQueue
 {
 private:
 	// Prime queue, which is being copied every frame to task Queue
-	std::priority_queue<Task> primeQueue;
+	std::queue<Task> primeQueue;
 
 	// Current task's queue, which has to be emptied each frame
-	std::priority_queue<Task> tasksQueue;
+	std::queue<Task> tasksQueue;
 
 	// Conditional variable used to hold threads until the new frame notification
+	std::mutex conditionalVariableMutex;
 	std::condition_variable nextFrameConditionalVariable;
 
 	// Mutex used to make queue operations thread safe
 	std::mutex queueModificationMutex;
 
-	// Get next task with enables synchronization
-	Task getNextTask()
-	{
-		// TODO:
-	}
+	// Active threads vector
+	std::vector<std::thread> activeWorkersVector;
+
+	// Number of threads waiting for notification
+	int threadsWaiting = 0;
+
+	// Get next task with enabled synchronization
+	Task getNextTask();
 
 	// Check if there are any tasks left in the taskQueue
-	bool isTaskQueueEmpty()
-	{
-		// TODO: 
-	}
+	bool isTaskQueueEmpty();
 
 	// Start worker cycle on current process
-	void startWorkerCycle()
-	{
-		// TODO:
-	}
+	void startWorkerCycle(int threadId);
+
+	std::chrono::steady_clock::time_point t1;
+	std::chrono::steady_clock::time_point t2;
+	std::chrono::steady_clock::time_point t3;
 
 
 public:
+	const int MaxQueueActiveThreads = 2;
+	
 	// Insert new given task to priority queue
-	void pushTask(Task task)
-	{
-		primeQueue.push(task);
-	}
+	void pushTask(Task task);
 
 	// Pop and return top task from the queue
-	Task popTask()
-	{
-		Task task = primeQueue.top();
-		primeQueue.pop();
-		return task;
-	}
+	Task popTask();
 
 	// Start given number of threads running in worker cycle
-	void runWorkers(int numberOfWorkers)
-	{
-		// TODO:
-	}
+	void runWorkers(int numberOfWorkers);
 
 	// Notify all the workers and the queue about the new frame event
-	void newFrameNotify()
-	{
-		// TODO: if all tasks were completed - rethink it - also implement in .cpp not here
-
-		// Copy prime queue to taskQueue
-		tasksQueue = primeQueue;
-
-		// Notify all threads about the event
-		nextFrameConditionalVariable.notify_all();
-	}
+	void newFrameNotify();
 
 	// Process queue's cycle regularly without mutlithreading (not practical)
-	void processQueue()
-	{
-		// TODO:
-	}
+	void processQueue();
+
+	bool ifTaskFinished();
 };

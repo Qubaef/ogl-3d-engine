@@ -97,7 +97,11 @@ void Engine::startPhaseEnginePrep()
 
 	//// TODO: Initialzie user control thread
 
-	
+	// If execution mode is tests, run proper test
+	if(constProperties.executionMode == ConstProperties::TESTS)
+	{
+		runEnginePrepTests();
+	}
 
 	//// TODO: Cleanup and move the following
 	
@@ -116,6 +120,61 @@ void Engine::startPhaseEnginePrep()
 	// initialize_user_control();
 	// initialize_terrain();
 	// initialize_skybox();
+}
+
+void Engine::runEnginePrepTests()
+{
+	//// SafeTaskQueue tests
+	// SafeTaskQueue test initialize:
+	TestEntity testEntity;
+	Task testTask(reinterpret_cast<EntityType*>(&testEntity), &EntityType::processPerFrame);
+	int testSize = 100;
+	for (int i = 0; i < testSize; i++)
+	{
+		preRenderQueue.pushTask(testTask);
+	}
+
+	// Test 1
+	printf("Test 1\n");
+	auto t1 = std::chrono::high_resolution_clock::now();
+	for (int i = 0; i < testSize; i++)
+	{
+		testEntity.processPerFrame();
+	}
+	auto t2 = std::chrono::high_resolution_clock::now();
+
+	printf("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
+
+	// Test 1.5
+	printf("Test 1.5\n");
+	t1 = std::chrono::high_resolution_clock::now();
+	preRenderQueue.newFrameNotify();
+	preRenderQueue.processQueue();
+	t2 = std::chrono::high_resolution_clock::now();
+
+	printf("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
+
+	//// Test 2
+	printf("Test 2\n");
+	preRenderQueue.runWorkers(2);
+	t1 = std::chrono::high_resolution_clock::now();
+	preRenderQueue.newFrameNotify();
+	while (!preRenderQueue.ifTaskFinished());
+	t2 = std::chrono::high_resolution_clock::now();
+
+	printf("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
+
+	//// Test 3
+	printf("Test 3\n");
+	preRenderQueue.runWorkers(8);
+	t1 = std::chrono::high_resolution_clock::now();
+	preRenderQueue.newFrameNotify();
+	while (!preRenderQueue.ifTaskFinished());
+	t2 = std::chrono::high_resolution_clock::now();
+
+	printf("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
+
+	
 }
 
 void Engine::setDefaultsRenderProperties()

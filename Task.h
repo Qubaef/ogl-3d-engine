@@ -7,11 +7,20 @@ struct Task
 {
 	EntityType* owner;
 	TaskFunction taskFunction;
-	int priority;
 
-    // Overloaded < operator for priority comparison
-	bool operator<(const Task& task) const
+	Task()
 	{
-		return (priority < task.priority);
+		owner = nullptr;
+	}
+
+	Task(EntityType* owner, TaskFunction taskFunction) :
+		owner(owner), taskFunction(taskFunction)
+	{
+	}
+
+	// Perform the task's function
+	void perform()
+	{
+		(*owner.*taskFunction)();
 	}
 };

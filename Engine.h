@@ -6,12 +6,13 @@
 
 // Obligatory engine includes
 #include "EntityType.h"
+#include "SafeTaskQueue.h"
 
 class LightsManager;
 #include "LightsManager.h"
 
 // Entities
-
+#include "TestEntity.h"
 
 // Cameras
 #include "FirstPersonCameraController.h"
@@ -59,7 +60,8 @@ private:
 	// Main container keeping references to all EntityTypes used in the engine
 	std::vector<EntityType*> entitiesTypesList;
 
-	// Queue storing 
+	// Queue storing and executing given tasks every frame
+	SafeTaskQueue preRenderQueue;
 
 	// User-defined manager that supports lights logic - lights could be defined in various ways
 	// The reference to the manager is supposed to be accessible from RenderEntityType, so share the same global lights info
@@ -110,6 +112,9 @@ private:
 
 	// Start Engine Preparation Phase
 	void startPhaseEnginePrep();
+
+	// TMP: function for running tests
+	void runEnginePrepTests();
 	
 	// Set default values of RenderProperties
 	// [Note: not a constructor, cause default value sometimes requires library call]

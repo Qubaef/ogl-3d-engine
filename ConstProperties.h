@@ -2,12 +2,22 @@
 
 struct ConstProperties
 {
+	// Engine execution mode
+	enum EXECUTION_MODE
+	{
+		REGULAR,
+		DEBUG,
+		TESTS,
+	};
+
+	EXECUTION_MODE executionMode = TESTS;
+	
 	// Window properties
 	const char* windowName = "Engine";
 	const int windowWidth = 1280;
 	const int windowHeight = 720;
 
-	// TODO: Move camera properties to camera class WOW
+	// TODO: Move camera properties to camera class WOW SO UNPREDICTABLE
 	// Camera properties
 	const unsigned cameraFov = 45;
 	const float cameraNearClipping = 5.f;
