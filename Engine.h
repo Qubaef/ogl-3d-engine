@@ -7,6 +7,7 @@
 // Obligatory engine includes
 #include "EntityType.h"
 #include "SafeTaskQueue.h"
+#include "Logger.h"
 
 class LightsManager;
 #include "LightsManager.h"
@@ -113,7 +114,7 @@ private:
 	// Start Engine Preparation Phase
 	void startPhaseEnginePrep();
 
-	// TMP: function for running tests
+	// TMP: functions for running tests
 	void runEnginePrepTests();
 	
 	// Set default values of RenderProperties
@@ -149,7 +150,7 @@ private:
 	void printTimePerFrameInfo();
 
 	// Check for ogl errors
-	static bool checkOglErrors(const char* location);
+	bool checkOglErrors(const char* location);
 
 public:
 	// =====================================================
@@ -157,6 +158,9 @@ public:
 	// =====================================================
 	
 	Engine();
+
+	// Publicly available Log
+	Logger Log;
 
 	// Returns global engine's render properties
 	RenderProperties& getRenderProperties();

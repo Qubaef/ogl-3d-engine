@@ -10,7 +10,7 @@ struct ConstProperties
 		TESTS,
 	};
 
-	EXECUTION_MODE executionMode = TESTS;
+	EXECUTION_MODE executionMode = REGULAR;
 	
 	// Window properties
 	const char* windowName = "Engine";

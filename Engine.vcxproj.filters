@@ -141,9 +141,6 @@
     <ClCompile Include="Engine.cpp">
       <Filter>Pliki źródłowe\Classes\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="TestEntity.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h">
@@ -251,11 +248,14 @@
     <ClInclude Include="Engine.h">
       <Filter>Pliki źródłowe\Classes\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="HeadersOgl.h">
-      <Filter>Pliki nagłówkowe\Preprocessor</Filter>
-    </ClInclude>
     <ClInclude Include="TestEntity.h">
       <Filter>Pliki źródłowe\Classes\Entities\User-defined</Filter>
+    </ClInclude>
+    <ClInclude Include="ObligatoryHeaders.h">
+      <Filter>Pliki nagłówkowe\Preprocessor</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Pliki źródłowe\Classes\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

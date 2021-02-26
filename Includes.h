@@ -13,8 +13,6 @@
 
 // Custom exceptions
 #include "InitializationException.h"
-
-
-#include "HeadersOgl.h"
+#include "ObligatoryHeaders.h"
 
 using namespace glm;

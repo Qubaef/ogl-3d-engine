@@ -101,6 +101,7 @@ void Engine::startPhaseEnginePrep()
 	if(constProperties.executionMode == ConstProperties::TESTS)
 	{
 		runEnginePrepTests();
+		Log.PERFORMANCE("Tests completed. Continuing regular run...");
 	}
 
 	//// TODO: Cleanup and move the following
@@ -125,56 +126,96 @@ void Engine::startPhaseEnginePrep()
 void Engine::runEnginePrepTests()
 {
 	//// SafeTaskQueue tests
-	// SafeTaskQueue test initialize:
-	TestEntity testEntity;
-	Task testTask(reinterpret_cast<EntityType*>(&testEntity), &EntityType::processPerFrame);
-	int testSize = 100;
-	for (int i = 0; i < testSize; i++)
+	if (false)
 	{
-		preRenderQueue.pushTask(testTask);
+		// SafeTaskQueue test initialize:
+		TestEntity testEntity;
+		Task testTask(reinterpret_cast<EntityType*>(&testEntity), &EntityType::processPerFrame);
+		int testSize = 100;
+		for (int i = 0; i < testSize; i++)
+		{
+			preRenderQueue.pushTask(testTask);
+		}
+
+		// Test 1
+		Log.PERFORMANCE("Test 1\n");
+		auto t1 = std::chrono::high_resolution_clock::now();
+		for (int i = 0; i < testSize; i++)
+		{
+			testEntity.processPerFrame();
+		}
+		auto t2 = std::chrono::high_resolution_clock::now();
+
+		Log.PERFORMANCE("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
+
+		// Test 1.5
+		Log.PERFORMANCE("Test 1.5\n");
+		t1 = std::chrono::high_resolution_clock::now();
+		preRenderQueue.newFrameNotify();
+		preRenderQueue.processQueue();
+		t2 = std::chrono::high_resolution_clock::now();
+
+		Log.PERFORMANCE("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
+
+		//// Test 2
+		Log.PERFORMANCE("Test 2\n");
+		preRenderQueue.runWorkers(2);
+		t1 = std::chrono::high_resolution_clock::now();
+		preRenderQueue.newFrameNotify();
+		while (!preRenderQueue.ifTaskFinished());
+		t2 = std::chrono::high_resolution_clock::now();
+
+		Log.PERFORMANCE("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
+
+		//// Test 3
+		Log.PERFORMANCE("Test 3\n");
+		preRenderQueue.runWorkers(8);
+		t1 = std::chrono::high_resolution_clock::now();
+		preRenderQueue.newFrameNotify();
+		while (!preRenderQueue.ifTaskFinished());
+		t2 = std::chrono::high_resolution_clock::now();
+
+		Log.PERFORMANCE("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
 	}
 
-	// Test 1
-	printf("Test 1\n");
-	auto t1 = std::chrono::high_resolution_clock::now();
-	for (int i = 0; i < testSize; i++)
+	//// Fopen test
+	if(false)
 	{
-		testEntity.processPerFrame();
+		// Fopen initialization
+		FILE* pFile;
+		int testSize = 1000;
+		const char* filename1 = "t1";
+		const char* filename2 = "t2";
+		char buffer[] = "Test message\n";
+		
+		// Test 1
+		Log.PERFORMANCE("Test 1\n");
+		auto t1 = std::chrono::high_resolution_clock::now();
+
+		pFile = fopen(filename1, "w");
+		for (int i = 0; i < testSize; i++)
+		{
+			fwrite(buffer, sizeof(char), sizeof(buffer), pFile);
+		}
+		fclose(pFile);
+		
+		auto t2 = std::chrono::high_resolution_clock::now();
+		Log.PERFORMANCE("Test result: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
+		
+		// Test 2
+		Log.PERFORMANCE("Test 2\n");
+		t1 = std::chrono::high_resolution_clock::now();
+		
+		for (int i = 0; i < testSize; i++)
+		{
+			pFile = fopen(filename1, "w");
+			fwrite(buffer, sizeof(char), sizeof(buffer), pFile);
+			fclose(pFile);
+		}
+		
+		t2 = std::chrono::high_resolution_clock::now();
+		Log.PERFORMANCE("Test result: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
 	}
-	auto t2 = std::chrono::high_resolution_clock::now();
-
-	printf("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
-
-	// Test 1.5
-	printf("Test 1.5\n");
-	t1 = std::chrono::high_resolution_clock::now();
-	preRenderQueue.newFrameNotify();
-	preRenderQueue.processQueue();
-	t2 = std::chrono::high_resolution_clock::now();
-
-	printf("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
-
-	//// Test 2
-	printf("Test 2\n");
-	preRenderQueue.runWorkers(2);
-	t1 = std::chrono::high_resolution_clock::now();
-	preRenderQueue.newFrameNotify();
-	while (!preRenderQueue.ifTaskFinished());
-	t2 = std::chrono::high_resolution_clock::now();
-
-	printf("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
-
-	//// Test 3
-	printf("Test 3\n");
-	preRenderQueue.runWorkers(8);
-	t1 = std::chrono::high_resolution_clock::now();
-	preRenderQueue.newFrameNotify();
-	while (!preRenderQueue.ifTaskFinished());
-	t2 = std::chrono::high_resolution_clock::now();
-
-	printf("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
-
-	
 }
 
 void Engine::setDefaultsRenderProperties()
@@ -239,7 +280,7 @@ void Engine::saveTimestep()
 	timeProperties.lastFrameTimestamp = currentTimestamp;
 	timeProperties.processedFramesNumber++;
 
-	// If last printf() was more than 1 sec ago, print status and reset print timer
+	// If last print was more than 1 sec ago, print status and reset print timer
 	if (currentTimestamp - timeProperties.lastPrintTimestamp >= timeProperties.printInterval) {
 		printTimePerFrameInfo();
 		timeProperties.processedFramesNumber = 0;
@@ -249,7 +290,7 @@ void Engine::saveTimestep()
 
 void Engine::printTimePerFrameInfo()
 {
-	printf("%f ms/frame : %d fps \n", 1000.0 / double(timeProperties.processedFramesNumber), timeProperties.processedFramesNumber);
+	Log.PERFORMANCE("%f ms/frame : %d fps \n", 1000.0 / double(timeProperties.processedFramesNumber), timeProperties.processedFramesNumber);
 }
 
 bool Engine::checkOglErrors(const char* location)
@@ -270,7 +311,7 @@ bool Engine::checkOglErrors(const char* location)
 		case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
 		case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
 		}
-		printf_s("%s error in %s\n", error.c_str(), location);
+		Log.ERROR("%s Opengl error in %s\n", error.c_str(), location);
 		result = true;
 	}
 
@@ -282,12 +323,23 @@ bool Engine::checkOglErrors(const char* location)
 
 Engine::Engine()
 {
+	// Initialize Engine.Log
+	switch(constProperties.executionMode)
+	{
+	case ConstProperties::DEBUG:
+		Log.init(true, true, true, true, true);
+		break;
+	default:
+		Log.init(true, true, true, false, true);		
+	}
+
+
 	try
 	{
 		// Start OpenGL Initialization Phase
 		startPhaseOpenGlInit();
 	} catch (InitializationException& e) {
-		fprintf(stderr, "Exception: %s\n Message: %s\n, Location: %s\n", e.get_type(), e.get_msg(), e.get_func());
+		Log.ERROR( "Exception: %s\n Message: %s\n, Location: %s\n", e.get_type(), e.get_msg(), e.get_func());
 		return;
 	}
 	

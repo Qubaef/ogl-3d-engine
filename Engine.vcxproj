@@ -159,7 +159,6 @@
     <ClCompile Include="SimplexTerrainChunk.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Terrain.cpp" />
-    <ClCompile Include="TestEntity.cpp" />
     <ClCompile Include="WaterTerrain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -171,7 +170,8 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="FlatTerrain.h" />
-    <ClInclude Include="HeadersOgl.h" />
+    <ClInclude Include="Logger.h" />
+    <ClInclude Include="ObligatoryHeaders.h" />
     <ClInclude Include="Includes.h" />
     <ClInclude Include="InitializationException.h" />
     <ClInclude Include="InputManager.h" />

@@ -8,7 +8,7 @@
 #include <chrono>
 
 // Own includes
-#include "HeadersOgl.h"
+#include "ObligatoryHeaders.h"
 #include "Task.h"
 
 
