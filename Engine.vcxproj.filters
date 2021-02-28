@@ -55,6 +55,12 @@
     <Filter Include="Pliki źródłowe\Classes\Engine\Data processing pipeline">
       <UniqueIdentifier>{aaea24b7-2df9-42d7-9a3c-cefb369d4b9f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki źródłowe\Classes\Entities\User-defined\TerrainType">
+      <UniqueIdentifier>{63f9f843-b516-4e48-a83e-f7a9c0f8563c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Classes\Universal">
+      <UniqueIdentifier>{9525d49b-7173-452b-a869-c0a94b70ca23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InitializationException.cpp">
@@ -80,9 +86,6 @@
     </ClCompile>
     <ClCompile Include="OverviewCameraController.cpp">
       <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
-    </ClCompile>
-    <ClCompile Include="Terrain.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClCompile>
     <ClCompile Include="FlatTerrain.cpp">
       <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
@@ -141,6 +144,18 @@
     <ClCompile Include="Engine.cpp">
       <Filter>Pliki źródłowe\Classes\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="_Terrain.cpp">
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainType.cpp">
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\TerrainType</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\TerrainType</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Pliki źródłowe\Classes\Universal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h">
@@ -186,9 +201,6 @@
       <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClInclude>
     <ClInclude Include="SimpleTerrain.h">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
-    </ClInclude>
-    <ClInclude Include="Terrain.h">
       <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
     </ClInclude>
     <ClInclude Include="WaterTerrain.h">
@@ -256,6 +268,24 @@
     </ClInclude>
     <ClInclude Include="Logger.h">
       <Filter>Pliki źródłowe\Classes\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="_Terrain.h">
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainType.h">
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\TerrainType</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Pliki źródłowe\Classes\Entities\User-defined\TerrainType</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Pliki źródłowe\Classes\Universal</Filter>
+    </ClInclude>
+    <ClInclude Include="Vbo.h">
+      <Filter>Pliki źródłowe\Classes\Universal</Filter>
+    </ClInclude>
+    <ClInclude Include="Vao.h">
+      <Filter>Pliki źródłowe\Classes\Universal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

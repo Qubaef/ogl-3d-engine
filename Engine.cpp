@@ -91,11 +91,8 @@ void Engine::startPhaseEnginePrep()
 	//// Attach and initialize all user-defined entities
 	initializeEntityTypes();
 
-	//// TODO: Initialize task qeue
-
-	//// TODO: Initialize workers threads
-
-	//// TODO: Initialzie user control thread
+	//// Initialize worker threads in preRenderQueue
+	preRenderQueue.runWorkers(2);
 
 	// If execution mode is tests, run proper test
 	if(constProperties.executionMode == ConstProperties::TESTS)
@@ -111,6 +108,8 @@ void Engine::startPhaseEnginePrep()
 	p_water_shader = new Shader(WATER_SHADER_PATH_VERTEX, LIGHT_SHADER_PATH_FRAGMENT);
 	// p_skybox_shader = new Shader(SKYBOX_SHADER_PATH_VERTEX, SKYBOX_SHADER_PATH_FRAGMENT);
 
+	// TODO: following the description below, gather all used shaders during (or better after, using virtual func) entities initialization
+	// TODO: and then pass them to Light(s)Manager to, make it update every frame
 	// Gather all shaders, which are supposed to use given light configuration
 	// and pass them together as a vector to LightManager (which will properly set them up)
 	// std::vector<Shader*> used_shaders_vector;
@@ -162,7 +161,7 @@ void Engine::runEnginePrepTests()
 		preRenderQueue.runWorkers(2);
 		t1 = std::chrono::high_resolution_clock::now();
 		preRenderQueue.newFrameNotify();
-		while (!preRenderQueue.ifTaskFinished());
+		while (!preRenderQueue.ifFinished());
 		t2 = std::chrono::high_resolution_clock::now();
 
 		Log.PERFORMANCE("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
@@ -172,7 +171,7 @@ void Engine::runEnginePrepTests()
 		preRenderQueue.runWorkers(8);
 		t1 = std::chrono::high_resolution_clock::now();
 		preRenderQueue.newFrameNotify();
-		while (!preRenderQueue.ifTaskFinished());
+		while (!preRenderQueue.ifFinished());
 		t2 = std::chrono::high_resolution_clock::now();
 
 		Log.PERFORMANCE("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
@@ -371,13 +370,27 @@ int Engine::startPhaseRuntime()
 	// Render loop
 	while (!glfwWindowShouldClose(engineWindowPtr))
 	{
+		//// Refresh tasks and notify worker threads about new them
+		preRenderQueue.newFrameNotify();
+
+		//// Perform necessary side tasks, while waiting for preRenderQueue tasks to be completed
+		
 		// Track time per frame value and print it's status
 		saveTimestep();
-
+		
 		// Clear buffers
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// TODO: Clear queue and fill it with new sets of tasks
+		// Update matrices according to user's input
+		// engineControllerPtr->updateCamera();
+
+		// Process user input
+		// p_input_manager->process_input();
+
+		//// Wait for preRenderQueue to be finished
+		while (!preRenderQueue.ifFinished());
+
+		//// 
 
 		// Update lights configuration in the scene (if some of them are moving)
 		// p_light_manager->update();
@@ -389,16 +402,10 @@ int Engine::startPhaseRuntime()
 		// Render it last and use depth buffer to optimize process and skip redundant fragments
 		// p_skybox->render();
 
-		// Swap buffers after the draw (idk why, apparently it is required)
+		// Swap buffers after the rendering is finished
 		glfwSwapBuffers(engineWindowPtr);
 		// Process pending events
 		glfwPollEvents();
-
-		// Update matrices according to user's input
-		// engineControllerPtr->updateCamera();
-
-		// Process user input
-		// p_input_manager->process_input();
 
 		// Check for OpenGl rendering errors
 		assert(checkOglErrors("runtimeLoop") == false);

@@ -75,6 +75,7 @@ void LightManager::update()
 		update_point_lights(p_shader);
 	}
 }
+
 void LightManager::update_directional_light(Shader* p_shader) const
 {
 	p_shader->set_vec3(directional_light_name + ".ambient", directional_light->getColorAmbient());

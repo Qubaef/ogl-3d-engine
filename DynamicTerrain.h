@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "Terrain.h"
+#include "_Terrain.h"
 #include "QuadTreeLOD.h"
 
-class DynamicTerrain : public Terrain
+class DynamicTerrain : public _Terrain
 {
 	const float lod_level = SECTOR_SIZE / 2;
 	const float max_lod_depth = 0;

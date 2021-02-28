@@ -47,7 +47,7 @@ void RandomTerrain::set_material()
 void RandomTerrain::render_terrain()
 {
 	// call universal render_terrain() method
-	Terrain::render_terrain();
+	_Terrain::render_terrain();
 
 	// Bind to VAO to perform draw operation
 	glBindVertexArray(main_VAO_id);

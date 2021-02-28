@@ -1,7 +1,7 @@
 ﻿#include "SimpleTerrain.h"
 
 SimpleTerrain::SimpleTerrain(int start_pos_x, int start_pos_z, int terrain_size, int vertices_number, Shader* p_shader, CameraController* p_camera_controller)
-	: Terrain(start_pos_x, start_pos_z, terrain_size, vertices_number, p_shader, p_camera_controller)
+	: _Terrain(start_pos_x, start_pos_z, terrain_size, vertices_number, p_shader, p_camera_controller)
 {
 	initialize_OGL_objects();
 }
@@ -99,7 +99,7 @@ void SimpleTerrain::prepare_data()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_VBO_id);
 	// bind indices VBO
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_data.size() * sizeof(unsigned int), &indices_data[0], GL_DYNAMIC_DRAW);
-
+	
 	//// 1st vertex shader input attribute - vertex data
 	// select vertex VBO
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO_id);

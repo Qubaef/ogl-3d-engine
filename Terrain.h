@@ -1,50 +1,26 @@
 ﻿#pragma once
-#include "Includes.h"
-#include "CameraController.h"
-#include "Shader.h"
 
 class Terrain
 {
-protected:
-	GLuint main_VAO_id;
-	CameraController* p_camera_controller;
-	Shader* p_shader;
-
-	// handles to matrices ids
-	GLuint MatrixID;
-	GLuint ViewMatrixID;
-	GLuint ModelMatrixID;
-
-	const int start_pos_x;
-	const int start_pos_z;
-
-	const int terrain_size;
-
-	const int vertices_number;
-
-	Terrain(int start_pos_x, int start_pos_z, int terrain_size, int vertices_number, Shader* p_shader, CameraController* p_camera_controller);
-
-	// Each Terrain should provide it's own implementation of initialize_OGL_objects method
-	// initialize_OGL_objects should be called in the constructor, and it should initialize all used ogl objects
-	virtual void initialize_OGL_objects() = 0;
-
-	// Each Terrain should provide it's own implementation of generate_terrain method
-	// generate_terrain should be called in the constructor, and it should initialize height_array
-	virtual void generate_terrain() = 0;
-
-	// Each Terrain should provide it's own implementation of prepare_data method
-	// prepare_data should format and send all data to gpu
-	// depending on terrain implementation, it should be sent just once in generate_terrain() (static terrain)
-	// or should be sent every frame in render_terrain (dynamic terrain)
-	virtual void prepare_data() = 0;
-
-	// Get and set handles to MVP uniforms
-	void get_MVP_handles();
 public:
-	// Each Terrain should provide it's own implementation of render_terrain method
-	// render_terrain will be called each frame, so it should update ogl buffers and call draw functions for them
-	// Terrain delivers default render method, which gets and sets uniforms for vertex shader (MVP)
-	virtual void render_terrain();
+	
+	// Each Terrain should provide it's own implementation of initialize method
+	//  * initialize will be called during Engine preparation phase
+	//  * it should prepare data structures and ogl buffers (glBufferData() to allocate), start used threads, load and set all obligatory data
+	//  * it's execution time will effect engine loading time, so it is not required to be ultra optimized
+	virtual void initialize() = 0;
 
-	virtual ~Terrain();
+	// Each Terrain should provide it's own implementation of update method (it can be empty)
+	//  * update will be called every frame during runtime
+	//  * it should update data basing on chosen conditions (it should not send the data to buffers yet)
+	//  * it's execution time will effect engine runtime, so it is required to be optimized
+	virtual void update() = 0;
+
+	// Each Terrain should provide it's own implementation of sendData method (it can be empty)
+	//  * sendData will be called only after it was registered as queued event in update method
+	//  * it should send updated data to Gpu buffers used by the shader (glBufferSubData() to send the data)
+	//  * it's execution time will effect engine runtime, so it is required to be optimized
+	//  * difference between update and sendAndRender is crucial, as update gets called in worker thread, which cannot
+	//	  send or render on gpu
+	virtual void sendAndRender() = 0;
 };

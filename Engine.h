@@ -53,7 +53,6 @@ private:
 	// =====================================================
 	// ==================== Engine's mandatory variables
 	// =====================================================
-	// [Note: dot in separate container to optimize the references]
 
 	// Pointer to window handle
 	GLFWwindow* engineWindowPtr = NULL;
@@ -61,8 +60,13 @@ private:
 	// Main container keeping references to all EntityTypes used in the engine
 	std::vector<EntityType*> entitiesTypesList;
 
-	// Queue storing and executing given tasks every frame
+	// Queue storing and executing given pre render tasks every frame
 	SafeTaskQueue preRenderQueue;
+
+	// Queue storing all main-thread data exchange tasks (performed while corresponding pre render tasks are finished)
+	// ex. terrain heightmap generated on cpu, requires to be processed every frame - we can send data only after finishing the processing (unless there is versioning mechanism)
+	// another ex. lights uniforms require to be updated every frame, but they do not need any processing (for such simple objects, we just calculate it on the run)
+	SafeTaskQueue dataExchangeQueue;
 
 	// User-defined manager that supports lights logic - lights could be defined in various ways
 	// The reference to the manager is supposed to be accessible from RenderEntityType, so share the same global lights info
@@ -73,8 +77,8 @@ private:
 	// Pointer to CameraController
 	CameraController* engineControllerPtr = NULL;
 
-	// Pointer to Terrain
-	Terrain* p_terrain = NULL;
+	// Pointer to _Terrain
+	_Terrain* p_terrain = NULL;
 
 	// Pointer to Skybox
 	Skybox* p_skybox = NULL;

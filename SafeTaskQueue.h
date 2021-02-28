@@ -5,7 +5,6 @@
 #include <condition_variable>
 #include <mutex>
 #include <thread>
-#include <chrono>
 
 // Own includes
 #include "ObligatoryHeaders.h"
@@ -32,7 +31,7 @@ private:
 	std::vector<std::thread> activeWorkersVector;
 
 	// Number of threads waiting for notification
-	int threadsWaiting = 0;
+	std::atomic_int threadsWaiting = 0;
 
 	// Get next task with enabled synchronization
 	Task getNextTask();
@@ -42,11 +41,6 @@ private:
 
 	// Start worker cycle on current process
 	void startWorkerCycle(int threadId);
-
-	std::chrono::steady_clock::time_point t1;
-	std::chrono::steady_clock::time_point t2;
-	std::chrono::steady_clock::time_point t3;
-
 
 public:
 	const int MaxQueueActiveThreads = 2;
@@ -63,8 +57,9 @@ public:
 	// Notify all the workers and the queue about the new frame event
 	void newFrameNotify();
 
-	// Process queue's cycle regularly without mutlithreading (not practical)
+	// Process queue's cycle regularly without mutlithreading
 	void processQueue();
 
-	bool ifTaskFinished();
+	// Check if all taskQueue tasks were finished and if threads are waiting
+	bool ifFinished();
 };

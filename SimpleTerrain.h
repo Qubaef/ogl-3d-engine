@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "Terrain.h"
+#include "_Terrain.h"
 
 
-class SimpleTerrain : public Terrain
+class SimpleTerrain : public _Terrain
 {
 protected:
 	// Ids of OGL objects

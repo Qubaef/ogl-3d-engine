@@ -38,37 +38,34 @@ bool SafeTaskQueue::isTaskQueueEmpty()
 
 void SafeTaskQueue::startWorkerCycle(int threadId)
 {
-	printf("Thread %d: initialized\n", threadId);
+	// printf("Thread %d: Initialized\n", threadId);
 	while (true)
 	{
-		// printf("Thread %d: preLockGuard\n", threadId);
+		//printf("Thread %d: Prelock. ThreadsWaiting %d\n", threadId, threadsWaiting);
 		std::unique_lock<std::mutex> mutexLockGuard(conditionalVariableMutex);
 
 		// Wait for notification on new portion of tasks
-		threadsWaiting++;
-		// printf("time diff 1: %d time diff 2: %d\n", std::chrono::duration_cast<std::chrono::microseconds>(t3 - t1).count(), std::chrono::duration_cast<std::chrono::microseconds>(t3 - t1).count());
-		// printf("Thread %d: waiting!\n", threadId);
-		t1 = std::chrono::high_resolution_clock::now();
+		// printf("Thread %d: Going to wait! ThreadsWaiting %d\n", threadId, threadsWaiting);
+
+		++threadsWaiting;
 		nextFrameConditionalVariable.wait(mutexLockGuard);
 		mutexLockGuard.unlock();
-		t3 = std::chrono::high_resolution_clock::now();
-		// printf("Thread %d: unlocked!\n", threadId);
-		threadsWaiting--;
+		--threadsWaiting;
+
+		// printf("Thread %d: Continuing! ThreadsWaiting %d\n", threadId, threadsWaiting);
 
 		// Tasks performing loop
 		while (true)
 		{
-			// printf("Thread %d: getting new task\n", threadId);
 			Task task = getNextTask();
 
 			if (task.owner == nullptr)
 			{
-				printf("Thread %d: No tasks\n", threadId);
+				// printf("Thread %d: No tasks!\n", threadId);
 				break;
 			}
 
 			task.perform();
-			// printf("Thread %d: task completed\n", threadId);
 		}
 	}
 }
@@ -105,30 +102,30 @@ void SafeTaskQueue::newFrameNotify()
 	while (threadsWaiting != activeWorkersVector.size());
 
 	std::unique_lock<std::mutex> mutexLockGuard(conditionalVariableMutex);
-	
+
 	// Copy prime queue to taskQueue
 	tasksQueue = primeQueue;
 
 	// Notify all threads about the event
 	mutexLockGuard.unlock();
-	t2 = std::chrono::high_resolution_clock::now();
 	nextFrameConditionalVariable.notify_all();
 }
 
 
 void SafeTaskQueue::processQueue()
 {
-	while(!tasksQueue.empty())
-	{
-		Task nextTask = tasksQueue.front();
-		tasksQueue.pop();
+	// Refresh task queue
+	tasksQueue = primeQueue;
 
-		nextTask.perform();
+	while (!tasksQueue.empty())
+	{
+		tasksQueue.front().perform();
+		tasksQueue.pop();
 	}
 }
 
 
-bool SafeTaskQueue::ifTaskFinished()
+bool SafeTaskQueue::ifFinished()
 {
 	return tasksQueue.empty() && (threadsWaiting == activeWorkersVector.size());
 }
