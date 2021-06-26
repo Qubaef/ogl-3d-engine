@@ -260,5 +260,18 @@ paket-files/
 __pycache__/
 *.pyc
 
+# Tracy collected data
+output.tracy
+
+# debug profiles
+debug-profile-collect/
+debug-profile-parallel/
+
 # Log file
-engineLOG.txt
+engine-log.txt
+
+# Apitrace
+apitrace/
+
+# Heightmap
+Heightmap.tga
