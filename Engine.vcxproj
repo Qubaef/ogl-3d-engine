@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="debug-profile-collect|Win32">
+      <Configuration>debug-profile-collect</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="debug-profile-collect|x64">
+      <Configuration>debug-profile-collect</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="debug-profile-parallel|Win32">
+      <Configuration>debug-profile-parallel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="debug-profile-parallel|x64">
+      <Configuration>debug-profile-parallel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -30,6 +46,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -51,6 +68,20 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='debug-profile-collect|Win32'">
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug-profile-parallel|Win32'" Label="Configuration">
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='debug-profile-collect|x64'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug-profile-parallel|x64'" Label="Configuration">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -69,7 +100,24 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug-profile-collect|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Debug\</OutDir>
+    <IntDir>Debug\</IntDir>
+    <IncludePath>$(ProjectDir)src\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug-profile-parallel|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Debug\</OutDir>
+    <IntDir>Debug\</IntDir>
+    <IncludePath>$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(ProjectDir)src\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(ProjectDir)src\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -79,13 +127,26 @@
       <AdditionalIncludeDirectories>C:\Users\Qubaef\cpp-libs\GL\glm-9.8.8;C:\Users\Qubaef\cpp-libs\GL\glfw-3.3.2\include;C:\Users\Qubaef\cpp-libs\GL\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>Includes.h</PrecompiledHeaderFile>
+      <PreprocessToFile>false</PreprocessToFile>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <BrowseInformation>true</BrowseInformation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>C:\Users\Qubaef\cpp-libs\GL\glew-2.1.0\lib\Release\Win32\;C:\Users\Qubaef\cpp-libs\GL\glfw-3.3.2\lib-vc2017\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <StackReserveSize>16777216 </StackReserveSize>
+      <StackReserveSize>
+      </StackReserveSize>
+      <HeapReserveSize>2000000000</HeapReserveSize>
+      <HeapCommitSize>
+      </HeapCommitSize>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -109,11 +170,18 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <HeapReserveSize>2000000000</HeapReserveSize>
+      <StackReserveSize>
+      </StackReserveSize>
+      <HeapCommitSize>
+      </HeapCommitSize>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -131,92 +199,182 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='debug-profile-collect|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\Qubaef\cpp-libs\GL\glm-9.8.8;C:\Users\Qubaef\cpp-libs\GL\glfw-3.3.2\include;C:\Users\Qubaef\cpp-libs\GL\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>GLEW_STATIC;_MBCS;_CRT_SECURE_NO_WARNINGS;TRACY_ENABLE;TRACY_PROFILE_COLLECT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>Includes.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>C:\Users\Qubaef\cpp-libs\GL\glew-2.1.0\lib\Release\Win32\;C:\Users\Qubaef\cpp-libs\GL\glfw-3.3.2\lib-vc2017\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <StackReserveSize>
+      </StackReserveSize>
+      <HeapReserveSize>2000000000</HeapReserveSize>
+      <HeapCommitSize>
+      </HeapCommitSize>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='debug-profile-parallel|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\Qubaef\cpp-libs\GL\glm-9.8.8;C:\Users\Qubaef\cpp-libs\GL\glfw-3.3.2\include;C:\Users\Qubaef\cpp-libs\GL\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>GLEW_STATIC;_MBCS;_CRT_SECURE_NO_WARNINGS;TRACY_ENABLE;TRACY_PROFILE_PARALLEL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>Includes.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>C:\Users\Qubaef\cpp-libs\GL\glew-2.1.0\lib\Release\Win32\;C:\Users\Qubaef\cpp-libs\GL\glfw-3.3.2\lib-vc2017\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <StackReserveSize>
+      </StackReserveSize>
+      <HeapReserveSize>2000000000</HeapReserveSize>
+      <HeapCommitSize>
+      </HeapCommitSize>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CameraController.cpp" />
-    <ClCompile Include="DynamicTerrain.cpp" />
-    <ClCompile Include="EntityType.cpp" />
-    <ClCompile Include="FirstPersonCameraController.cpp" />
-    <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="FlatTerrain.cpp" />
-    <ClCompile Include="InitializationException.cpp" />
-    <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="LightDirectional.cpp" />
-    <ClCompile Include="Light.cpp" />
-    <ClCompile Include="LightManager.cpp" />
-    <ClCompile Include="LightPoint.cpp" />
-    <ClCompile Include="LightsManager.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="OverviewCameraController.cpp" />
-    <ClCompile Include="Quad.cpp" />
-    <ClCompile Include="QuadPoint.cpp" />
-    <ClCompile Include="QuadTreeLOD.cpp" />
-    <ClCompile Include="RandomTerrain.cpp" />
-    <ClCompile Include="RenderedEntityType.cpp" />
-    <ClCompile Include="SafeTaskQueue.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="ShaderManager.cpp" />
-    <ClCompile Include="SimpleTerrain.cpp" />
-    <ClCompile Include="SimplexNoise.cpp" />
-    <ClCompile Include="SimplexTerrainChunk.cpp" />
-    <ClCompile Include="Skybox.cpp" />
-    <ClCompile Include="Terrain.cpp" />
-    <ClCompile Include="_Terrain.cpp" />
-    <ClCompile Include="TerrainType.cpp" />
-    <ClCompile Include="WaterTerrain.cpp" />
+    <ClCompile Include="src\App\Renderables\LodTerrain\Heightmap.cpp" />
+    <ClCompile Include="src\App\Renderables\Sphere.cpp" />
+    <ClCompile Include="src\App\Renderables\LodTerrain\LodTerrain.cpp" />
+    <ClCompile Include="src\Engine\Common\ImageLibWrapper.cpp" />
+    <ClCompile Include="src\Engine\CpuPipeline\ProcessableQueue.cpp" />
+    <ClCompile Include="src\App\Renderables\BaseGui.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\App\CameraControllers\CameraController.cpp" />
+    <ClCompile Include="src\App\CameraControllers\FirstPersonCameraController.cpp" />
+    <ClCompile Include="src\App\CameraControllers\InputManager.cpp" />
+    <ClCompile Include="src\App\CameraControllers\OverviewCameraController.cpp" />
+    <ClCompile Include="src\App\main.cpp" />
+    <ClCompile Include="src\App\Renderables\Skybox.cpp" />
+    <ClCompile Include="src\App\Renderables\TerrainTmp\DynamicTerrain.cpp" />
+    <ClCompile Include="src\App\Renderables\TerrainTmp\Quad.cpp" />
+    <ClCompile Include="src\App\Renderables\TerrainTmp\QuadPoint.cpp" />
+    <ClCompile Include="src\App\Renderables\TerrainTmp\QuadTreeLOD.cpp" />
+    <ClCompile Include="src\App\Renderables\TerrainTmp\SimpleTerrain.cpp" />
+    <ClCompile Include="src\App\Renderables\TerrainTmp\_FlatTerrain.cpp" />
+    <ClCompile Include="src\App\Renderables\TerrainTmp\_Terrain.cpp" />
+    <ClCompile Include="src\App\Renderables\Terrain\FlatTerrain.cpp" />
+    <ClCompile Include="src\App\Renderables\Terrain\RandomTerrain.cpp" />
+    <ClCompile Include="src\App\Renderables\Terrain\SimplexNoise.cpp" />
+    <ClCompile Include="src\App\Renderables\Terrain\SimplexTerrainChunk.cpp" />
+    <ClCompile Include="src\App\Renderables\Terrain\TerrainManager.cpp" />
+    <ClCompile Include="src\App\Renderables\Terrain\WaterTerrain.cpp" />
+    <ClCompile Include="src\App\Renderables\TestEntity.cpp" />
+    <ClCompile Include="src\Engine\Camera\Camera.cpp" />
+    <ClCompile Include="src\Engine\Common\Mesh.cpp" />
+    <ClCompile Include="src\Engine\Engine.cpp" />
+    <ClCompile Include="src\Engine\Exceptions\InitializationException.cpp" />
+    <ClCompile Include="src\Engine\Lights\Light.cpp" />
+    <ClCompile Include="src\Engine\Lights\LightDirectional.cpp" />
+    <ClCompile Include="src\Engine\Lights\LightPoint.cpp" />
+    <ClCompile Include="src\Engine\Logger\Logger.cpp" />
+    <ClCompile Include="src\Engine\CpuPipeline\Processable.cpp" />
+    <ClCompile Include="src\Engine\Shaders\Shader.cpp" />
+    <ClCompile Include="src\Engine\Shaders\ShaderManager.cpp" />
+    <ClCompile Include="tracy\TracyClient.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CameraController.h" />
-    <ClInclude Include="ConstProperties.h" />
-    <ClInclude Include="DynamicTerrain.h" />
-    <ClInclude Include="EntityType.h" />
-    <ClInclude Include="FirstPersonCameraController.h" />
-    <ClInclude Include="Constants.h" />
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="FlatTerrain.h" />
-    <ClInclude Include="Logger.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="ObligatoryHeaders.h" />
-    <ClInclude Include="Includes.h" />
-    <ClInclude Include="InitializationException.h" />
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="InputState.h" />
-    <ClInclude Include="LightDirectional.h" />
-    <ClInclude Include="Light.h" />
-    <ClInclude Include="LightManager.h" />
-    <ClInclude Include="LightPoint.h" />
-    <ClInclude Include="LightsManager.h" />
-    <ClInclude Include="OverviewCameraController.h" />
-    <ClInclude Include="Quad.h" />
-    <ClInclude Include="QuadPoint.h" />
-    <ClInclude Include="QuadTreeLOD.h" />
-    <ClInclude Include="RandomTerrain.h" />
-    <ClInclude Include="RenderedEntityType.h" />
-    <ClInclude Include="RenderProperties.h" />
-    <ClInclude Include="SafeTaskQueue.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="ShaderManager.h" />
-    <ClInclude Include="SimpleTerrain.h" />
-    <ClInclude Include="SimplexNoise.h" />
-    <ClInclude Include="SimplexTerrainChunk.h" />
-    <ClInclude Include="Skybox.h" />
-    <ClInclude Include="Task.h" />
-    <ClInclude Include="Terrain.h" />
-    <ClInclude Include="Vao.h" />
-    <ClInclude Include="Vbo.h" />
-    <ClInclude Include="_Terrain.h" />
-    <ClInclude Include="TerrainType.h" />
-    <ClInclude Include="TestEntity.h" />
-    <ClInclude Include="TimeProperties.h" />
-    <ClInclude Include="WaterTerrain.h" />
+    <ClInclude Include="src\App\Renderables\LodTerrain\Heightmap.h" />
+    <ClInclude Include="src\App\Renderables\LodTerrain\QuadTerrainNode.h" />
+    <ClInclude Include="src\App\Renderables\Sphere.h" />
+    <ClInclude Include="src\App\Renderables\LodTerrain\LodTerrain.h" />
+    <ClInclude Include="src\App\Renderables\Terrain\SimplexNoiseWrapper.h" />
+    <ClInclude Include="src\Engine\Common\ImageLibWrapper.h" />
+    <ClInclude Include="src\Engine\CpuPipeline\ProcessableQueue.h" />
+    <ClInclude Include="src\App\Renderables\BaseGui.h" />
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="imgui\imstb_rectpack.h" />
+    <ClInclude Include="imgui\imstb_textedit.h" />
+    <ClInclude Include="imgui\imstb_truetype.h" />
+    <ClInclude Include="src\App\CameraControllers\CameraController.h" />
+    <ClInclude Include="src\App\CameraControllers\FirstPersonCameraController.h" />
+    <ClInclude Include="src\App\CameraControllers\InputManager.h" />
+    <ClInclude Include="src\App\CameraControllers\InputState.h" />
+    <ClInclude Include="src\App\CameraControllers\OverviewCameraController.h" />
+    <ClInclude Include="src\App\Renderables\Skybox.h" />
+    <ClInclude Include="src\App\Renderables\TerrainTmp\DynamicTerrain.h" />
+    <ClInclude Include="src\App\Renderables\TerrainTmp\Quad.h" />
+    <ClInclude Include="src\App\Renderables\TerrainTmp\QuadPoint.h" />
+    <ClInclude Include="src\App\Renderables\TerrainTmp\QuadTreeLOD.h" />
+    <ClInclude Include="src\App\Renderables\TerrainTmp\SimpleTerrain.h" />
+    <ClInclude Include="src\App\Renderables\TerrainTmp\_FlatTerrain.h" />
+    <ClInclude Include="src\App\Renderables\TerrainTmp\_Terrain.h" />
+    <ClInclude Include="src\App\Renderables\Terrain\FlatTerrain.h" />
+    <ClInclude Include="src\App\Renderables\Terrain\RandomTerrain.h" />
+    <ClInclude Include="src\App\Renderables\Terrain\SimplexNoise.h" />
+    <ClInclude Include="src\App\Renderables\Terrain\SimplexTerrainChunk.h" />
+    <ClInclude Include="src\App\Renderables\Terrain\Terrain.h" />
+    <ClInclude Include="src\App\Renderables\Terrain\TerrainManager.h" />
+    <ClInclude Include="src\App\Renderables\Terrain\WaterTerrain.h" />
+    <ClInclude Include="src\App\Renderables\TestEntity.h" />
+    <ClInclude Include="src\Engine\Camera\Camera.h" />
+    <ClInclude Include="src\Engine\Common\Mesh.h" />
+    <ClInclude Include="src\Engine\Common\Vao.h" />
+    <ClInclude Include="src\Engine\Common\Vbo.h" />
+    <ClInclude Include="src\Engine\CpuPipeline\Task.h" />
+    <ClInclude Include="src\Engine\Engine.h" />
+    <ClInclude Include="src\Engine\Exceptions\InitializationException.h" />
+    <ClInclude Include="src\Engine\Include\Common.h" />
+    <ClInclude Include="src\Engine\Include\Constants.h" />
+    <ClInclude Include="src\Engine\Include\Includes.h" />
+    <ClInclude Include="src\Engine\Lights\Light.h" />
+    <ClInclude Include="src\Engine\Lights\LightDirectional.h" />
+    <ClInclude Include="src\Engine\Lights\LightPoint.h" />
+    <ClInclude Include="src\Engine\Logger\Logger.h" />
+    <ClInclude Include="src\Engine\Properties\ConstProperties.h" />
+    <ClInclude Include="src\Engine\Properties\RenderProperties.h" />
+    <ClInclude Include="src\Engine\Properties\TimeProperties.h" />
+    <ClInclude Include="src\Engine\CpuPipeline\Processable.h" />
+    <ClInclude Include="src\Engine\Shaders\Shader.h" />
+    <ClInclude Include="src\Engine\Shaders\ShaderManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\FragmentShader.frag" />
-    <None Include="Shaders\LightingFragmentShader.frag" />
-    <None Include="Shaders\LightingVertexShader.vert" />
-    <None Include="Shaders\VertexShader.vert" />
-    <None Include="Shaders\WaterVertexShader.vert" />
-    <None Include="SkyBoxFragmentShader.frag" />
-    <None Include="SkyBoxVertexShader.vert" />
+    <None Include="src\Shaderfiles\FragmentShader.frag" />
+    <None Include="src\Shaderfiles\HeightmapGenerationShader.comp" />
+    <None Include="src\Shaderfiles\LightingFragmentShader.frag" />
+    <None Include="src\Shaderfiles\LightingVertexShader.vert" />
+    <None Include="src\Shaderfiles\SkyboxFragmentShader.frag" />
+    <None Include="src\Shaderfiles\SkyboxVertexShader.vert" />
+    <None Include="src\Shaderfiles\TerrainLod.frag" />
+    <None Include="src\Shaderfiles\TerrainLod.geom" />
+    <None Include="src\Shaderfiles\TerrainLod.tesc" />
+    <None Include="src\Shaderfiles\TerrainLod.tese" />
+    <None Include="src\Shaderfiles\TerrainLod.vert" />
+    <None Include="src\Shaderfiles\VertexShader.vert" />
+    <None Include="src\Shaderfiles\WaterVertexShader.vert" />
+    <None Include="tracy\capture\build\win32\x64\Debug\capture.exe" />
+    <None Include="tracy\profiler\build\win32\x64\Debug\Tracy.exe" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

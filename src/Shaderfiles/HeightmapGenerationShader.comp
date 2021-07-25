@@ -1,0 +1,123 @@
+#version 430 core
+
+layout (local_size_x = 25, local_size_y = 25) in;
+layout (binding = 0, r32f) uniform image2D img_output;
+//layout (binding = 0, rgba32f) uniform image2D img_output;
+
+uniform float stepSize;
+uniform float amplitude;
+
+vec2 hash21(vec2 p)
+{
+    float h = dot(p, vec2(127.1, 311.7));
+    return -1.0 + 2.0 * fract(sin(h) * 43758.5453123);
+}
+
+float ValueNoise(vec2 p)
+{
+    vec2 pi = floor(p);
+    vec2 pf = fract(p);
+    
+    //float2 w = pf * pf * (3.0 - 2.0 * pf);
+    vec2 w = pf * pf * pf * (6 * pf * pf - 15 * pf + 10);
+     
+    return mix(mix(hash21(pi + vec2(0.0, 0.0)),hash21(pi + vec2(1.0, 0.0)), w.x),
+                mix(hash21(pi + vec2(0.0, 1.0)), hash21(pi + vec2(1.0, 1.0)), w.x),w.y);
+}
+
+vec2 hash22(vec2 p)
+{
+    p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
+    return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);
+}
+
+float SimplexNoise( in vec2 p )
+{
+    const float K1 = 0.366025404; // (sqrt(3)-1)/2;
+    const float K2 = 0.211324865; // (3-sqrt(3))/6;
+
+	vec2  i = floor( p + (p.x+p.y)*K1 );
+    vec2  a = p - i + (i.x+i.y)*K2;
+    float m = step(a.y,a.x); 
+    vec2  o = vec2(m,1.0-m);
+    vec2  b = a - o + K2;
+	vec2  c = a - 1.0 + 2.0*K2;
+    vec3  h = max( 0.5-vec3(dot(a,a), dot(b,b), dot(c,c) ), 0.0 );
+	vec3  n = h*h*h*h*vec3( dot(a,hash22(i+0.0)), dot(b,hash22(i+o)), dot(c,hash22(i+1.0)));
+    return dot( n, vec3(70.0) );
+}
+
+//Calculate the squared length of a vector
+float length2(vec2 p){
+    return dot(p,p);
+}
+
+//Generate some noise to scatter points.
+float noise(vec2 p){
+	return fract(sin(fract(sin(p.x) * (43.13311)) + p.y) * 31.0011);
+}
+
+float worley(vec2 p) {
+    //Set our distance to infinity
+	float d = 1e30;
+    //For the 9 surrounding grid points
+	for (int xo = -1; xo <= 1; ++xo) {
+		for (int yo = -1; yo <= 1; ++yo) {
+            //Floor our vec2 and add an offset to create our point
+			vec2 tp = floor(p) + vec2(xo, yo);
+            //Calculate the minimum distance for this grid point
+            //Mix in the noise value too!
+			d = min(d, length2(p - tp - noise(tp)));
+		}
+	}
+	return 3.0*exp(-4.0*abs(2.5*d - 1.0));
+}
+
+float fworley(vec2 p) {
+    //Stack noise layers 
+	return sqrt(sqrt(sqrt(
+		worley(p*5.0 + 0.05) *
+		sqrt(worley(p * 50.0 + 0.12 + -0.1)) *
+		sqrt(sqrt(worley(p * -10.0 + 0.03))))));
+}
+
+
+void main()
+{
+//    // get index in global work group i.e x,y position
+    ivec2 pixel_coords = ivec2(gl_GlobalInvocationID.xy);
+//    
+//    // base pixel colour for image
+//    float val = SimplexNoise(vec2(pixel_coords.x, pixel_coords.y));
+//    // vec4 pixel = vec4(ValueNoise(vec2(pixel_coords.x, pixel_coords.y) * stepSize));
+//    vec4 pixel = vec4(val);
+//    
+//    //  if(pixel_coords.x == pixel_coords.y){
+//    //    pixel.x = 1.0;
+//    //  }
+//    
+//    // output to a specific pixel in the image
+//    imageStore(img_output, pixel_coords, pixel);
+
+
+    vec2 p = ivec2(gl_GlobalInvocationID.xy) * stepSize;
+	float f = 0.0;
+	
+    // left: value noise	
+	// f = fworley(16.0 * p);
+
+    // right: fractal noise (4 octaves)
+	p *= 5.0;
+    mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
+	f  = 0.5000*SimplexNoise(p); p = m * p;
+	f += 0.2500*SimplexNoise(p); p = m * p;
+	f += 0.1250*SimplexNoise(p); p = m * p;
+	f += 0.0625*SimplexNoise(p); p = m * p;
+
+	f = amplitude * 0.5 + amplitude * 0.5 * f;
+	
+    f *= smoothstep(0.0, 0.005, abs(p.x-0.6));	
+	
+    // output to a specific pixel in the image
+	imageStore(img_output, pixel_coords, vec4(f, 0, 0, 1.0));
+}

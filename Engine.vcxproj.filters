@@ -13,302 +13,401 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Pliki źródłowe\Classes">
-      <UniqueIdentifier>{2fa0a9d7-7304-4515-9107-20f9b138173e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki nagłówkowe\Preprocessor">
-      <UniqueIdentifier>{2bad9452-8ec7-4402-bd88-010b59c3a5c8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Exceptions">
-      <UniqueIdentifier>{ff6d7cfe-6e5d-4f76-8801-5d31d3295c67}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Shaders">
-      <UniqueIdentifier>{e21cf9f9-6634-4e1f-bfd0-87a2579bf165}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Classes\Lights">
-      <UniqueIdentifier>{0b49947f-a2d7-47de-a0cc-67c8d165b680}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Classes\CameraControllers">
-      <UniqueIdentifier>{febb54d9-8d31-4371-be37-fdc496f72d20}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Classes\Skybox">
-      <UniqueIdentifier>{021b54a1-e9ab-48fe-b44c-f5d5982e8858}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Classes\Entities">
-      <UniqueIdentifier>{9ebafd40-5592-47db-8a04-c56f1fe7a15b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Classes\Entities\User-defined">
-      <UniqueIdentifier>{b2cc7870-12df-45cb-b09d-0bba5ab65782}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Classes\Entities\User-defined\Terrains">
-      <UniqueIdentifier>{af978c17-420a-4561-8d76-f7a379388ce3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Classes\Entities\User-defined\Terrains\DynamicQuadtreeLOD">
-      <UniqueIdentifier>{63b7bb85-c92a-4d55-b5f1-2f3ae2360ce7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Classes\Engine">
+    <Filter Include="Pliki źródłowe\Engine">
       <UniqueIdentifier>{554a4fec-19c6-4143-a29d-32b5b438f0f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pliki źródłowe\Classes\Engine\Engine properties">
+    <Filter Include="Pliki źródłowe\App">
+      <UniqueIdentifier>{59e944d6-2e4c-471e-b0d8-7148a1d28178}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Engine\Properties">
       <UniqueIdentifier>{a542e1f6-4455-4677-84b6-36efda4b60a9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pliki źródłowe\Classes\Engine\Data processing pipeline">
-      <UniqueIdentifier>{aaea24b7-2df9-42d7-9a3c-cefb369d4b9f}</UniqueIdentifier>
+    <Filter Include="Pliki źródłowe\Engine\Lights">
+      <UniqueIdentifier>{b81147db-7e7f-48ef-8573-59313037eb5a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pliki źródłowe\Classes\Entities\User-defined\TerrainType">
-      <UniqueIdentifier>{63f9f843-b516-4e48-a83e-f7a9c0f8563c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Classes\Universal">
+    <Filter Include="Pliki źródłowe\Engine\Common">
       <UniqueIdentifier>{9525d49b-7173-452b-a869-c0a94b70ca23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki źródłowe\Engine\Shaders">
+      <UniqueIdentifier>{90312e92-f426-4856-90b0-6f2ba59c81d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Shaderfiles">
+      <UniqueIdentifier>{e21cf9f9-6634-4e1f-bfd0-87a2579bf165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Engine\Renderables">
+      <UniqueIdentifier>{ac576980-1050-43f1-9520-14b63a3181a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\App\Renderables">
+      <UniqueIdentifier>{b1621f4a-86d0-4ce4-bbf6-c6ab18104f28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\App\Renderables\Terrains">
+      <UniqueIdentifier>{af978c17-420a-4561-8d76-f7a379388ce3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\App\Renderables\Terrains\DynamicQuadtreeLOD">
+      <UniqueIdentifier>{63b7bb85-c92a-4d55-b5f1-2f3ae2360ce7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Engine\Logger">
+      <UniqueIdentifier>{baf3b7b9-dce0-4e2c-95fc-874ad70c9049}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Profiler">
+      <UniqueIdentifier>{e80de483-9125-4e63-a3f0-a17195f077f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\App\Renderables\Terrain">
+      <UniqueIdentifier>{63f9f843-b516-4e48-a83e-f7a9c0f8563c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Engine\Exceptions">
+      <UniqueIdentifier>{ff6d7cfe-6e5d-4f76-8801-5d31d3295c67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\App\CameraControllers">
+      <UniqueIdentifier>{45ace95a-bea2-42da-a2b7-0075544c6e0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Engine\Camera">
+      <UniqueIdentifier>{febb54d9-8d31-4371-be37-fdc496f72d20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Include">
+      <UniqueIdentifier>{2bad9452-8ec7-4402-bd88-010b59c3a5c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Engine\CpuPipeline">
+      <UniqueIdentifier>{aaea24b7-2df9-42d7-9a3c-cefb369d4b9f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="InitializationException.cpp">
-      <Filter>Pliki źródłowe\Exceptions</Filter>
+    <ClCompile Include="tracy\TracyClient.cpp">
+      <Filter>Pliki źródłowe\Profiler</Filter>
     </ClCompile>
-    <ClCompile Include="Light.cpp">
-      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    <ClCompile Include="src\App\CameraControllers\CameraController.cpp">
+      <Filter>Pliki źródłowe\App\CameraControllers</Filter>
     </ClCompile>
-    <ClCompile Include="LightDirectional.cpp">
-      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    <ClCompile Include="src\App\CameraControllers\FirstPersonCameraController.cpp">
+      <Filter>Pliki źródłowe\App\CameraControllers</Filter>
     </ClCompile>
-    <ClCompile Include="LightPoint.cpp">
-      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    <ClCompile Include="src\App\CameraControllers\InputManager.cpp">
+      <Filter>Pliki źródłowe\App\CameraControllers</Filter>
     </ClCompile>
-    <ClCompile Include="LightManager.cpp">
-      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    <ClCompile Include="src\App\CameraControllers\OverviewCameraController.cpp">
+      <Filter>Pliki źródłowe\App\CameraControllers</Filter>
     </ClCompile>
-    <ClCompile Include="FirstPersonCameraController.cpp">
-      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    <ClCompile Include="src\App\Renderables\Terrain\FlatTerrain.cpp">
+      <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="CameraController.cpp">
-      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    <ClCompile Include="src\App\Renderables\Terrain\RandomTerrain.cpp">
+      <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="OverviewCameraController.cpp">
-      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    <ClCompile Include="src\App\Renderables\Terrain\SimplexNoise.cpp">
+      <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="FlatTerrain.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    <ClCompile Include="src\App\Renderables\Terrain\SimplexTerrainChunk.cpp">
+      <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleTerrain.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    <ClCompile Include="src\App\Renderables\Terrain\TerrainManager.cpp">
+      <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="RandomTerrain.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    <ClCompile Include="src\App\Renderables\Terrain\WaterTerrain.cpp">
+      <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="WaterTerrain.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    <ClCompile Include="src\App\Renderables\TerrainTmp\Quad.cpp">
+      <Filter>Pliki źródłowe\App\Renderables\Terrains\DynamicQuadtreeLOD</Filter>
     </ClCompile>
-    <ClCompile Include="DynamicTerrain.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    <ClCompile Include="src\App\Renderables\TerrainTmp\QuadPoint.cpp">
+      <Filter>Pliki źródłowe\App\Renderables\Terrains\DynamicQuadtreeLOD</Filter>
     </ClCompile>
-    <ClCompile Include="QuadTreeLOD.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains\DynamicQuadtreeLOD</Filter>
+    <ClCompile Include="src\App\Renderables\TerrainTmp\QuadTreeLOD.cpp">
+      <Filter>Pliki źródłowe\App\Renderables\Terrains\DynamicQuadtreeLOD</Filter>
     </ClCompile>
-    <ClCompile Include="Quad.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains\DynamicQuadtreeLOD</Filter>
+    <ClCompile Include="src\App\Renderables\TerrainTmp\_FlatTerrain.cpp">
+      <Filter>Pliki źródłowe\App\Renderables\Terrains</Filter>
     </ClCompile>
-    <ClCompile Include="QuadPoint.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains\DynamicQuadtreeLOD</Filter>
+    <ClCompile Include="src\App\Renderables\TerrainTmp\_Terrain.cpp">
+      <Filter>Pliki źródłowe\App\Renderables\Terrains</Filter>
     </ClCompile>
-    <ClCompile Include="Skybox.cpp">
-      <Filter>Pliki źródłowe\Classes\Skybox</Filter>
+    <ClCompile Include="src\App\Renderables\TerrainTmp\DynamicTerrain.cpp">
+      <Filter>Pliki źródłowe\App\Renderables\Terrains</Filter>
     </ClCompile>
-    <ClCompile Include="SimplexTerrainChunk.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    <ClCompile Include="src\App\Renderables\TerrainTmp\SimpleTerrain.cpp">
+      <Filter>Pliki źródłowe\App\Renderables\Terrains</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Pliki źródłowe\Shaders</Filter>
+    <ClCompile Include="src\App\Renderables\TestEntity.cpp">
+      <Filter>Pliki źródłowe\App\Renderables</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderManager.cpp">
-      <Filter>Pliki źródłowe\Shaders</Filter>
+    <ClCompile Include="src\App\main.cpp">
+      <Filter>Pliki źródłowe\App</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    <ClCompile Include="src\Engine\Common\Mesh.cpp">
+      <Filter>Pliki źródłowe\Engine\Common</Filter>
     </ClCompile>
-    <ClCompile Include="SimplexNoise.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    <ClCompile Include="src\Engine\Exceptions\InitializationException.cpp">
+      <Filter>Pliki źródłowe\Engine\Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="EntityType.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities</Filter>
+    <ClCompile Include="src\Engine\Lights\Light.cpp">
+      <Filter>Pliki źródłowe\Engine\Lights</Filter>
     </ClCompile>
-    <ClCompile Include="RenderedEntityType.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities</Filter>
+    <ClCompile Include="src\Engine\Lights\LightDirectional.cpp">
+      <Filter>Pliki źródłowe\Engine\Lights</Filter>
     </ClCompile>
-    <ClCompile Include="LightsManager.cpp">
-      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    <ClCompile Include="src\Engine\Lights\LightPoint.cpp">
+      <Filter>Pliki źródłowe\Engine\Lights</Filter>
     </ClCompile>
-    <ClCompile Include="SafeTaskQueue.cpp">
-      <Filter>Pliki źródłowe\Classes\Engine\Data processing pipeline</Filter>
+    <ClCompile Include="src\Engine\Logger\Logger.cpp">
+      <Filter>Pliki źródłowe\Engine\Logger</Filter>
     </ClCompile>
-    <ClCompile Include="Engine.cpp">
-      <Filter>Pliki źródłowe\Classes\Engine</Filter>
+    <ClCompile Include="src\Engine\Shaders\Shader.cpp">
+      <Filter>Pliki źródłowe\Engine\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="_Terrain.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    <ClCompile Include="src\Engine\Shaders\ShaderManager.cpp">
+      <Filter>Pliki źródłowe\Engine\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="TerrainType.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\TerrainType</Filter>
+    <ClCompile Include="src\Engine\Engine.cpp">
+      <Filter>Pliki źródłowe\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Terrain.cpp">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\TerrainType</Filter>
+    <ClCompile Include="src\App\Renderables\Skybox.cpp">
+      <Filter>Pliki źródłowe\App\Renderables</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Pliki źródłowe\Classes\Universal</Filter>
+    <ClCompile Include="src\Engine\CpuPipeline\Processable.cpp">
+      <Filter>Pliki źródłowe\Engine\Renderables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Camera\Camera.cpp">
+      <Filter>Pliki źródłowe\Engine\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_tables.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_glfw.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_opengl3.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\Renderables\BaseGui.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\CpuPipeline\ProcessableQueue.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\Renderables\Sphere.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\Renderables\LodTerrain\LodTerrain.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\Renderables\LodTerrain\Heightmap.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Common\ImageLibWrapper.cpp">
+      <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Constants.h">
-      <Filter>Pliki nagłówkowe\Preprocessor</Filter>
+    <ClInclude Include="src\App\CameraControllers\CameraController.h">
+      <Filter>Pliki źródłowe\App\CameraControllers</Filter>
     </ClInclude>
-    <ClInclude Include="Includes.h">
-      <Filter>Pliki nagłówkowe\Preprocessor</Filter>
+    <ClInclude Include="src\App\CameraControllers\FirstPersonCameraController.h">
+      <Filter>Pliki źródłowe\App\CameraControllers</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderManager.h">
-      <Filter>Pliki źródłowe\Shaders</Filter>
+    <ClInclude Include="src\App\CameraControllers\InputManager.h">
+      <Filter>Pliki źródłowe\App\CameraControllers</Filter>
     </ClInclude>
-    <ClInclude Include="CameraController.h">
-      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    <ClInclude Include="src\App\CameraControllers\InputState.h">
+      <Filter>Pliki źródłowe\App\CameraControllers</Filter>
     </ClInclude>
-    <ClInclude Include="FirstPersonCameraController.h">
-      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    <ClInclude Include="src\App\CameraControllers\OverviewCameraController.h">
+      <Filter>Pliki źródłowe\App\CameraControllers</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    <ClInclude Include="src\App\Renderables\Terrain\FlatTerrain.h">
+      <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="OverviewCameraController.h">
-      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    <ClInclude Include="src\App\Renderables\Terrain\RandomTerrain.h">
+      <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    <ClInclude Include="src\App\Renderables\Terrain\SimplexNoise.h">
+      <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="LightDirectional.h">
-      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    <ClInclude Include="src\App\Renderables\Terrain\SimplexTerrainChunk.h">
+      <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="LightManager.h">
-      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    <ClInclude Include="src\App\Renderables\Terrain\TerrainManager.h">
+      <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="LightPoint.h">
-      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    <ClInclude Include="src\App\Renderables\Terrain\WaterTerrain.h">
+      <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="DynamicTerrain.h">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    <ClInclude Include="src\App\Renderables\TerrainTmp\Quad.h">
+      <Filter>Pliki źródłowe\App\Renderables\Terrains\DynamicQuadtreeLOD</Filter>
     </ClInclude>
-    <ClInclude Include="FlatTerrain.h">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    <ClInclude Include="src\App\Renderables\TerrainTmp\QuadPoint.h">
+      <Filter>Pliki źródłowe\App\Renderables\Terrains\DynamicQuadtreeLOD</Filter>
     </ClInclude>
-    <ClInclude Include="RandomTerrain.h">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    <ClInclude Include="src\App\Renderables\TerrainTmp\QuadTreeLOD.h">
+      <Filter>Pliki źródłowe\App\Renderables\Terrains\DynamicQuadtreeLOD</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleTerrain.h">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    <ClInclude Include="src\App\Renderables\TerrainTmp\_FlatTerrain.h">
+      <Filter>Pliki źródłowe\App\Renderables\Terrains</Filter>
     </ClInclude>
-    <ClInclude Include="WaterTerrain.h">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    <ClInclude Include="src\App\Renderables\TerrainTmp\_Terrain.h">
+      <Filter>Pliki źródłowe\App\Renderables\Terrains</Filter>
     </ClInclude>
-    <ClInclude Include="Quad.h">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains\DynamicQuadtreeLOD</Filter>
+    <ClInclude Include="src\App\Renderables\TerrainTmp\DynamicTerrain.h">
+      <Filter>Pliki źródłowe\App\Renderables\Terrains</Filter>
     </ClInclude>
-    <ClInclude Include="QuadPoint.h">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains\DynamicQuadtreeLOD</Filter>
+    <ClInclude Include="src\App\Renderables\TerrainTmp\SimpleTerrain.h">
+      <Filter>Pliki źródłowe\App\Renderables\Terrains</Filter>
     </ClInclude>
-    <ClInclude Include="QuadTreeLOD.h">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains\DynamicQuadtreeLOD</Filter>
+    <ClInclude Include="src\App\Renderables\TestEntity.h">
+      <Filter>Pliki źródłowe\App\Renderables</Filter>
     </ClInclude>
-    <ClInclude Include="InitializationException.h">
-      <Filter>Pliki źródłowe\Exceptions</Filter>
+    <ClInclude Include="src\Engine\Common\Mesh.h">
+      <Filter>Pliki źródłowe\Engine\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Pliki źródłowe\Shaders</Filter>
+    <ClInclude Include="src\Engine\Common\Vao.h">
+      <Filter>Pliki źródłowe\Engine\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Skybox.h">
-      <Filter>Pliki źródłowe\Classes\Skybox</Filter>
+    <ClInclude Include="src\Engine\Common\Vbo.h">
+      <Filter>Pliki źródłowe\Engine\Common</Filter>
     </ClInclude>
-    <ClInclude Include="SimplexNoise.h">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    <ClInclude Include="src\Engine\CpuPipeline\Task.h">
+      <Filter>Pliki źródłowe\Engine\CpuPipeline</Filter>
     </ClInclude>
-    <ClInclude Include="InputState.h">
-      <Filter>Pliki źródłowe\Classes\CameraControllers</Filter>
+    <ClInclude Include="src\Engine\Exceptions\InitializationException.h">
+      <Filter>Pliki źródłowe\Engine\Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="SimplexTerrainChunk.h">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    <ClInclude Include="src\Engine\Lights\Light.h">
+      <Filter>Pliki źródłowe\Engine\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="RenderProperties.h">
-      <Filter>Pliki źródłowe\Classes\Engine\Engine properties</Filter>
+    <ClInclude Include="src\Engine\Lights\LightDirectional.h">
+      <Filter>Pliki źródłowe\Engine\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="TimeProperties.h">
-      <Filter>Pliki źródłowe\Classes\Engine\Engine properties</Filter>
+    <ClInclude Include="src\Engine\Lights\LightPoint.h">
+      <Filter>Pliki źródłowe\Engine\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="ConstProperties.h">
-      <Filter>Pliki źródłowe\Classes\Engine\Engine properties</Filter>
+    <ClInclude Include="src\Engine\Logger\Logger.h">
+      <Filter>Pliki źródłowe\Engine\Logger</Filter>
     </ClInclude>
-    <ClInclude Include="Task.h">
-      <Filter>Pliki źródłowe\Classes\Engine\Data processing pipeline</Filter>
+    <ClInclude Include="src\Engine\Properties\ConstProperties.h">
+      <Filter>Pliki źródłowe\Engine\Properties</Filter>
     </ClInclude>
-    <ClInclude Include="EntityType.h">
-      <Filter>Pliki źródłowe\Classes\Entities</Filter>
+    <ClInclude Include="src\Engine\Properties\RenderProperties.h">
+      <Filter>Pliki źródłowe\Engine\Properties</Filter>
     </ClInclude>
-    <ClInclude Include="RenderedEntityType.h">
-      <Filter>Pliki źródłowe\Classes\Entities</Filter>
+    <ClInclude Include="src\Engine\Properties\TimeProperties.h">
+      <Filter>Pliki źródłowe\Engine\Properties</Filter>
     </ClInclude>
-    <ClInclude Include="LightsManager.h">
-      <Filter>Pliki źródłowe\Classes\Lights</Filter>
+    <ClInclude Include="src\Engine\Shaders\Shader.h">
+      <Filter>Pliki źródłowe\Engine\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="SafeTaskQueue.h">
-      <Filter>Pliki źródłowe\Classes\Engine\Data processing pipeline</Filter>
+    <ClInclude Include="src\Engine\Shaders\ShaderManager.h">
+      <Filter>Pliki źródłowe\Engine\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="Engine.h">
-      <Filter>Pliki źródłowe\Classes\Engine</Filter>
+    <ClInclude Include="src\Engine\Engine.h">
+      <Filter>Pliki źródłowe\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="TestEntity.h">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined</Filter>
+    <ClInclude Include="src\App\Renderables\Skybox.h">
+      <Filter>Pliki źródłowe\App\Renderables</Filter>
     </ClInclude>
-    <ClInclude Include="ObligatoryHeaders.h">
-      <Filter>Pliki nagłówkowe\Preprocessor</Filter>
+    <ClInclude Include="src\Engine\CpuPipeline\Processable.h">
+      <Filter>Pliki źródłowe\Engine\Renderables</Filter>
     </ClInclude>
-    <ClInclude Include="Logger.h">
-      <Filter>Pliki źródłowe\Classes\Engine</Filter>
+    <ClInclude Include="src\Engine\Camera\Camera.h">
+      <Filter>Pliki źródłowe\Engine\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="_Terrain.h">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\Terrains</Filter>
+    <ClInclude Include="src\Engine\Include\Common.h">
+      <Filter>Pliki nagłówkowe\Include</Filter>
     </ClInclude>
-    <ClInclude Include="TerrainType.h">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\TerrainType</Filter>
+    <ClInclude Include="src\Engine\Include\Constants.h">
+      <Filter>Pliki nagłówkowe\Include</Filter>
     </ClInclude>
-    <ClInclude Include="Terrain.h">
-      <Filter>Pliki źródłowe\Classes\Entities\User-defined\TerrainType</Filter>
+    <ClInclude Include="src\Engine\Include\Includes.h">
+      <Filter>Pliki nagłówkowe\Include</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Pliki źródłowe\Classes\Universal</Filter>
+    <ClInclude Include="src\App\Renderables\Terrain\Terrain.h">
+      <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="Vbo.h">
-      <Filter>Pliki źródłowe\Classes\Universal</Filter>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="Vao.h">
-      <Filter>Pliki źródłowe\Classes\Universal</Filter>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_rectpack.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_textedit.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_truetype.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_opengl3.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_glfw.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\BaseGui.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\CpuPipeline\ProcessableQueue.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\Terrain\SimplexNoiseWrapper.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\Sphere.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\LodTerrain\LodTerrain.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\LodTerrain\QuadTerrainNode.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\LodTerrain\Heightmap.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Common\ImageLibWrapper.h">
+      <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SkyBoxFragmentShader.frag">
-      <Filter>Pliki źródłowe\Shaders</Filter>
+    <None Include="tracy\profiler\build\win32\x64\Debug\Tracy.exe">
+      <Filter>Pliki źródłowe\Profiler</Filter>
     </None>
-    <None Include="SkyBoxVertexShader.vert">
-      <Filter>Pliki źródłowe\Shaders</Filter>
+    <None Include="src\Shaderfiles\FragmentShader.frag">
+      <Filter>Pliki źródłowe\Shaderfiles</Filter>
     </None>
-    <None Include="Shaders\FragmentShader.frag">
-      <Filter>Pliki źródłowe\Shaders</Filter>
+    <None Include="src\Shaderfiles\LightingFragmentShader.frag">
+      <Filter>Pliki źródłowe\Shaderfiles</Filter>
     </None>
-    <None Include="Shaders\LightingFragmentShader.frag">
-      <Filter>Pliki źródłowe\Shaders</Filter>
+    <None Include="src\Shaderfiles\LightingVertexShader.vert">
+      <Filter>Pliki źródłowe\Shaderfiles</Filter>
     </None>
-    <None Include="Shaders\LightingVertexShader.vert">
-      <Filter>Pliki źródłowe\Shaders</Filter>
+    <None Include="src\Shaderfiles\VertexShader.vert">
+      <Filter>Pliki źródłowe\Shaderfiles</Filter>
     </None>
-    <None Include="Shaders\VertexShader.vert">
-      <Filter>Pliki źródłowe\Shaders</Filter>
+    <None Include="src\Shaderfiles\WaterVertexShader.vert">
+      <Filter>Pliki źródłowe\Shaderfiles</Filter>
     </None>
-    <None Include="Shaders\WaterVertexShader.vert">
-      <Filter>Pliki źródłowe\Shaders</Filter>
-    </None>
+    <None Include="src\Shaderfiles\SkyboxVertexShader.vert" />
+    <None Include="src\Shaderfiles\SkyboxFragmentShader.frag" />
+    <None Include="tracy\capture\build\win32\x64\Debug\capture.exe" />
+    <None Include="src\Shaderfiles\TerrainLod.frag" />
+    <None Include="src\Shaderfiles\TerrainLod.vert" />
+    <None Include="src\Shaderfiles\HeightmapGenerationShader.comp" />
+    <None Include="src\Shaderfiles\TerrainLod.tese" />
+    <None Include="src\Shaderfiles\TerrainLod.tesc" />
+    <None Include="src\Shaderfiles\TerrainLod.geom" />
   </ItemGroup>
 </Project>
