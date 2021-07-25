@@ -1,0 +1,9 @@
+{
+  "commands": {
+    "Tracy": {
+      "fileName": "cmd.exe",
+      "workingDirectory": ".",
+      "arguments": "/c tracy\\profiler\\build\\win32\\x64\\Debug\\Tracy.exe"
+    }
+  }
+}
