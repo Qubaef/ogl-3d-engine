@@ -6,8 +6,9 @@ class Engine;
 
 class Heightmap
 {
-	unsigned size;
-	unsigned density;
+	const unsigned workgroupDiv = 25;	// Divisor also specified in compute shader
+	const unsigned size;
+	const unsigned density;
 
 	const char* filename = "Heightmap.tga";
 public:

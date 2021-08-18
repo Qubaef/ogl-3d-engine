@@ -35,6 +35,7 @@ void FirstPersonCameraController::registerInput()
 	inputManagerPtr->register_key_event(GLFW_KEY_S);
 	inputManagerPtr->register_key_event(GLFW_KEY_A);
 	inputManagerPtr->register_key_event(GLFW_KEY_D);
+	inputManagerPtr->register_key_event(GLFW_KEY_E);
 	inputManagerPtr->register_key_event(GLFW_KEY_SPACE);
 	inputManagerPtr->register_key_event(GLFW_KEY_LEFT_SHIFT);
 }
@@ -72,29 +73,29 @@ void FirstPersonCameraController::updatePerFrame()
 	}
 
 	// Direction : Spherical coordinates to Cartesian coordinates conversion
-	camera_direction = vec3(
+	cameraDirection = vec3(
 		cos(initial_vertical_angle) * sin(initial_horizontal_angle),
 		sin(initial_vertical_angle),
 		cos(initial_vertical_angle) * cos(initial_horizontal_angle)
 	);
 
-	direction_flattened = glm::normalize(camera_direction);
-	direction_flattened.y = 0;
-	direction_flattened = glm::normalize(direction_flattened);
+	directionFlattened = glm::normalize(cameraDirection);
+	directionFlattened.y = 0;
+	directionFlattened = glm::normalize(directionFlattened);
 
 	// Right vector
-	vec3 camera_right = normalize(cross(camera_direction, camera_up));
+	vec3 camera_right = normalize(cross(cameraDirection, cameraUp));
 
 	// Movement vector
 	vec3 movement_vector = vec3(0, 0, 0);
 
 	// Move forward
 	if (inputState.if_key_pressed(GLFW_KEY_W) != InputState::NOT_PRESSED) {
-		movement_vector += direction_flattened * delta_time;
+		movement_vector += directionFlattened * delta_time;
 	}
 	// Move backward
 	if (inputState.if_key_pressed(GLFW_KEY_S) != InputState::NOT_PRESSED) {
-		movement_vector -= direction_flattened * delta_time;
+		movement_vector -= directionFlattened * delta_time;
 	}
 	// Move upwards
 	if (inputState.if_key_pressed(GLFW_KEY_SPACE) != InputState::NOT_PRESSED) {
@@ -113,15 +114,21 @@ void FirstPersonCameraController::updatePerFrame()
 		movement_vector -= camera_right * delta_time;
 	}
 
+	float speedMultiplier;
+	// Speedup
+	if (inputState.if_key_pressed(GLFW_KEY_E) != InputState::NOT_PRESSED) {
+		speedMultiplier = 10;
+	}
+	else
+	{
+		speedMultiplier = 1;
+	}
+
 	// Update movement speed if it is more than 0
 	if (movement_vector.x != 0 || movement_vector.y != 0 || movement_vector.z != 0)
 	{
-		cameraPosition += normalize(movement_vector) * movement_speed;
+		cameraPosition += normalize(movement_vector) * movement_speed * speedMultiplier;
 	}
-
-	// INFO.INFO("Pos: <%f, %f, %f> Dir: <%f, %f, %f>\n",
-	// 	camera_position.x, camera_position.y, camera_position.z,
-	// 	camera_direction.x, camera_direction.y, camera_direction.z);
 
 	updateView();
 	updateMVP();

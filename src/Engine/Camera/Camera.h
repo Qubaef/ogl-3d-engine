@@ -11,7 +11,8 @@ class Camera
 protected:
 	Engine* enginePtr;
 
-	vec3 cameraPosition;					// Camera Position Vector
+	vec3 cameraPosition;			// Camera Position Vector
+	vec3 cameraDirection;			// Camera Position Vector
 
 	mat4 Projection;				// Projection Matrix
 	mat4 View;						// View Matrix
@@ -29,4 +30,5 @@ public:
 	mat4* getMVPMatrix();
 
 	vec3 getPosition();
+	vec3 getDirection();
 };

@@ -4,12 +4,15 @@ layout (local_size_x = 25, local_size_y = 25) in;
 layout (binding = 0, r32f) uniform image2D img_output;
 //layout (binding = 0, rgba32f) uniform image2D img_output;
 
-uniform float stepSize;
+uniform float size;
+uniform float density;
+uniform float frequency;
 uniform float amplitude;
 
 vec2 hash21(vec2 p)
 {
     float h = dot(p, vec2(127.1, 311.7));
+
     return -1.0 + 2.0 * fract(sin(h) * 43758.5453123);
 }
 
@@ -17,8 +20,7 @@ float ValueNoise(vec2 p)
 {
     vec2 pi = floor(p);
     vec2 pf = fract(p);
-    
-    //float2 w = pf * pf * (3.0 - 2.0 * pf);
+     
     vec2 w = pf * pf * pf * (6 * pf * pf - 15 * pf + 10);
      
     return mix(mix(hash21(pi + vec2(0.0, 0.0)),hash21(pi + vec2(1.0, 0.0)), w.x),
@@ -28,7 +30,22 @@ float ValueNoise(vec2 p)
 vec2 hash22(vec2 p)
 {
     p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
+
     return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);
+}
+
+float Perlin(in vec2 p)
+{
+    vec2 pi = floor(p);     //Return the largest integer less than or equal to x.
+    vec2 pf = fract(p);     //Returns the decimal part of the input value.
+    
+    //float2 w = pf * pf * (3.0 - 2.0 * pf);
+    vec2 w = pf * pf * pf * (6 * pf * pf - 15 * pf + 10);
+     
+    return mix(mix(dot(hash22(pi + vec2(0.0, 0.0)), pf - vec2(0.0, 0.0)),
+                    dot(hash22(pi + vec2(1.0, 0.0)), pf - vec2(1, 0.0)), w.x),
+                mix(dot(hash22(pi + vec2(0.0, 1.0)), pf - vec2(0.0, 1.0)),
+                    dot(hash22(pi + vec2(1.0, 1.0)), pf - vec2(1.0, 1.0)), w.x), w.y);
 }
 
 float SimplexNoise( in vec2 p )
@@ -60,6 +77,7 @@ float noise(vec2 p){
 float worley(vec2 p) {
     //Set our distance to infinity
 	float d = 1e30;
+
     //For the 9 surrounding grid points
 	for (int xo = -1; xo <= 1; ++xo) {
 		for (int yo = -1; yo <= 1; ++yo) {
@@ -70,6 +88,7 @@ float worley(vec2 p) {
 			d = min(d, length2(p - tp - noise(tp)));
 		}
 	}
+
 	return 3.0*exp(-4.0*abs(2.5*d - 1.0));
 }
 
@@ -81,43 +100,56 @@ float fworley(vec2 p) {
 		sqrt(sqrt(worley(p * -10.0 + 0.03))))));
 }
 
+// Calculate height for given position
+vec4 calculateHeight(vec2 p){
+    float f = 0.0;
+    mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
+
+    f  = 0.4000 * SimplexNoise(p); p = m * p;
+    f += 0.3000 * SimplexNoise(p); p = m * p;
+    f += 0.1000 * SimplexNoise(p); p = m * p;
+    f += 0.0500 * SimplexNoise(p); p = m * p;
+    f += 0.0250 * SimplexNoise(p); p = m * p;
+    f += 0.0125 * SimplexNoise(p); p = m * p;
+    f += 0.0062 * SimplexNoise(p); p = m * p;
+    f += 0.0031 * SimplexNoise(p); p = m * p;
+
+    f = amplitude * 0.5 + amplitude * 0.5 * f;
+
+    return vec4(f, 0, 0, 1.0);
+}
+
 
 void main()
 {
-//    // get index in global work group i.e x,y position
-    ivec2 pixel_coords = ivec2(gl_GlobalInvocationID.xy);
-//    
-//    // base pixel colour for image
-//    float val = SimplexNoise(vec2(pixel_coords.x, pixel_coords.y));
-//    // vec4 pixel = vec4(ValueNoise(vec2(pixel_coords.x, pixel_coords.y) * stepSize));
-//    vec4 pixel = vec4(val);
-//    
-//    //  if(pixel_coords.x == pixel_coords.y){
-//    //    pixel.x = 1.0;
-//    //  }
-//    
-//    // output to a specific pixel in the image
-//    imageStore(img_output, pixel_coords, pixel);
+    // Get index in global work group i.e x,y position
+    ivec2 pixelCoords = ivec2(gl_GlobalInvocationID.xy);
+    vec2 p = pixelCoords * size / density * (1 / frequency);
 
+    // Output to a specific pixel in the image
+    imageStore(img_output, pixelCoords, calculateHeight(p));
+    // imageStore(img_output, pixelCoords, vec4(0, 0, 0, 1.0));
+    
 
-    vec2 p = ivec2(gl_GlobalInvocationID.xy) * stepSize;
-	float f = 0.0;
-	
-    // left: value noise	
-	// f = fworley(16.0 * p);
+    //** Random trash which migh turn out helpful **//
 
-    // right: fractal noise (4 octaves)
-	p *= 5.0;
-    mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
-	f  = 0.5000*SimplexNoise(p); p = m * p;
-	f += 0.2500*SimplexNoise(p); p = m * p;
-	f += 0.1250*SimplexNoise(p); p = m * p;
-	f += 0.0625*SimplexNoise(p); p = m * p;
+    // f += Perlin(p);
+    // f += -worley(p);
 
-	f = amplitude * 0.5 + amplitude * 0.5 * f;
-	
-    f *= smoothstep(0.0, 0.005, abs(p.x-0.6));	
+    // f *= smoothstep(0.0, 0.005, abs(p.x-0.6));
 	
     // output to a specific pixel in the image
-	imageStore(img_output, pixel_coords, vec4(f, 0, 0, 1.0));
+	// imageStore(img_output, pixel_coords, vec4(f, 0, 0, 1.0));
+
+    // if( gl_GlobalInvocationID.x < 100 && gl_GlobalInvocationID.y < 100){
+    //     imageStore(img_output, pixel_coords, vec4(1, 0, 0, 1.0));
+    // }
+    // 
+    // if( gl_GlobalInvocationID.x > density* 0.4 && gl_GlobalInvocationID.x < density * 0.6 ){
+    //     imageStore(img_output, pixel_coords, vec4(0, 0, 0, 1.0));
+    // }
+    // 
+    // if( gl_GlobalInvocationID.y > density* 0.4 && gl_GlobalInvocationID.y < density * 0.6 ){
+    //     imageStore(img_output, pixel_coords, vec4(0, 0, 0, 1.0));
+    // }
 }

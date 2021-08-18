@@ -65,16 +65,20 @@ Shader::Shader(const char* name, const char* vertexFilepath, const char* fragmen
 	glAttachShader(Id, fragmentShaderId);
 
 	// Compile and attach optional shaders
-	if (tessControlFilepath && tessEvaluationFilepath && geometryFilepath)
+	if (tessControlFilepath && tessEvaluationFilepath)
 	{
 		tessControlShaderId = glCreateShader(GL_TESS_CONTROL_SHADER);;
 		tessEvaluationShaderId = glCreateShader(GL_TESS_EVALUATION_SHADER);
-		geometryShaderId = glCreateShader(GL_GEOMETRY_SHADER);
 		compile(tessControlShaderId, tessControlFilepath);
 		compile(tessEvaluationShaderId, tessEvaluationFilepath);
-		compile(geometryShaderId, geometryFilepath);
 		glAttachShader(Id, tessControlShaderId);
 		glAttachShader(Id, tessEvaluationShaderId);
+	}
+
+	if(geometryFilepath)
+	{
+		geometryShaderId = glCreateShader(GL_GEOMETRY_SHADER);
+		compile(geometryShaderId, geometryFilepath);
 		glAttachShader(Id, geometryShaderId);
 	}
 
@@ -96,18 +100,21 @@ Shader::Shader(const char* name, const char* vertexFilepath, const char* fragmen
 	// Delete shaders (cause they are already compiled)
 	glDetachShader(Id, vertexShaderId);
 	glDetachShader(Id, fragmentShaderId);
-
 	glDeleteShader(vertexShaderId);
 	glDeleteShader(fragmentShaderId);
 
 	// Delete optional shaders
-	if (tessControlFilepath && tessEvaluationFilepath && geometryFilepath)
+	if (tessControlFilepath && tessEvaluationFilepath)
 	{
 		glDetachShader(Id, tessControlShaderId);
 		glDetachShader(Id, tessEvaluationShaderId);
-		glDetachShader(Id, geometryShaderId);
 		glDeleteShader(tessControlShaderId);
 		glDeleteShader(tessEvaluationShaderId);
+	}
+
+	if(geometryFilepath)
+	{
+		glDetachShader(Id, geometryShaderId);
 		glDeleteShader(geometryShaderId);
 	}
 }

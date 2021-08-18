@@ -23,16 +23,14 @@ LodTerrain::LodTerrain(Engine* enginePtr)
 
 	nodePosId = glGetUniformLocation(shaderPtr->get_ID(), "nodePos");
 	nodeSizeId = glGetUniformLocation(shaderPtr->get_ID(), "nodeSize");
+	terrainPosId = glGetUniformLocation(shaderPtr->get_ID(), "terrainPos");
 
 	viewportId = glGetUniformLocation(shaderPtr->get_ID(), "viewport");
 	terrainHeightId = glGetUniformLocation(shaderPtr->get_ID(), "terrainHeight");
-	// terrainHeigh2tId = glGetUniformLocation(shaderPtr->get_ID(), "terrainHeight2");
-	terrainHeightOffsetId = glGetUniformLocation(shaderPtr->get_ID(), "terrainHeightOffset");
 
-	tscaleNegxId = glGetUniformLocation(shaderPtr->get_ID(), "tscaleNegx");
-	tscaleNegzId = glGetUniformLocation(shaderPtr->get_ID(), "tscaleNegz");
-	tscalePosxId = glGetUniformLocation(shaderPtr->get_ID(), "tscalePosx");
-	tscalePoszId = glGetUniformLocation(shaderPtr->get_ID(), "tscalePosz");
+	terrainHeightOffsetId = glGetUniformLocation(shaderPtr->get_ID(), "terrainHeightOffset");
+	terrainDensity = glGetUniformLocation(shaderPtr->get_ID(), "terrainDensity");
+	terrainSize = glGetUniformLocation(shaderPtr->get_ID(), "terrainSize");
 
 	viewPosId = glGetUniformLocation(shaderPtr->get_ID(), "viewPos");
 
@@ -50,18 +48,14 @@ LodTerrain::LodTerrain(Engine* enginePtr)
 
 	// Prepare indices data
 	indicesData[0] = 0;
-	indicesData[1] = 2;
-	indicesData[2] = 1;
-	indicesData[3] = 1;
-	indicesData[4] = 2;
-	indicesData[5] = 3;
-
-	enginePtr->checkOglErrors("Lodterrain-preheightmap");
+	indicesData[1] = 1;
+	indicesData[2] = 2;
+	indicesData[3] = 3;
 
 	// Initialize heightmap
 	if (true)
 	{
-		heightmap = new Heightmap(size, 2 * size);
+		heightmap = new Heightmap(size, density);
 		heightmap->updateGpu(enginePtr);
 		// heightmap->update();
 		// heightmap->saveToFile();
@@ -75,7 +69,7 @@ LodTerrain::LodTerrain(Engine* enginePtr)
 		heightmap = new Heightmap("Heightmap.tga");
 	}
 
-	enginePtr->checkOglErrors("Lodterrain-prebuffers");
+	// enginePtr->checkOglErrors("Lodterrain-prebuffers");
 
 	// bind global VAO object
 	glBindVertexArray(mainVao.id);
@@ -130,9 +124,9 @@ void LodTerrain::process()
 	ZoneScoped;
 
 	// Update Nodes
-	Camera* cameraPtr = enginePtr->getCamera();
-	glm::vec3 pos = cameraPtr->getPosition();
-	float minSize = 20;
+	glm::vec3 pos = enginePtr->getCamera()->getPosition();
+	pos.y = 0;
+	float minSize = 10;
 
 	terrainQuadTree->update(pos, minSize);
 }
@@ -157,45 +151,43 @@ void LodTerrain::render()
 	// Update all uniforms
 	shaderPtr->use();
 
-	enginePtr->checkOglErrors("Lodterrain-prematrix");
-
 	glUniformMatrix4fv(matMvpId, 1, GL_FALSE, &(*Mvp)[0][0]);
 	glUniformMatrix4fv(matMvId, 1, GL_FALSE, &(Mv)[0][0]);
 	glUniformMatrix4fv(matMId, 1, GL_FALSE, &(*M)[0][0]);
 	glUniformMatrix4fv(matPId, 1, GL_FALSE, &(*P)[0][0]);
 
-	enginePtr->checkOglErrors("Lodterrain-previewport");
-
+	glUniform2f(terrainPosId, -size / 2, -size / 2);
 	glUniform2f(viewportId, viewportW, viewportH);
 	glUniform1i(terrainHeightId, 0);
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, heightmap->textureId);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+
 	glUniform1f(terrainHeightOffsetId, 0.0);
-
-	enginePtr->checkOglErrors("Lodterrain-pretess");
-
-	glUniform1f(tscaleNegxId, 1.0);
-	glUniform1f(tscaleNegzId, 1.0);
-	glUniform1f(tscalePosxId, 1.0);
-	glUniform1f(tscalePoszId, 1.0);
+	glUniform1f(terrainDensity, density);
+	glUniform1f(terrainSize, size);
 
 	glUniform3f(viewPosId, viewPos.x, viewPos.y, viewPos.z);
 
-	enginePtr->checkOglErrors("Lodterrain-prematerial");
+	// Set materials
+	shaderPtr->set_vec3("materialFlat.ambient", vec3(0.298f, 0.282f, 0.27f));
+	shaderPtr->set_vec3("materialFlat.diffuse", vec3(0.458f, 0.411f, 0.341f));
+	shaderPtr->set_vec3("materialFlat.specular", vec3(0.0f, 0.0f, 0.0f));
+	shaderPtr->set_float("materialFlat.shininess", 1024);
 
-	// Set material
-	shaderPtr->set_vec3("material.ambient", vec3(0.298f, 0.282f, 0.27f));
-	shaderPtr->set_vec3("material.diffuse", vec3(0.458f, 0.411f, 0.341f));
-	shaderPtr->set_vec3("material.specular", vec3(1.0f, 1.0f, 1.0f));
-	shaderPtr->set_float("material.shininess", 32);
+	shaderPtr->set_vec3("materialSteep.ambient", vec3(0.339f, 0.559f, 0.339f));
+	shaderPtr->set_vec3("materialSteep.diffuse", vec3(0.565f, 0.933f, 0.565f));
+	shaderPtr->set_vec3("materialSteep.specular", vec3(0.0f, 0.0f, 0.0f));
+	shaderPtr->set_float("materialSteep.shininess", 1024);
 
 	// Attributes setup and global VAO creation
 	// bind global VAO object
 	glBindVertexArray(mainVao.id);
 
-
-
-	enginePtr->checkOglErrors("Lodterrain-prerender");
+	// Specify patch size
+	glPatchParameteri(GL_PATCH_VERTICES, 4);
 
 	// Render whole Terrain Tree
 	terrainQuadTree->render(shaderPtr, nodePosId, nodeSizeId, enginePtr);

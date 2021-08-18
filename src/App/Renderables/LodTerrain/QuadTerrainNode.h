@@ -41,9 +41,30 @@ public:
 	{
 		float d = glm::abs(distance(point, vec3(startPos.x + size * 0.5, 0, startPos.y + size * 0.5)));
 		float cap = sqrt(pow(size * 0.5, 2.0) * 2.0) * 5.0;
-		// return distance >= glm::abs(glm::distance(vec2(point.x, point.z), vec2(startPos.x / 2, startPos.y / 2)));
-		
+
 		return d < cap;
+	}
+
+	// Check if point is in front of the camera
+	bool inFieldOfView(Camera* cameraPtr)
+	{
+		// Get camera direction
+		vec2 dir = normalize(cameraPtr->getDirection().xz());
+
+		// Calculate direction to the middle of the sector
+		//  The (dir * camPos.y) component is subtracted from camera position
+		//  to move position back according to camera height
+		vec2 midPoint = startPos + vec2(size / 2);
+		vec3 camPos = cameraPtr->getPosition();
+		vec2 pointDir = midPoint - (camPos.xz() - (dir * camPos.y));
+
+		// Angle of Fov (TODO: connect this value with camera FOV)
+		float maxAngle = 45;
+
+		// Calculate angle between vectors
+		float angle = degrees(orientedAngle(dir, normalize(pointDir)));
+
+		return angle < maxAngle && angle > -maxAngle;
 	}
 
 	void update(vec3& referencePoint, float minSize)
@@ -97,21 +118,20 @@ public:
 
 		if (leaf)
 		{
-			// Set node's uniforms
-			glUniform3f(nodePosId, startPos.x, 0, startPos.y);
-			glUniform1f(nodeSizeId, size);
+			// Check if patch is inf front of the camera
+			if (inFieldOfView(enginePtr->getCamera())) {
+				// Set node's uniforms
+				glUniform3f(nodePosId, startPos.x, 0, startPos.y);
+				glUniform1f(nodeSizeId, size);
 
-			enginePtr->checkOglErrors("Lodterrain-aftersize");
-
-			// Draw node
-			glDrawElements(
-				GL_TRIANGLES,			// mode
-				6,						// count
-				GL_UNSIGNED_INT,		// type
-				(void*)0				// element array buffer offset
-			);
-
-			enginePtr->checkOglErrors("Lodterrain-afterrender");
+				// Draw node
+				glDrawElements(
+					GL_PATCHES,				// mode
+					4,						// count
+					GL_UNSIGNED_INT,		// type
+					(void*)0				// element array buffer offset
+				);
+			}
 		}
 		else
 		{

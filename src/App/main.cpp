@@ -7,7 +7,6 @@
 #include "Renderables/Sphere.h"
 #include "Renderables/LodTerrain/LodTerrain.h"
 
-
 int main()
 {
 	ZoneScoped;
@@ -46,8 +45,7 @@ int main()
 		"src/Shaderfiles/TerrainLod.vert",
 		"src/Shaderfiles/TerrainLod.frag",
 		"src/Shaderfiles/TerrainLod.tesc",
-		"src/Shaderfiles/TerrainLod.tese",
-		"src/Shaderfiles/TerrainLod.geom");
+		"src/Shaderfiles/TerrainLod.tese");
 	enginePtr->registerShader(terrainLodShader);
 
 	Shader heightmapShader = Shader("HeightmapShader",
@@ -62,8 +60,8 @@ int main()
 	// enginePtr->registerTask(reinterpret_cast<Renderable*>(new TerrainManager(enginePtr, TerrainManager::FLAT)));
 	// enginePtr->registerTask(reinterpret_cast<Renderable*>(new TerrainManager(enginePtr, TerrainManager::WATER)));
 	enginePtr->registerProcessable(reinterpret_cast<Processable*>(new Sphere(enginePtr)));
-	//enginePtr->registerProcessable(reinterpret_cast<Processable*>(new LodTerrain(enginePtr)));
-	enginePtr->registerProcessable(reinterpret_cast<Processable*>(new TerrainManager(enginePtr, TerrainManager::SIMPLEX)));
+	enginePtr->registerProcessable(reinterpret_cast<Processable*>(new LodTerrain(enginePtr)));
+	// enginePtr->registerProcessable(reinterpret_cast<Processable*>(new TerrainManager(enginePtr, TerrainManager::SIMPLEX)));
 	enginePtr->registerProcessable(reinterpret_cast<Processable*>(new Skybox(enginePtr)));
 	enginePtr->registerProcessable(reinterpret_cast<Processable*>(new BaseGui(enginePtr)));
 

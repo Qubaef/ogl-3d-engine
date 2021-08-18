@@ -13,8 +13,8 @@ constexpr auto SKYBOX_SHADER_PATH_FRAGMENT = "src/Shaderfiles/SkyBoxFragmentShad
 constexpr auto SCREEN_W = 1280;
 constexpr auto SCREEN_H = 720;
 constexpr auto CAMERA_FOV = 45;
-constexpr auto CAMERA_NEAR_CLIPPING = 5.f;
-constexpr auto CAMERA_FAR_CLIPPING = 100000.f;
+constexpr auto CAMERA_NEAR_CLIPPING = 1.f;
+constexpr auto CAMERA_FAR_CLIPPING = 20000.f;
 
 constexpr auto SECTOR_DENSITY = 1000;
 constexpr auto SECTOR_SIZE = 1000;

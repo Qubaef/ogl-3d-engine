@@ -12,12 +12,12 @@ CameraController::CameraController(Engine* enginePtr, InputManager* p_input_mana
 	this->inputManagerPtr = p_input_manager;
 
 	// set initial values of camera
-	this->cameraPosition = vec3(0, 1, 0);
-	this->camera_direction = normalize(vec3(
+	this->cameraPosition = vec3(0, 1000, 0);
+	this->cameraDirection = normalize(vec3(
 		cos(initial_vertical_angle) * sin(initial_horizontal_angle),
 		sin(initial_vertical_angle),
 		cos(initial_vertical_angle) * cos(initial_horizontal_angle)));
-	this->camera_up = vec3(0, 1, 0);
+	this->cameraUp = vec3(0, 1, 0);
 
 	generate_matrices();
 	registerInput();
@@ -43,11 +43,11 @@ CameraController::CameraController(Engine* enginePtr, InputManager* p_input_mana
 
 	// set initial values of camera
 	this->cameraPosition = position;
-	this->camera_direction = vec3(
+	this->cameraDirection = vec3(
 		cos(vertical_angle) * sin(horizontal_angle),
 		sin(vertical_angle),
 		cos(vertical_angle) * cos(horizontal_angle));
-	this->camera_up = vec3(0, 1, 0);
+	this->cameraUp = vec3(0, 1, 0);
 
 	generate_matrices();
 	registerInput();
@@ -121,8 +121,8 @@ void CameraController::updateView()
 	// update View matrix
 	View = glm::lookAt(
 		cameraPosition,						// the position of your camera, in world space
-		cameraPosition + camera_direction,		// where you want to look at, in world space
-		camera_up								// up vector (0,1,0) on default
+		cameraPosition + cameraDirection,		// where you want to look at, in world space
+		cameraUp								// up vector (0,1,0) on default
 	);
 }
 

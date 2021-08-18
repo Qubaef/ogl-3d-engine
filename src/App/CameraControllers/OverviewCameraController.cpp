@@ -51,16 +51,16 @@ vec3 OverviewCameraController::calculate_midpoint()
 
 	// Calculate mid point, around which rotation will be performed
 	float k;
-	if (camera_direction.y != 0)
+	if (cameraDirection.y != 0)
 	{
-		k = -(cameraPosition.y / camera_direction.y);
+		k = -(cameraPosition.y / cameraDirection.y);
 	}
 	else
 	{
 		k = 10;
 	}
 
-	return cameraPosition + (camera_direction * k);
+	return cameraPosition + (cameraDirection * k);
 }
 
 
@@ -89,7 +89,7 @@ void OverviewCameraController::updatePerFrame()
 
 		// Move along direction vector
 		// calculate flat direction vector to prevent changing y coordinate while moving
-		vec3 flat_direction = camera_direction;
+		vec3 flat_direction = cameraDirection;
 		flat_direction.y = 0;
 		flat_direction = normalize(flat_direction);
 
@@ -105,7 +105,7 @@ void OverviewCameraController::updatePerFrame()
 
 		// Move along right vector
 		// calculate flat_right vector, and rest same as above
-		vec3 flat_right = normalize(cross(flat_direction, camera_up));
+		vec3 flat_right = normalize(cross(flat_direction, cameraUp));
 		cameraPosition -= flat_right * (mouse_sensitivity / 300 * float(mouse_current_pos.x - mouse_last_pos.x)) * height_multiplier;
 	}
 
@@ -144,7 +144,7 @@ void OverviewCameraController::updatePerFrame()
 			mid_point.z + cos(vertical_angle) * cos(horizontal_angle) * dist
 		);
 
-		camera_direction = normalize(mid_point - cameraPosition);
+		cameraDirection = normalize(mid_point - cameraPosition);
 	}
 
 	if (inputState.if_mouse_scroll_moved())
@@ -162,7 +162,7 @@ void OverviewCameraController::updatePerFrame()
 			height_multiplier = 1;
 		}
 
-		cameraPosition += camera_direction * (float)(inputState.mouse_scroll_y_offset * mouse_sensitivity / 3 * height_multiplier);
+		cameraPosition += cameraDirection * (float)(inputState.mouse_scroll_y_offset * mouse_sensitivity / 3 * height_multiplier);
 	}
 
 	updateView();

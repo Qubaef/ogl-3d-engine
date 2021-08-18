@@ -23,23 +23,21 @@ class LodTerrain : public Processable
 
 	GLuint nodePosId;
 	GLuint nodeSizeId;
-
+	GLuint terrainPosId;
+	
 	GLuint viewportId;
 	GLuint terrainHeightId;
-	// GLuint terrainHeigh2tId;
 	GLuint terrainHeightOffsetId;
-
-	GLuint tscaleNegxId;
-	GLuint tscaleNegzId;
-	GLuint tscalePosxId;
-	GLuint tscalePoszId;
+	GLuint terrainDensity;
+	GLuint terrainSize;
 
 	GLuint viewPosId;
 
 	// Size of the heightmap
 	SimplexNoiseWrapper noise;
 	Heightmap* heightmap = nullptr;
-	int size = 5000;
+	const int size = 10000;
+	const int density = size;
 
 	// Buffers common for all sectors
 	Vbo vertexBuffer;
@@ -49,7 +47,7 @@ class LodTerrain : public Processable
 	vec3 normalsData[4];
 
 	Vbo indicesBuffer;
-	int indicesData[6];
+	int indicesData[4];
 
 	// Terrain QuadTree
 	QuadTerrainNode* terrainQuadTree = nullptr;

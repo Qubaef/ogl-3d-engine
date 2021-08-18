@@ -452,7 +452,7 @@ int Engine::run()
 		glfwPollEvents();
 
 		// Check for OpenGl rendering errors
-		// assert(checkOglErrors("runtimeLoop") == false);
+		checkOglErrors("runtimeLoop");
 
 		// Tracy Profiler: End frame mark
 		FrameMark;

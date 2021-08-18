@@ -7,6 +7,7 @@ struct Material {
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+
     float shininess;
 }; 
 
@@ -22,6 +23,8 @@ struct DirectionalLight {
 // Uniforms
 //
 uniform vec3 viewPos;
+uniform Material materialFlat;
+uniform Material materialSteep;
 uniform Material material;
 uniform DirectionalLight dir_light;
 
@@ -36,13 +39,23 @@ out vec4 fragColor;
 //
 // Inputs
 //
-in vec3 normal;
-in vec3 fragPos;
+in float steepness;
 
-in vec2 gs_terrainTexCoord;
+in vec3 tese_normal;
+in vec3 tese_fragPos;
+
+Material interpolateMaterials(Material m1, Material m2, float val) {
+	Material newM;
+	newM.ambient = mix(m1.ambient, m2.ambient, val);
+	newM.diffuse = mix(m1.diffuse, m2.diffuse, val);
+	newM.specular = mix(m1.specular, m2.specular, val);
+	newM.shininess = m1.shininess * val + m2.shininess * (1 - val);
+
+	return newM;
+}
 
 
-vec3 calculate_dir_light(DirectionalLight light, vec3 normal, vec3 view_dir)
+vec3 calculate_dirLight(DirectionalLight light, vec3 normal, vec3 viewDir, Material material)
 {
 	// Ambient
 	vec3 ambient = light.ambient * material.ambient;
@@ -50,7 +63,7 @@ vec3 calculate_dir_light(DirectionalLight light, vec3 normal, vec3 view_dir)
 	vec3 diffuse = light.diffuse * material.diffuse * max(dot(normalize(normal), normalize(light.direction)), 0.0) ;
 	// Specular
 	vec3 reflect_dir = reflect(normalize(-light.direction), normalize(normal));
-	vec3 specular = light.specular * material.specular * pow(max(dot(view_dir, reflect_dir), 0.0), material.shininess);
+	vec3 specular = light.specular * material.specular * pow(max(dot(viewDir, reflect_dir), 0.0), material.shininess);
 
 	return (ambient + diffuse + specular);
 }
@@ -58,10 +71,8 @@ vec3 calculate_dir_light(DirectionalLight light, vec3 normal, vec3 view_dir)
 void main()
 {
 	//// Calculate result basing on directional light
-	vec3 view_dir = normalize(viewPos - fragPos);
-	vec4 color = vec4(calculate_dir_light(dir_light, normal, view_dir), 1.f);
+	vec3 viewDir = normalize(viewPos - tese_fragPos);
+	vec4 color = vec4(calculate_dirLight(dir_light, tese_normal, viewDir, interpolateMaterials(materialFlat, materialSteep, steepness)), 1.f);
 
-	//vec4 color = vec4(mix(0.0, 1.0, nodeSize / 1000.0), mix(1.0, 0.0, nodeSize / 1000.0), 0.0, 1.0);
-	// vec4 color = texture(terrainHeight, gs_terrainTexCoord);
 	fragColor = color;
 }

@@ -16,11 +16,7 @@ Heightmap::Heightmap(const char* filename) : size(size), density(density)
 	float* data = new float[density * density];
 	data = (float*)ImageLibWrapper::image_load(filename, &w, &h, 0, 4);
 
-	if (w == h)
-	{
-		size = w;
-	}
-	else
+	if (w != h)
 	{
 		LOG.ERROR("Unable to properly load heightmap.");
 	}
@@ -78,8 +74,10 @@ void Heightmap::updateGpu(Engine* enginePtr)
 	// Get and setup shader
 	Shader* shaderPtr = enginePtr->getShaderByName("HeightmapShader");
 	shaderPtr->use();
-	shaderPtr->set_float("stepSize", size / (float)density);
-	shaderPtr->set_float("amplitude", 500);
+	shaderPtr->set_float("size", size);
+	shaderPtr->set_float("density", density);
+	shaderPtr->set_float("frequency", 2000);
+	shaderPtr->set_float("amplitude", 1500);
 
 	// Init texture
 	glGenTextures(1, &textureId);
@@ -93,7 +91,8 @@ void Heightmap::updateGpu(Engine* enginePtr)
 		glBindImageTexture(0, textureId, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
 
 		// Launch compute shader
-		glDispatchCompute(density / 25, density / 25, 1);
+		LOG.INFO("Launching compute shader heightmap generation. Work groups: %d, %d, %d", density / workgroupDiv, density / workgroupDiv, 1);
+		glDispatchCompute(density / workgroupDiv, density / workgroupDiv, 1);
 
 		// Make sure writing to image has finished before read
 		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
@@ -110,18 +109,25 @@ void Heightmap::updateGpu(Engine* enginePtr)
 		// Make sure writing to image has finished before read
 		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 
-		// Read texture from GPU
-		float* data = new float[density * density];
-		glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, (void*)data);
+		//// Read texture from GPU
+		//float* data = new float[density * density];
+		//glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, (void*)data);
 	}
-
 	
 	// Download texture to validate data
 	if (false)
 	{
 		// Read texture from GPU
 		float* data = new float[density * density];
-		glGetTexImage(GL_TEXTURE_2D, 0, GL_RED, GL_FLOAT, (void*)data);
+		
+		if(true)
+		{
+			glGetTexImage(GL_TEXTURE_2D, 0, GL_RED, GL_FLOAT, (void*)data);
+		}
+		else
+		{
+			glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, (void*)data);
+		}
 
 		// Find min and max height
 		float max = data[0];
@@ -131,6 +137,8 @@ void Heightmap::updateGpu(Engine* enginePtr)
 			max = glm::max(max, data[i]);
 			min = glm::min(min, data[i]);
 		}
+
+		saveToFile(data);
 
 		delete[] data;
 	}

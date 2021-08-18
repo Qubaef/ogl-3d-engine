@@ -5,7 +5,7 @@
 
 class FirstPersonCameraController : public CameraController
 {
-	const float movement_speed = 1;
+	const float movement_speed = 0.1;
 
 public:
 	// methods

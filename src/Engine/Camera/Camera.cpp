@@ -38,3 +38,8 @@ vec3 Camera::getPosition()
 {
 	return cameraPosition;
 }
+
+vec3 Camera::getDirection()
+{
+	return cameraDirection;
+}

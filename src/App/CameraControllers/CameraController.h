@@ -30,9 +30,8 @@ protected:
 		WIREFRAME
 	} draw_mode;
 
-	vec3 camera_direction;
-	vec3 camera_up;
-	vec3 direction_flattened;
+	vec3 cameraUp;
+	vec3 directionFlattened;
 
 	// methods
 	void updateProjection();
