@@ -126,6 +126,14 @@ Skybox::Skybox(Engine* enginePtr)
 	shaderPtr->set_int("skybox", 0);
 }
 
+void Skybox::preprocess()
+{
+}
+
+void Skybox::process()
+{
+}
+
 
 void Skybox::render()
 {

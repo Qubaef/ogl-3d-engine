@@ -31,7 +31,12 @@ class Skybox : public Processable
 public:
 	Skybox(Engine* enginePtr);
 
+	void preprocess() override;
+	
+	void process() override;
+
 	void render() override;
 
 	~Skybox() override = default;
+
 };

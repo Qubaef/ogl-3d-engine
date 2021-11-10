@@ -6,6 +6,10 @@ BaseGui::BaseGui(Engine* enginePtr) :
 
 }
 
+void BaseGui::process()
+{
+}
+
 void BaseGui::preprocess()
 {
 	// static bool show_demo_window = true;
@@ -58,4 +62,8 @@ void BaseGui::preprocess()
 	
 	ImGui::Text("Camera pos x: %.2f, y: %.2f, z: %.2f", cameraPos[0], cameraPos[1], cameraPos[2]);
 	ImGui::End();
+}
+
+void BaseGui::render()
+{
 }

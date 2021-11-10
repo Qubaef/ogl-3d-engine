@@ -9,7 +9,12 @@ class BaseGui : public Processable
 public:
 	BaseGui(Engine* enginePtr);
 
+	void process() override;
+
 	void preprocess() override;
 
+	void render() override;
+
 	~BaseGui() override = default;
+
 };

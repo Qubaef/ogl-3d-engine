@@ -32,6 +32,10 @@ class Sphere : public Processable
 public:
 	Sphere(Engine* enginePtr);
 
+	void preprocess() override;
+
+	void process() override;
+	
 	void render() override;
 
 	~Sphere() override = default;

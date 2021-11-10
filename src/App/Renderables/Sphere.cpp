@@ -87,6 +87,14 @@ Sphere::Sphere(Engine* enginePtr)
 	glEnableVertexAttribArray(1);
 }
 
+void Sphere::preprocess()
+{
+}
+
+void Sphere::process()
+{
+}
+
 void Sphere::render()
 {
 	ZoneScoped;

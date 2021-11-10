@@ -5,6 +5,7 @@
 #include "Renderables/BaseGui.h"
 #include "Renderables/Skybox.h"
 #include "Renderables/Sphere.h"
+#include "Renderables/Framebuffer.h"
 #include "Renderables/LodTerrain/LodTerrain.h"
 
 int main()
@@ -52,18 +53,24 @@ int main()
 		"src/Shaderfiles/HeightmapGenerationShader.comp");
 	enginePtr->registerShader(heightmapShader);
 
+	Shader framebufferShader = Shader("FramebufferShader",
+		"src/Shaderfiles/FramebufferShader.vert",
+		"src/Shaderfiles/FramebufferShader.frag");
+	enginePtr->registerShader(framebufferShader);
+	
 	/* Register camera */
-	// enginePtr->registerCamera(reinterpret_cast<Camera*>(new FirstPersonCameraController(enginePtr, new InputManager(enginePtr))));
-	enginePtr->registerCamera(reinterpret_cast<Camera*>(new OverviewCameraController(enginePtr, new InputManager(enginePtr))));
+	enginePtr->registerCamera(reinterpret_cast<Camera*>(new FirstPersonCameraController(enginePtr, new InputManager(enginePtr))));
+	// enginePtr->registerCamera(reinterpret_cast<Camera*>(new OverviewCameraController(enginePtr, new InputManager(enginePtr))));
 
 	/* Register processing and rendering tasks */
-	// enginePtr->registerTask(reinterpret_cast<Renderable*>(new TerrainManager(enginePtr, TerrainManager::FLAT)));
-	// enginePtr->registerTask(reinterpret_cast<Renderable*>(new TerrainManager(enginePtr, TerrainManager::WATER)));
 	enginePtr->registerProcessable(reinterpret_cast<Processable*>(new Sphere(enginePtr)));
 	enginePtr->registerProcessable(reinterpret_cast<Processable*>(new LodTerrain(enginePtr)));
 	// enginePtr->registerProcessable(reinterpret_cast<Processable*>(new TerrainManager(enginePtr, TerrainManager::SIMPLEX)));
 	enginePtr->registerProcessable(reinterpret_cast<Processable*>(new Skybox(enginePtr)));
+
+	enginePtr->registerProcessable(reinterpret_cast<Processable*>(new Framebuffer(enginePtr)));
 	enginePtr->registerProcessable(reinterpret_cast<Processable*>(new BaseGui(enginePtr)));
+
 
 	// Start the Engine
 	enginePtr->run();

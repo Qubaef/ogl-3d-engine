@@ -6,40 +6,40 @@ Processable::Processable(Engine* enginePtr) :
 	// If following methods are not overriden in child class,
 	// proper bits will be set
 	// This allows to check which methods are implemented
-	preprocess();
-	process();
-	render();
+	definePreprocess();
+	defineProcess();
+	defineRender();
 	// postprocess();
 }
 
-void Processable::preprocess()
+void Processable::definePreprocess()
 {
 	implementationStatus |= preprocessFlag;
 }
 
 bool Processable::ifDefinedPreprocess()
 {
-	return (implementationStatus & (1 << 0));
+	return (implementationStatus & preprocessFlag);
 }
 
-void Processable::process()
+void Processable::defineProcess()
 {
 	implementationStatus |= processFlag;
 }
 
 bool Processable::ifDefinedProcess()
 {
-	return (implementationStatus & (1 << 1));
+	return (implementationStatus & processFlag);
 }
 
-void Processable::render()
+void Processable::defineRender()
 {
 	implementationStatus |= renderFlag;
 }
 
 bool Processable::ifDefinedRender()
 {
-	return (implementationStatus & (1 << 2));
+	return (implementationStatus & renderFlag);
 }
 
 //void Processable::postprocess()

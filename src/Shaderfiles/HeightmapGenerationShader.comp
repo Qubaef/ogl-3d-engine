@@ -2,14 +2,14 @@
 
 layout (local_size_x = 25, local_size_y = 25) in;
 layout (binding = 0, r32f) uniform image2D img_output;
-//layout (binding = 0, rgba32f) uniform image2D img_output;
+// layout (binding = 0, rgba32f) uniform image2D img_output;
 
 uniform float size;
 uniform float density;
 uniform float frequency;
 uniform float amplitude;
 
-vec2 hash21(vec2 p)
+float hash21(vec2 p)
 {
     float h = dot(p, vec2(127.1, 311.7));
 
@@ -113,6 +113,11 @@ vec4 calculateHeight(vec2 p){
     f += 0.0125 * SimplexNoise(p); p = m * p;
     f += 0.0062 * SimplexNoise(p); p = m * p;
     f += 0.0031 * SimplexNoise(p); p = m * p;
+    // f += 0.0015 * SimplexNoise(p * frequency); p = m * p;
+    f += 0.0004 * SimplexNoise(p * frequency); p = m * p;
+    // f += 0.0002 * SimplexNoise(p * frequency); p = m * p;
+
+    f *= smoothstep(0.0, 0.005, abs(p.x-0.6));
 
     f = amplitude * 0.5 + amplitude * 0.5 * f;
 

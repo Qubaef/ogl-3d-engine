@@ -69,8 +69,6 @@ LodTerrain::LodTerrain(Engine* enginePtr)
 		heightmap = new Heightmap("Heightmap.tga");
 	}
 
-	// enginePtr->checkOglErrors("Lodterrain-prebuffers");
-
 	// bind global VAO object
 	glBindVertexArray(mainVao.id);
 
@@ -172,15 +170,15 @@ void LodTerrain::render()
 	glUniform3f(viewPosId, viewPos.x, viewPos.y, viewPos.z);
 
 	// Set materials
-	shaderPtr->set_vec3("materialFlat.ambient", vec3(0.298f, 0.282f, 0.27f));
-	shaderPtr->set_vec3("materialFlat.diffuse", vec3(0.458f, 0.411f, 0.341f));
-	shaderPtr->set_vec3("materialFlat.specular", vec3(0.0f, 0.0f, 0.0f));
-	shaderPtr->set_float("materialFlat.shininess", 1024);
-
-	shaderPtr->set_vec3("materialSteep.ambient", vec3(0.339f, 0.559f, 0.339f));
-	shaderPtr->set_vec3("materialSteep.diffuse", vec3(0.565f, 0.933f, 0.565f));
+	shaderPtr->set_vec3("materialSteep.ambient", vec3(0.298f, 0.282f, 0.27f));
+	shaderPtr->set_vec3("materialSteep.diffuse", vec3(0.458f, 0.411f, 0.341f));
 	shaderPtr->set_vec3("materialSteep.specular", vec3(0.0f, 0.0f, 0.0f));
 	shaderPtr->set_float("materialSteep.shininess", 1024);
+
+	shaderPtr->set_vec3("materialFlat.ambient", vec3(0.339f, 0.559f, 0.339f));
+	shaderPtr->set_vec3("materialFlat.diffuse", vec3(0.565f, 0.933f, 0.565f));
+	shaderPtr->set_vec3("materialFlat.specular", vec3(0.0f, 0.0f, 0.0f));
+	shaderPtr->set_float("materialFlat.shininess", 1024);
 
 	// Attributes setup and global VAO creation
 	// bind global VAO object

@@ -28,8 +28,8 @@ in vec3 vert_fragPos[];
 //
 layout(vertices = 4) out;
 
-patch out float gl_TessLevelOuter[4];
-patch out float gl_TessLevelInner[2];
+//patch out float gl_TessLevelOuter[4];
+//patch out float gl_TessLevelInner[2];
 
 out float tesc_tessLevel[];
 

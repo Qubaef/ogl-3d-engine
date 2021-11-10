@@ -207,6 +207,9 @@
     <ClCompile Include="src\Engine\Common\ImageLibWrapper.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="src\App\Renderables\Framebuffer.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App\CameraControllers\CameraController.h">
@@ -380,6 +383,9 @@
     <ClInclude Include="src\Engine\Common\ImageLibWrapper.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="src\App\Renderables\Framebuffer.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="tracy\profiler\build\win32\x64\Debug\Tracy.exe">
@@ -409,5 +415,7 @@
     <None Include="src\Shaderfiles\TerrainLod.tese" />
     <None Include="src\Shaderfiles\TerrainLod.tesc" />
     <None Include="src\Shaderfiles\TerrainLod.geom" />
+    <None Include="src\Shaderfiles\FramebufferShader.frag" />
+    <None Include="src\Shaderfiles\FramebufferShader.vert" />
   </ItemGroup>
 </Project>
