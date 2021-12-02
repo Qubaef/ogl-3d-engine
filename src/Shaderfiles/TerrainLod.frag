@@ -68,11 +68,21 @@ vec3 calculate_dirLight(DirectionalLight light, vec3 normal, vec3 viewDir, Mater
 	return (ambient + diffuse + specular);
 }
 
+#define LOG2 1.442695
+
 void main()
 {
 	//// Calculate result basing on directional light
 	vec3 viewDir = normalize(viewPos - tese_fragPos);
-	vec4 color = vec4(calculate_dirLight(dir_light, tese_normal, viewDir, interpolateMaterials(materialFlat, materialSteep, steepness)), 1.f);
+	// gl_FragDepth;
+	vec4 color = vec4(calculate_dirLight(dir_light, tese_normal, viewDir, interpolateMaterials(materialSteep, materialFlat, steepness)), 1.f);
+	
+	float u_fogDensity = 0.00010;
+	float fogDistance = length(viewPos - tese_fragPos);
+	float fogAmount = 1. - exp2(-u_fogDensity * u_fogDensity * fogDistance * fogDistance * LOG2);
+	vec4 fogColor = vec4(0.86, 0.9, 1.0, 1.0);
 
-	fragColor = color;
+	fragColor = mix(color, fogColor, fogAmount);
+
+	// fragColor = color;
 }

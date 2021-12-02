@@ -17,7 +17,7 @@ struct ConstProperties
 	const int windowWidth = 1280;
 	const int windowHeight = 720;
 
-	// TODO: Move camera properties to camera class WOW SO UNPREDICTABLE
+	// TODO: Move camera properties to camera class
 	// Camera properties
 	const unsigned cameraFov = 45;
 	const float cameraNearClipping = 5.f;

@@ -254,6 +254,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\App\Renderables\Framebuffer.cpp" />
     <ClCompile Include="src\App\Renderables\LodTerrain\Heightmap.cpp" />
     <ClCompile Include="src\App\Renderables\Sphere.cpp" />
     <ClCompile Include="src\App\Renderables\LodTerrain\LodTerrain.cpp" />
@@ -301,6 +302,7 @@
     <ClCompile Include="tracy\TracyClient.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\App\Renderables\Framebuffer.h" />
     <ClInclude Include="src\App\Renderables\LodTerrain\Heightmap.h" />
     <ClInclude Include="src\App\Renderables\LodTerrain\QuadTerrainNode.h" />
     <ClInclude Include="src\App\Renderables\Sphere.h" />
@@ -361,6 +363,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Shaderfiles\FragmentShader.frag" />
+    <None Include="src\Shaderfiles\FramebufferShader.frag" />
+    <None Include="src\Shaderfiles\FramebufferShader.vert" />
     <None Include="src\Shaderfiles\HeightmapGenerationShader.comp" />
     <None Include="src\Shaderfiles\LightingFragmentShader.frag" />
     <None Include="src\Shaderfiles\LightingVertexShader.vert" />

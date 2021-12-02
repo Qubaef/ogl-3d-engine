@@ -26,21 +26,24 @@ public:
 	// * performed in main thread
 	// * performed before all the actual processing (recommended for e.g. Model Matrix Calculation)
 	// * NOT PARALLEL, so it should be well optimized and contain only the key operations
-	virtual void preprocess();
+	virtual void preprocess() = 0;
+	void definePreprocess();
 	bool ifDefinedPreprocess();
 
 	// Operation characteristics:
 	// * performed in one of the worker threads
 	// * executed in processing phase, so should be independent of other Processable components
 	// * PARALLEL, so it should contain heaviest of the calculations (e.g. physics calculation)
-	virtual void process();
+	virtual void process() = 0;
+	void defineProcess();
 	bool ifDefinedProcess();
 
 	// Operation characteristics:
 	// * performed in main thread
 	// * performed after processing phase, when all updates are finished
 	// * PARALLEL, so it should contain heaviest of the calculations (e.g. physics calculation)
-	virtual void render();
+	virtual void render() = 0;
+	void defineRender();
 	bool ifDefinedRender();
 
 	// Operation characteristics:

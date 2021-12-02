@@ -196,6 +196,20 @@ void Shader::set_float(const std::string& name, float value) const
 	glUniform1f(glGetUniformLocation(Id, name.c_str()), value);
 }
 
+void Shader::set_vec2(const std::string& name, vec2& value) const
+{
+	ZoneScoped;
+
+	glUniform2f(glGetUniformLocation(Id, name.c_str()), value.x, value.y);
+}
+
+void Shader::set_vec2(const std::string& name, float x, float y) const
+{
+	ZoneScoped;
+
+	glUniform2f(glGetUniformLocation(Id, name.c_str()), x, y);
+}
+
 // Vec3 uniform methods
 void Shader::set_vec3(const std::string& name, vec3 value) const
 {

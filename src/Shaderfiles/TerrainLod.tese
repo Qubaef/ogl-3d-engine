@@ -20,8 +20,8 @@ layout(quads, fractional_even_spacing, cw) in;
 // layout(quads, fractional_odd_spacing, cw) in;
 // layout(quads, equal_spacing, cw) in;
 
-patch in float gl_TessLevelOuter[4];
-patch in float gl_TessLevelInner[2];
+//patch in float gl_TessLevelOuter[4];
+//patch in float gl_TessLevelInner[2];
 
 //
 // Outputs

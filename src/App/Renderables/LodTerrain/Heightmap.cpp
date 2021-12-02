@@ -76,8 +76,8 @@ void Heightmap::updateGpu(Engine* enginePtr)
 	shaderPtr->use();
 	shaderPtr->set_float("size", size);
 	shaderPtr->set_float("density", density);
-	shaderPtr->set_float("frequency", 2000);
-	shaderPtr->set_float("amplitude", 1500);
+	shaderPtr->set_float("frequency", 2600);
+	shaderPtr->set_float("amplitude", 2500);
 
 	// Init texture
 	glGenTextures(1, &textureId);
@@ -91,7 +91,7 @@ void Heightmap::updateGpu(Engine* enginePtr)
 		glBindImageTexture(0, textureId, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
 
 		// Launch compute shader
-		LOG.INFO("Launching compute shader heightmap generation. Work groups: %d, %d, %d", density / workgroupDiv, density / workgroupDiv, 1);
+		LOG.INFO("Launching compute shader heightmap generation. Work groups: %d, %d, %d\n", density / workgroupDiv, density / workgroupDiv, 1);
 		glDispatchCompute(density / workgroupDiv, density / workgroupDiv, 1);
 
 		// Make sure writing to image has finished before read
@@ -115,7 +115,7 @@ void Heightmap::updateGpu(Engine* enginePtr)
 	}
 	
 	// Download texture to validate data
-	if (false)
+	if (true)
 	{
 		// Read texture from GPU
 		float* data = new float[density * density];
@@ -126,7 +126,7 @@ void Heightmap::updateGpu(Engine* enginePtr)
 		}
 		else
 		{
-			glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, (void*)data);
+			glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)data);
 		}
 
 		// Find min and max height
