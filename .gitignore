@@ -263,6 +263,9 @@ __pycache__/
 # Tracy collected data
 output.tracy
 
+# Imgui data
+imgui.ini
+
 # debug profiles
 debug-profile-collect/
 debug-profile-parallel/
@@ -273,5 +276,5 @@ engine-log.txt
 # Apitrace
 apitrace/
 
-# Heightmap
+# Heightmap texture
 Heightmap.tga
