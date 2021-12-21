@@ -9,7 +9,6 @@ uniform mat4 matM;
 uniform mat4 matP;
 
 uniform sampler2D terrainHeight;
-uniform float terrainHeightOffset;
 uniform float terrainDensity;
 uniform float terrainSize;
 
@@ -20,16 +19,16 @@ layout(quads, fractional_even_spacing, cw) in;
 // layout(quads, fractional_odd_spacing, cw) in;
 // layout(quads, equal_spacing, cw) in;
 
-//patch in float gl_TessLevelOuter[4];
-//patch in float gl_TessLevelInner[2];
-
 //
 // Outputs
 //
 out float steepness;
+out float tesselation_level;
 
 out vec3 tese_normal;
 out vec3 tese_fragPos;
+
+const float s = terrainSize / terrainDensity;
 
 
 vec4 interpolate4(in vec4 v0, in vec4 v1, in vec4 v2, in vec4 v3)
@@ -66,18 +65,44 @@ vec3 pt_pi(in vec3 q, in vec3 p, in vec3 n)
 
 float getHeight(vec2 p)
 {
-	return texture(terrainHeight, vec2(p.x, p.y) / terrainSize + 0.5).x + terrainHeightOffset;
+	return texture(terrainHeight, vec2(p.x, p.y) / terrainSize + 0.5).x;
 }
 
-vec3 getPosWHeight(vec3 p)
+vec3 getPosHeight(vec3 p)
 {
-	return vec3(p.x, texture(terrainHeight, vec2(p.x, p.z) / terrainSize + 0.5).x + terrainHeightOffset, p.z);
+	return vec3(p.x, texture(terrainHeight, vec2(p.x, p.z) / terrainSize).x, p.z);
+}
+
+// Get the normal at the given point
+vec3 getNormal(vec3 p) {
+	vec3 n = vec3(0.0);
+
+	// Get the height of the point
+	float h = getHeight(p.xz);
+
+	// Get the height of the point above and below
+	float h_above = getHeight(p.xz + vec2(0.0, s));
+	float h_below = getHeight(p.xz + vec2(0.0, -s));
+
+	// Get the height of the point to the left and right
+	float h_left = getHeight(p.xz + vec2(-s, 0.0));
+	float h_right = getHeight(p.xz + vec2(s, 0.0));
+
+	// Calculate the normal
+	n.x = h_right - h_left;
+	n.y = 1.0;
+	n.z = h_below - h_above;
+
+	// Normalize the normal
+	n = normalize(n);
+
+	return n;
 }
 
 
 void main()
 {
-	// Calculate the vertex position using the four original points and interpolate depneding on the tessellation coordinates.	
+	// Calculate the vertex position using the four original points and interpolate depneding on the tessellation coordinates
 	gl_Position = interpolate4(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_in[2].gl_Position, gl_in[3].gl_Position);
 
 	// Sample the heightmap and offset y position of vertex
@@ -92,22 +117,16 @@ void main()
 	// Project the vertex to clip space and send it along
 	gl_Position = matP * matMv * gl_Position;
 
-	// Calculate normal vector 
-	tese_normal = vec3(0);
-	float s = terrainSize / terrainDensity;
-	tese_normal += cross(getPosWHeight(vec3(p.x - s, 0, p.z - s)) - p, getPosWHeight(vec3(p.x, 0, p.z - s)) - p); // top-left and top
-	tese_normal += cross(getPosWHeight(vec3(p.x + s, 0, p.z - s)) - p, getPosWHeight(vec3(p.x + s, 0, p.z)) - p); // top-right and right
-	tese_normal += cross(getPosWHeight(vec3(p.x + s, 0, p.z + s)) - p, getPosWHeight(vec3(p.x, 0, p.z + s)) - p); // bot-right and bot
-	tese_normal += cross(getPosWHeight(vec3(p.x - s, 0, p.z + s)) - p, getPosWHeight(vec3(p.x - s, 0, p.z)) - p); // bot left and left
+	tese_normal = getNormal(p);
 
 	// Calculate angle for steepness calculation
-	float angle = degrees(acos(dot(vec3(0, 1, 0), normalize(tese_normal))));
+	float angle = degrees(acos(dot(vec3(0, 1, 0), tese_normal)));
 
-	tese_normal = mat3(transpose(inverse(matM))) * normalize(tese_normal);
+	tese_normal = mat3(transpose(inverse(matM))) * tese_normal;
 
 	// calculate steepness factor for color calculation
-	float minAngle = 140;
-	float maxAngle = 155;
+	float minAngle = 0;
+	float maxAngle = 70;
 
 	steepness = clamp((angle - minAngle) / (maxAngle - minAngle), 0, 1);
 }

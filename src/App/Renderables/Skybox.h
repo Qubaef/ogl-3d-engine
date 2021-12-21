@@ -5,12 +5,12 @@
 
 #include "Engine/Common/Vao.h"
 #include "Engine/Common/Vbo.h"
-#include "Engine/CpuPipeline/Processable.h"
+#include "Engine/CpuPipeline/IProcessable.h"
 #include "Engine/Shaders/Shader.h"
 
 using namespace glm;
 
-class Skybox : public Processable
+class Skybox : public IProcessable
 {
 	Shader* shaderPtr;
 	GLuint skyboxTextureID;

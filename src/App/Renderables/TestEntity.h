@@ -3,9 +3,9 @@
 #include <string>
 #include <algorithm>
 
-#include "../../Engine/CpuPipeline/Processable.h"
+#include "../../Engine/CpuPipeline/IProcessable.h"
 
-class TestEntity : Processable
+class TestEntity : IProcessable
 {
 public:
 	TestEntity(Engine* enginePtr);

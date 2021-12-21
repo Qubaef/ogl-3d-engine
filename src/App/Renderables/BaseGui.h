@@ -1,8 +1,8 @@
 #pragma once
-#include "../../Engine/CpuPipeline/Processable.h"
+#include "../../Engine/CpuPipeline/IProcessable.h"
 #include "../../Engine/Engine.h"
 
-class BaseGui : public Processable
+class BaseGui : public IProcessable
 {
 	static const int frameTimesLength = 100;
 	float frameTimes[frameTimesLength] = {0};

@@ -29,7 +29,7 @@ public:
 	virtual void sendAndRender() = 0;
 
 	// Each Terrain should be able to return it's Shader object
-	//  * getShader will be called by TerrainManager every frame to pass MVP matrices
+	//  * getShader will be called by SimpleMeshTerrainManager every frame to pass MVP matrices
 	//  * it should either return own created shader, or the one passed during initialization
 	virtual Shader* getShader() = 0;
 

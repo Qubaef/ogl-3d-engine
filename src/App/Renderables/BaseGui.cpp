@@ -1,7 +1,7 @@
 #include "BaseGui.h"
 
 BaseGui::BaseGui(Engine* enginePtr) :
-	Processable(enginePtr)
+	IProcessable(enginePtr)
 {
 
 }

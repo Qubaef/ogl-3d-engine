@@ -10,7 +10,6 @@ uniform mat4 matP;
 
 uniform vec3 nodePos;
 uniform float nodeSize;
-uniform vec2 terrainPos;
 
 //
 // Inputs

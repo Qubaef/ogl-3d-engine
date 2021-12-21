@@ -1,4 +1,4 @@
-﻿#include "TerrainManager.h"
+﻿#include "SimpleMeshTerrainManager.h"
 #include "Engine/Camera/Camera.h"
 
 #include "FlatTerrain.h"
@@ -6,7 +6,7 @@
 #include "WaterTerrain.h"
 #include "SimplexTerrainChunk.h"
 
-void TerrainManager::terrainInit(int x, int y, int pointsPerLine)
+void SimpleMeshTerrainManager::terrainInit(int x, int y, int pointsPerLine)
 {
 	// Initialize terrain object
 	switch (terrainType)
@@ -45,8 +45,8 @@ void TerrainManager::terrainInit(int x, int y, int pointsPerLine)
 	ModelMatrixID = glGetUniformLocation(shaderPtr->get_ID(), "M");
 }
 
-TerrainManager::TerrainManager(Engine* enginePtr, TERRAIN_TYPE terrainType) :
-	Processable(enginePtr), terrainType(terrainType)
+SimpleMeshTerrainManager::SimpleMeshTerrainManager(Engine* enginePtr, TERRAIN_TYPE terrainType) :
+	IProcessable(enginePtr), terrainType(terrainType)
 {
 	ZoneScoped;
 
@@ -56,7 +56,7 @@ TerrainManager::TerrainManager(Engine* enginePtr, TERRAIN_TYPE terrainType) :
 	terrainInit(x, y, pointsPerLine);
 }
 
-void TerrainManager::preprocess()
+void SimpleMeshTerrainManager::preprocess()
 {
 	ZoneScoped;
 
@@ -104,16 +104,16 @@ void TerrainManager::preprocess()
 	}
 }
 
-void TerrainManager::process()
+void SimpleMeshTerrainManager::process()
 {
 	ZoneScoped;
-	//ZoneScopedN("TerrainManager - ProcessPerFrame");
+	//ZoneScopedN("SimpleMeshTerrainManager - ProcessPerFrame");
 
 	// Update terrain
 	terrainPtr->update();
 }
 
-void TerrainManager::render()
+void SimpleMeshTerrainManager::render()
 {
 	ZoneScoped
 

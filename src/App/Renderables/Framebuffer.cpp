@@ -14,7 +14,7 @@ float Framebuffer::framebufferVertices[24] = {
 
 
 Framebuffer::Framebuffer(Engine* enginePtr)
-	: Processable(enginePtr)
+	: IProcessable(enginePtr)
 {
 	defineRender();
 

@@ -1,6 +1,6 @@
-﻿#include "Processable.h"
+﻿#include "IProcessable.h"
 
-Processable::Processable(Engine* enginePtr) :
+IProcessable::IProcessable(Engine* enginePtr) :
 	enginePtr(enginePtr)
 {
 	// If following methods are not overriden in child class,
@@ -12,42 +12,42 @@ Processable::Processable(Engine* enginePtr) :
 	// postprocess();
 }
 
-void Processable::definePreprocess()
+void IProcessable::definePreprocess()
 {
 	implementationStatus |= preprocessFlag;
 }
 
-bool Processable::ifDefinedPreprocess()
+bool IProcessable::ifDefinedPreprocess()
 {
 	return (implementationStatus & preprocessFlag);
 }
 
-void Processable::defineProcess()
+void IProcessable::defineProcess()
 {
 	implementationStatus |= processFlag;
 }
 
-bool Processable::ifDefinedProcess()
+bool IProcessable::ifDefinedProcess()
 {
 	return (implementationStatus & processFlag);
 }
 
-void Processable::defineRender()
+void IProcessable::defineRender()
 {
 	implementationStatus |= renderFlag;
 }
 
-bool Processable::ifDefinedRender()
+bool IProcessable::ifDefinedRender()
 {
 	return (implementationStatus & renderFlag);
 }
 
-//void Processable::postprocess()
+//void IProcessable::postprocess()
 //{
 //	implementationStatus |= postprocessFlag;
 //}
 //
-//bool Processable::ifDefinedPostprocess()
+//bool IProcessable::ifDefinedPostprocess()
 //{
 //	return !(implementationStatus & (1 << 3));
 //}

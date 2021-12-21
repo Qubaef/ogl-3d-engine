@@ -2,7 +2,7 @@
 #include <vector>
 
 #include "Terrain.h"
-#include "TerrainManager.h"
+#include "SimpleMeshTerrainManager.h"
 
 class WaterTerrain : public Terrain
 {
