@@ -1,12 +1,10 @@
-﻿#include "LodTerrain.h"
+﻿#include "SingleMeshLodTerrain.h"
 
 #include "Engine/Engine.h"
 
-LodTerrain::LodTerrain(Engine* enginePtr)
-	: Processable(enginePtr)
+SingleMeshLodTerrain::SingleMeshLodTerrain(Engine* enginePtr, int size, int density, int minLodPatchSize)
+	: IProcessable(enginePtr), size(size), density(density), minLodPatchSize(minLodPatchSize)
 {
-	ZoneScoped;
-
 	shaderPtr = enginePtr->getShaderByName("TerrainLod");
 
 	// Initialize terrainQuadTree
@@ -16,37 +14,35 @@ LodTerrain::LodTerrain(Engine* enginePtr)
 	shaderPtr->use();
 
 	// Get uniforms handles
-	matMvpId = glGetUniformLocation(shaderPtr->get_ID(), "matMvp");
-	matMvId = glGetUniformLocation(shaderPtr->get_ID(), "matMv");
-	matMId = glGetUniformLocation(shaderPtr->get_ID(), "matM");
-	matPId = glGetUniformLocation(shaderPtr->get_ID(), "matP");
+	uniformId_matMvp = glGetUniformLocation(shaderPtr->get_ID(), "matMvp");
+	uniformId_matMv = glGetUniformLocation(shaderPtr->get_ID(), "matMv");
+	uniformId_matM = glGetUniformLocation(shaderPtr->get_ID(), "matM");
+	uniformId_matP = glGetUniformLocation(shaderPtr->get_ID(), "matP");
 
-	nodePosId = glGetUniformLocation(shaderPtr->get_ID(), "nodePos");
-	nodeSizeId = glGetUniformLocation(shaderPtr->get_ID(), "nodeSize");
-	terrainPosId = glGetUniformLocation(shaderPtr->get_ID(), "terrainPos");
+	uniformId_nodePos = glGetUniformLocation(shaderPtr->get_ID(), "nodePos");
+	uniformId_nodeSize = glGetUniformLocation(shaderPtr->get_ID(), "nodeSize");
 
-	viewportId = glGetUniformLocation(shaderPtr->get_ID(), "viewport");
-	terrainHeightId = glGetUniformLocation(shaderPtr->get_ID(), "terrainHeight");
+	uniformId_viewport = glGetUniformLocation(shaderPtr->get_ID(), "viewport");
+	uniformId_terrainHeight = glGetUniformLocation(shaderPtr->get_ID(), "terrainHeight");
 
-	terrainHeightOffsetId = glGetUniformLocation(shaderPtr->get_ID(), "terrainHeightOffset");
-	terrainDensity = glGetUniformLocation(shaderPtr->get_ID(), "terrainDensity");
-	terrainSize = glGetUniformLocation(shaderPtr->get_ID(), "terrainSize");
+	uniformId_terrainDensity = glGetUniformLocation(shaderPtr->get_ID(), "terrainDensity");
+	uniformId_terrainSize = glGetUniformLocation(shaderPtr->get_ID(), "terrainSize");
 
-	viewPosId = glGetUniformLocation(shaderPtr->get_ID(), "viewPos");
+	uniformId_viewPos = glGetUniformLocation(shaderPtr->get_ID(), "viewPos");
 
-	// Prepare vertex data
+	// Init vertex data
 	vertexData[0] = glm::vec3(0, 0, 0);
 	vertexData[1] = glm::vec3(0, 0, 1);
 	vertexData[2] = glm::vec3(1, 0, 0);
 	vertexData[3] = glm::vec3(1, 0, 1);
 
-	// Prepare normals data
+	// Init normals data
 	normalsData[0] = glm::vec3(0, 1, 0);
 	normalsData[1] = glm::vec3(0, 1, 0);
 	normalsData[2] = glm::vec3(0, 1, 0);
 	normalsData[3] = glm::vec3(0, 1, 0);
 
-	// Prepare indices data
+	// Init indices data
 	indicesData[0] = 0;
 	indicesData[1] = 1;
 	indicesData[2] = 2;
@@ -70,16 +66,16 @@ LodTerrain::LodTerrain(Engine* enginePtr)
 	}
 
 	// bind global VAO object
-	glBindVertexArray(mainVao.id);
+	glBindVertexArray(vao_main.id);
 
 	// select indices VBO (to perform VBO indexing)
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer.id);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo_indices.id);
 	// bind indices VBO
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicesData), &indicesData[0], GL_DYNAMIC_DRAW);
 
 	//// 1st vertex shader input attribute - vertex data
 		// select vertex VBO
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer.id);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertex.id);
 	// copy data to gpu memory (to VBO)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * 4, vertexData, GL_DYNAMIC_DRAW);
 	// redirect buffer to input of the shader
@@ -96,7 +92,7 @@ LodTerrain::LodTerrain(Engine* enginePtr)
 
 	// 2nd vertex shader input attribute - normals
 	// select normals VBO
-	glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer.id);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_normals.id);
 	// copy data to gpu memory (to VBO)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * 4, normalsData, GL_DYNAMIC_DRAW);
 	// redirect buffer to input of the shader
@@ -112,24 +108,21 @@ LodTerrain::LodTerrain(Engine* enginePtr)
 	glEnableVertexAttribArray(1);
 }
 
-void LodTerrain::preprocess()
+void SingleMeshLodTerrain::preprocess()
 {
 
 }
 
-void LodTerrain::process()
+void SingleMeshLodTerrain::process()
 {
-	ZoneScoped;
-
 	// Update Nodes
 	glm::vec3 pos = enginePtr->getCamera()->getPosition();
 	pos.y = 0;
-	float minSize = 10;
 
-	terrainQuadTree->update(pos, minSize);
+	terrainQuadTree->update(pos, minLodPatchSize);
 }
 
-void LodTerrain::render()
+void SingleMeshLodTerrain::render()
 {
 	ZoneScoped;
 
@@ -139,7 +132,7 @@ void LodTerrain::render()
 	glm::mat4* Mvp = cameraPtr->getMVPMatrix();
 	glm::mat4* M = cameraPtr->getModelMatrix();
 	glm::mat4* P = cameraPtr->getProjectionMatrix();
-	glm::mat4 Mv = (*cameraPtr->getViewMatrix()) * (*M);
+	glm::mat4 Mv = *(cameraPtr->getViewMatrix()) * (*M);
 
 	int viewportW = enginePtr->getConstProperties().windowWidth;
 	int viewportH = enginePtr->getConstProperties().windowHeight;
@@ -149,25 +142,23 @@ void LodTerrain::render()
 	// Update all uniforms
 	shaderPtr->use();
 
-	glUniformMatrix4fv(matMvpId, 1, GL_FALSE, &(*Mvp)[0][0]);
-	glUniformMatrix4fv(matMvId, 1, GL_FALSE, &(Mv)[0][0]);
-	glUniformMatrix4fv(matMId, 1, GL_FALSE, &(*M)[0][0]);
-	glUniformMatrix4fv(matPId, 1, GL_FALSE, &(*P)[0][0]);
+	glUniformMatrix4fv(uniformId_matMvp, 1, GL_FALSE, &(*Mvp)[0][0]);
+	glUniformMatrix4fv(uniformId_matMv, 1, GL_FALSE, &(Mv)[0][0]);
+	glUniformMatrix4fv(uniformId_matM, 1, GL_FALSE, &(*M)[0][0]);
+	glUniformMatrix4fv(uniformId_matP, 1, GL_FALSE, &(*P)[0][0]);
 
-	glUniform2f(terrainPosId, -size / 2, -size / 2);
-	glUniform2f(viewportId, viewportW, viewportH);
-	glUniform1i(terrainHeightId, 0);
+	glUniform2f(uniformId_viewport, viewportW, viewportH);
+	glUniform1i(uniformId_terrainHeight, 0);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, heightmap->textureId);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 
-	glUniform1f(terrainHeightOffsetId, 0.0);
-	glUniform1f(terrainDensity, density);
-	glUniform1f(terrainSize, size);
+	glUniform1f(uniformId_terrainDensity, density);
+	glUniform1f(uniformId_terrainSize, size);
 
-	glUniform3f(viewPosId, viewPos.x, viewPos.y, viewPos.z);
+	glUniform3f(uniformId_viewPos, viewPos.x, viewPos.y, viewPos.z);
 
 	// Set materials
 	shaderPtr->set_vec3("materialSteep.ambient", vec3(0.298f, 0.282f, 0.27f));
@@ -182,11 +173,11 @@ void LodTerrain::render()
 
 	// Attributes setup and global VAO creation
 	// bind global VAO object
-	glBindVertexArray(mainVao.id);
+	glBindVertexArray(vao_main.id);
 
 	// Specify patch size
 	glPatchParameteri(GL_PATCH_VERTICES, 4);
 
 	// Render whole Terrain Tree
-	terrainQuadTree->render(shaderPtr, nodePosId, nodeSizeId, enginePtr);
+	terrainQuadTree->render(shaderPtr, uniformId_nodePos, uniformId_nodeSize, enginePtr);
 }

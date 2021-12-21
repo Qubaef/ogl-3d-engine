@@ -40,6 +40,7 @@ out vec4 fragColor;
 // Inputs
 //
 in float steepness;
+in float tesselation_level;
 
 in vec3 tese_normal;
 in vec3 tese_fragPos;
@@ -74,9 +75,9 @@ void main()
 {
 	//// Calculate result basing on directional light
 	vec3 viewDir = normalize(viewPos - tese_fragPos);
-	// gl_FragDepth;
-	vec4 color = vec4(calculate_dirLight(dir_light, tese_normal, viewDir, interpolateMaterials(materialSteep, materialFlat, steepness)), 1.f);
-	
+	vec4 color = vec4(calculate_dirLight(dir_light, tese_normal, viewDir, interpolateMaterials(materialFlat, materialSteep, steepness)), 1.f);
+	// vec4 color = vec4(tese_normal, 1.f);
+
 	float u_fogDensity = 0.00010;
 	float fogDistance = length(viewPos - tese_fragPos);
 	float fogAmount = 1. - exp2(-u_fogDensity * u_fogDensity * fogDistance * fogDistance * LOG2);

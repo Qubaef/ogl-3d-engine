@@ -10,7 +10,7 @@
 #include "Properties/ConstProperties.h"
 
 /* Obligatory engine includes */
-#include "CpuPipeline/Processable.h"
+#include "CpuPipeline/IProcessable.h"
 
 #include "CpuPipeline/ProcessableQueue.h"
 #include "Camera/Camera.h"
@@ -35,7 +35,7 @@ private:
 	GLFWwindow* engineWindowPtr = NULL;
 
 	// Container keeping references to all Processables registered to the engine
-	std::vector<Processable*> processableList;
+	std::vector<IProcessable*> processableList;
 
 	// Queue storing and executing given pre render tasks every frame
 	ProcessableQueue* processableQueue;
@@ -111,8 +111,8 @@ public:
 	// Register directional Light for 
 	void setDirectionalLight();
 
-	// Register new Processable static task in the Engine
-	bool registerProcessable(Processable* processablePtr);
+	// Register new IProcessable static task in the Engine
+	bool registerProcessable(IProcessable* processablePtr);
 
 	// Register camera/input manager for the engine
 	void registerCamera(Camera* cameraPtr);

@@ -1,12 +1,12 @@
 #include "Engine/Engine.h"
 #include "CameraControllers/OverviewCameraController.h"
 #include "CameraControllers/FirstPersonCameraController.h"
-#include "Renderables/Terrain/TerrainManager.h"
+#include "Renderables/Terrain/SimpleMeshTerrainManager.h"
 #include "Renderables/BaseGui.h"
 #include "Renderables/Skybox.h"
 #include "Renderables/Sphere.h"
 #include "Renderables/Framebuffer.h"
-#include "Renderables/LodTerrain/LodTerrain.h"
+#include "Renderables/LodTerrain/SingleMeshLodTerrain.h"
 
 int main()
 {
@@ -63,13 +63,13 @@ int main()
 	// enginePtr->registerCamera(reinterpret_cast<Camera*>(new OverviewCameraController(enginePtr, new InputManager(enginePtr))));
 
 	/* Register processing and rendering tasks */
-	enginePtr->registerProcessable(reinterpret_cast<Processable*>(new Sphere(enginePtr)));
-	enginePtr->registerProcessable(reinterpret_cast<Processable*>(new LodTerrain(enginePtr)));
-	// enginePtr->registerProcessable(reinterpret_cast<Processable*>(new TerrainManager(enginePtr, TerrainManager::SIMPLEX)));
-	enginePtr->registerProcessable(reinterpret_cast<Processable*>(new Skybox(enginePtr)));
+	enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new Sphere(enginePtr)));
+	enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new SingleMeshLodTerrain(enginePtr, 5000, 5000, 8)));
+	// enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new SimpleMeshTerrainManager(enginePtr, SimpleMeshTerrainManager::SIMPLEX)));
+	enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new Skybox(enginePtr)));
 
-	enginePtr->registerProcessable(reinterpret_cast<Processable*>(new Framebuffer(enginePtr)));
-	enginePtr->registerProcessable(reinterpret_cast<Processable*>(new BaseGui(enginePtr)));
+	// enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new Framebuffer(enginePtr)));
+	enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new BaseGui(enginePtr)));
 
 
 	// Start the Engine

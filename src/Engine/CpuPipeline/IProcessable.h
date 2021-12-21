@@ -6,7 +6,7 @@
 
 class Engine;
 
-class Processable
+class IProcessable
 {
 private:
 	int implementationStatus = 0;
@@ -20,7 +20,7 @@ protected:
 	Engine* enginePtr;
 
 public:
-	Processable(Engine* enginePtr);
+	IProcessable(Engine* enginePtr);
 
 	// Operation characteristics:
 	// * performed in main thread
@@ -32,7 +32,7 @@ public:
 
 	// Operation characteristics:
 	// * performed in one of the worker threads
-	// * executed in processing phase, so should be independent of other Processable components
+	// * executed in processing phase, so should be independent of other IProcessable components
 	// * PARALLEL, so it should contain heaviest of the calculations (e.g. physics calculation)
 	virtual void process() = 0;
 	void defineProcess();
@@ -53,8 +53,8 @@ public:
 	// virtual void postprocess();
 	// bool ifDefinedPostprocess();
 
-	// To provide that Processable is abstract class
-	virtual ~Processable() = default;
+	// To provide that IProcessable is abstract class
+	virtual ~IProcessable() = default;
 };
 
 #endif

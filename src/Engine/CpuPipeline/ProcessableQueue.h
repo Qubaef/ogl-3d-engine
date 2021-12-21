@@ -6,13 +6,13 @@
 #include <vector>
 #include <queue>
 
-#include "Processable.h"
+#include "IProcessable.h"
 #include "Task.h"
 
 class ProcessableQueue
 {
 	// Main vector
-	std::vector<Processable*> processablesList;
+	std::vector<IProcessable*> processablesList;
 
 	// Queue of tasks to perform
 	std::queue<Task> tasksQueue;
@@ -53,7 +53,7 @@ public:
 	ProcessableQueue(int numberOfWorkers);
 
 	// Add new processable to the queue
-	void pushProcessable(Processable* processable);
+	void pushProcessable(IProcessable* processable);
 
 	
 	// Execute and finish Preprocess phase

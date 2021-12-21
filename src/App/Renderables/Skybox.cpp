@@ -48,7 +48,7 @@ float Skybox::skyboxVertices[108] = {
 };
 
 Skybox::Skybox(Engine* enginePtr)
-	: Processable(enginePtr)
+	: IProcessable(enginePtr)
 {
 	ZoneScoped;
 

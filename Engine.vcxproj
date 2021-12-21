@@ -257,7 +257,7 @@
     <ClCompile Include="src\App\Renderables\Framebuffer.cpp" />
     <ClCompile Include="src\App\Renderables\LodTerrain\Heightmap.cpp" />
     <ClCompile Include="src\App\Renderables\Sphere.cpp" />
-    <ClCompile Include="src\App\Renderables\LodTerrain\LodTerrain.cpp" />
+    <ClCompile Include="src\App\Renderables\LodTerrain\SingleMeshLodTerrain.cpp" />
     <ClCompile Include="src\Engine\Common\ImageLibWrapper.cpp" />
     <ClCompile Include="src\Engine\CpuPipeline\ProcessableQueue.cpp" />
     <ClCompile Include="src\App\Renderables\BaseGui.cpp" />
@@ -285,7 +285,7 @@
     <ClCompile Include="src\App\Renderables\Terrain\RandomTerrain.cpp" />
     <ClCompile Include="src\App\Renderables\Terrain\SimplexNoise.cpp" />
     <ClCompile Include="src\App\Renderables\Terrain\SimplexTerrainChunk.cpp" />
-    <ClCompile Include="src\App\Renderables\Terrain\TerrainManager.cpp" />
+    <ClCompile Include="src\App\Renderables\Terrain\SimpleMeshTerrainManager.cpp" />
     <ClCompile Include="src\App\Renderables\Terrain\WaterTerrain.cpp" />
     <ClCompile Include="src\App\Renderables\TestEntity.cpp" />
     <ClCompile Include="src\Engine\Camera\Camera.cpp" />
@@ -296,7 +296,7 @@
     <ClCompile Include="src\Engine\Lights\LightDirectional.cpp" />
     <ClCompile Include="src\Engine\Lights\LightPoint.cpp" />
     <ClCompile Include="src\Engine\Logger\Logger.cpp" />
-    <ClCompile Include="src\Engine\CpuPipeline\Processable.cpp" />
+    <ClCompile Include="src\Engine\CpuPipeline\IProcessable.cpp" />
     <ClCompile Include="src\Engine\Shaders\Shader.cpp" />
     <ClCompile Include="src\Engine\Shaders\ShaderManager.cpp" />
     <ClCompile Include="tracy\TracyClient.cpp" />
@@ -306,7 +306,7 @@
     <ClInclude Include="src\App\Renderables\LodTerrain\Heightmap.h" />
     <ClInclude Include="src\App\Renderables\LodTerrain\QuadTerrainNode.h" />
     <ClInclude Include="src\App\Renderables\Sphere.h" />
-    <ClInclude Include="src\App\Renderables\LodTerrain\LodTerrain.h" />
+    <ClInclude Include="src\App\Renderables\LodTerrain\SingleMeshLodTerrain.h" />
     <ClInclude Include="src\App\Renderables\Terrain\SimplexNoiseWrapper.h" />
     <ClInclude Include="src\Engine\Common\ImageLibWrapper.h" />
     <ClInclude Include="src\Engine\CpuPipeline\ProcessableQueue.h" />
@@ -337,7 +337,7 @@
     <ClInclude Include="src\App\Renderables\Terrain\SimplexNoise.h" />
     <ClInclude Include="src\App\Renderables\Terrain\SimplexTerrainChunk.h" />
     <ClInclude Include="src\App\Renderables\Terrain\Terrain.h" />
-    <ClInclude Include="src\App\Renderables\Terrain\TerrainManager.h" />
+    <ClInclude Include="src\App\Renderables\Terrain\SimpleMeshTerrainManager.h" />
     <ClInclude Include="src\App\Renderables\Terrain\WaterTerrain.h" />
     <ClInclude Include="src\App\Renderables\TestEntity.h" />
     <ClInclude Include="src\Engine\Camera\Camera.h" />
@@ -357,7 +357,7 @@
     <ClInclude Include="src\Engine\Properties\ConstProperties.h" />
     <ClInclude Include="src\Engine\Properties\RenderProperties.h" />
     <ClInclude Include="src\Engine\Properties\TimeProperties.h" />
-    <ClInclude Include="src\Engine\CpuPipeline\Processable.h" />
+    <ClInclude Include="src\Engine\CpuPipeline\IProcessable.h" />
     <ClInclude Include="src\Engine\Shaders\Shader.h" />
     <ClInclude Include="src\Engine\Shaders\ShaderManager.h" />
   </ItemGroup>
@@ -371,7 +371,6 @@
     <None Include="src\Shaderfiles\SkyboxFragmentShader.frag" />
     <None Include="src\Shaderfiles\SkyboxVertexShader.vert" />
     <None Include="src\Shaderfiles\TerrainLod.frag" />
-    <None Include="src\Shaderfiles\TerrainLod.geom" />
     <None Include="src\Shaderfiles\TerrainLod.tesc" />
     <None Include="src\Shaderfiles\TerrainLod.tese" />
     <None Include="src\Shaderfiles\TerrainLod.vert" />

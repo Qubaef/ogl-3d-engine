@@ -1,11 +1,11 @@
 ﻿#pragma once
-#include "Engine/CpuPipeline/Processable.h"
+#include "Engine/CpuPipeline/IProcessable.h"
 #include "Terrain.h"
 #include "Engine/Engine.h"
 
-class TerrainManager : public Processable
+class SimpleMeshTerrainManager : public IProcessable
 {
-	// Shader used for TerrainManager
+	// Shader used for SimpleMeshTerrainManager
 	Shader* shaderPtr;
 
 	// Terrain specific object, which provides operations on terrain mesh 
@@ -31,7 +31,7 @@ public:
 	int y = 500;
 	int pointsPerLine = 501;
 
-	TerrainManager(Engine* enginePtr, TERRAIN_TYPE terrainType);
+	SimpleMeshTerrainManager(Engine* enginePtr, TERRAIN_TYPE terrainType);
 
 	void preprocess() override;
 
@@ -39,5 +39,5 @@ public:
 
 	void render() override;
 
-	~TerrainManager() override = default;
+	~SimpleMeshTerrainManager() override = default;
 };

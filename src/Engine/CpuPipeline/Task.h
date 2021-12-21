@@ -1,23 +1,23 @@
 ﻿#pragma once
 #ifndef TASK_H
 #define TASK_H
-#include "Processable.h"
+#include "IProcessable.h"
 #include "Renderable.h"
 
 struct Task
 {
-	// Processable method pointer
-	typedef void (Processable::* ProcessableFunction) ();
+	// IProcessable method pointer
+	typedef void (IProcessable::* ProcessableFunction) ();
 
 	ProcessableFunction function;
-	Processable* ownerPtr;
+	IProcessable* ownerPtr;
 
 	Task() :
 		function(nullptr), ownerPtr(nullptr)
 	{
 	}
 
-	Task(Processable* ownerPtr, ProcessableFunction function) :
+	Task(IProcessable* ownerPtr, ProcessableFunction function) :
 		function(function), ownerPtr(ownerPtr)
 	{
 	}

@@ -1,11 +1,11 @@
 ﻿#pragma once
 
-#include "Engine/CpuPipeline/Processable.h"
+#include "Engine/CpuPipeline/IProcessable.h"
 #include "Engine/Engine.h"
 #include "Engine/Common/Vao.h"
 #include "Engine/Common/Vbo.h"
 
-class Framebuffer : public Processable
+class Framebuffer : public IProcessable
 {
 	Shader* shaderPtr = nullptr;
 

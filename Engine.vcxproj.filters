@@ -99,7 +99,7 @@
     <ClCompile Include="src\App\Renderables\Terrain\SimplexTerrainChunk.cpp">
       <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="src\App\Renderables\Terrain\TerrainManager.cpp">
+    <ClCompile Include="src\App\Renderables\Terrain\SimpleMeshTerrainManager.cpp">
       <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="src\App\Renderables\Terrain\WaterTerrain.cpp">
@@ -162,7 +162,7 @@
     <ClCompile Include="src\App\Renderables\Skybox.cpp">
       <Filter>Pliki źródłowe\App\Renderables</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\CpuPipeline\Processable.cpp">
+    <ClCompile Include="src\Engine\CpuPipeline\IProcessable.cpp">
       <Filter>Pliki źródłowe\Engine\Renderables</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Camera\Camera.cpp">
@@ -198,7 +198,7 @@
     <ClCompile Include="src\App\Renderables\Sphere.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="src\App\Renderables\LodTerrain\LodTerrain.cpp">
+    <ClCompile Include="src\App\Renderables\LodTerrain\SingleMeshLodTerrain.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="src\App\Renderables\LodTerrain\Heightmap.cpp">
@@ -239,7 +239,7 @@
     <ClInclude Include="src\App\Renderables\Terrain\SimplexTerrainChunk.h">
       <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="src\App\Renderables\Terrain\TerrainManager.h">
+    <ClInclude Include="src\App\Renderables\Terrain\SimpleMeshTerrainManager.h">
       <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClInclude>
     <ClInclude Include="src\App\Renderables\Terrain\WaterTerrain.h">
@@ -317,7 +317,7 @@
     <ClInclude Include="src\App\Renderables\Skybox.h">
       <Filter>Pliki źródłowe\App\Renderables</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\CpuPipeline\Processable.h">
+    <ClInclude Include="src\Engine\CpuPipeline\IProcessable.h">
       <Filter>Pliki źródłowe\Engine\Renderables</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Camera\Camera.h">
@@ -371,7 +371,7 @@
     <ClInclude Include="src\App\Renderables\Sphere.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\App\Renderables\LodTerrain\LodTerrain.h">
+    <ClInclude Include="src\App\Renderables\LodTerrain\SingleMeshLodTerrain.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="src\App\Renderables\LodTerrain\QuadTerrainNode.h">
@@ -414,7 +414,6 @@
     <None Include="src\Shaderfiles\HeightmapGenerationShader.comp" />
     <None Include="src\Shaderfiles\TerrainLod.tese" />
     <None Include="src\Shaderfiles\TerrainLod.tesc" />
-    <None Include="src\Shaderfiles\TerrainLod.geom" />
     <None Include="src\Shaderfiles\FramebufferShader.frag" />
     <None Include="src\Shaderfiles\FramebufferShader.vert" />
   </ItemGroup>

@@ -165,7 +165,7 @@ void Engine::startPhaseEnginePrep()
 //	{
 //		// SafeTaskQueue test initialize:
 //		TestEntity testEntity(this);
-//		Task testTask(reinterpret_cast<Processable*>(&testEntity), &Processable::process);
+//		Task testTask(reinterpret_cast<IProcessable*>(&testEntity), &IProcessable::process);
 //		int testSize = 100;
 //		for (int i = 0; i < testSize; i++)
 //		{
@@ -372,7 +372,7 @@ void Engine::setDirectionalLight()
 
 }
 
-bool Engine::registerProcessable(Processable* processablePtr)
+bool Engine::registerProcessable(IProcessable* processablePtr)
 {
 	ZoneScoped;
 

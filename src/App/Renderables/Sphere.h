@@ -1,13 +1,13 @@
 ﻿#pragma once
 
-#include "Engine/CpuPipeline/Processable.h"
+#include "Engine/CpuPipeline/IProcessable.h"
 #include "Engine/Engine.h"
 #include "Engine/Common/Vao.h"
 #include "Engine/Common/Vbo.h"
 
-class Sphere : public Processable
+class Sphere : public IProcessable
 {
-	// Shader used for TerrainManager
+	// Shader used for SimpleMeshTerrainManager
 	Shader* shaderPtr;
 
 	// Handles to view matrices ids

@@ -34,26 +34,26 @@ void ProcessableQueue::refreshQueue()
 	// Lock access to the taskQueue
 	queueModificationMutex.lock();
 
-	for (Processable* processable : processablesList)
+	for (IProcessable* processable : processablesList)
 	{
 		switch (phase)
 		{
 		case PREPROCESS:
 			if (processable->ifDefinedPreprocess())
 			{
-				tasksQueue.push(Task(processable, &Processable::preprocess));
+				tasksQueue.push(Task(processable, &IProcessable::preprocess));
 			}
 			break;
 		case PROCESS:
 			if (processable->ifDefinedProcess())
 			{
-				tasksQueue.push(Task(processable, &Processable::process));
+				tasksQueue.push(Task(processable, &IProcessable::process));
 			}
 			break;
 		case RENDER:
 			if (processable->ifDefinedRender())
 			{
-				tasksQueue.push(Task(processable, &Processable::render));
+				tasksQueue.push(Task(processable, &IProcessable::render));
 			}
 			break;
 		case NONE: break;
@@ -116,7 +116,7 @@ ProcessableQueue::ProcessableQueue(int numberOfWorkers)
 	}
 }
 
-void ProcessableQueue::pushProcessable(Processable* processable)
+void ProcessableQueue::pushProcessable(IProcessable* processable)
 {
 	ZoneScoped;
 
