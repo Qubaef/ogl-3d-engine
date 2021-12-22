@@ -31,4 +31,7 @@ public:
 
 	vec3 getPosition();
 	vec3 getDirection();
+
+	void setPosition(vec3 positionVec);
+	void setDirection(vec3 directionVec);
 };

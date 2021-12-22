@@ -400,6 +400,7 @@ int Engine::run()
 	// Perform additional checks to make sure that Engine is ready for running
 	if (this->cameraPtr == NULL)
 	{
+		LOG.ERROR("Missing camera");
 		return -1;
 	}
 
@@ -424,9 +425,6 @@ int Engine::run()
 
 		// Update shaders uniforms with lights
 		shaderManagerPtr->updatePerFrame();
-
-		// Update matrices according to user's input
-		cameraPtr->updatePerFrame();
 
 		// Wait for preRenderQueue to be finished
 		// while waiting, start performing processable tasks, if there are some already waiting for execution

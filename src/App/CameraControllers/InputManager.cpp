@@ -1,6 +1,7 @@
 ﻿#include "InputManager.h"
 
 #include "../../Engine/Engine.h"
+#include "KeyState.h"
 
 void InputManager::set_window_user_pointer()
 {
@@ -68,29 +69,29 @@ InputState& InputManager::process_input()
 	{
 		if (glfwGetKey(p_window, keyState.first) == GLFW_PRESS)
 		{
-			if (keyState.second == InputState::NOT_PRESSED)
+			if (keyState.second == NOT_PRESSED)
 			{
-				keyState.second = InputState::JUST_PRESSED;
+				keyState.second = JUST_PRESSED;
 			}
 			else
 			{
-				keyState.second = InputState::HOLD_PRESSED;
+				keyState.second = HOLD_PRESSED;
 			}
 		}
-		else if (glfwGetKey(p_window, keyState.first) == GLFW_RELEASE && keyState.second != InputState::NOT_PRESSED)
+		else if (glfwGetKey(p_window, keyState.first) == GLFW_RELEASE && keyState.second != NOT_PRESSED)
 		{
-			keyState.second = InputState::NOT_PRESSED;
+			keyState.second = NOT_PRESSED;
 		}
 	}
 
 	return input_state;
 }
 
-void InputManager::register_key_event(int glfw_key_number)
+void InputManager::register_key_event(int glfwKeyNumber)
 {
 	ZoneScoped;
 
-	input_state.register_key(glfw_key_number);
+	input_state.registerKey(glfwKeyNumber);
 }
 
 
@@ -150,6 +151,11 @@ InputState& InputManager::get_input_state()
 	ZoneScoped;
 
 	return input_state;
+}
+
+KeyState InputManager::getKeyState(int glfwKeyNumber)
+{
+	return input_state.ifKeyPressed(glfwKeyNumber);
 }
 
 vec2 InputManager::get_mouse_pos()

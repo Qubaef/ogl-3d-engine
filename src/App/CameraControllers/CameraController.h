@@ -33,7 +33,7 @@ protected:
 	vec3 cameraUp;
 	vec3 directionFlattened;
 
-	// methods
+	// Methods
 	void updateProjection();
 	void updateView();
 	void updateModel();
@@ -50,11 +50,16 @@ public:
 
 	// Each CameraController should provide it's own implementation of updateCamera method
 	// updateCamera is being called every execution of render loop in the Engine
-	virtual void updatePerFrame() = 0;
+	void updatePerFrame() override = 0;
+
+	// Each CameraController should provide it's own implementation of enable method
+	// enable is being called every time the camera is enabled, so it should prepare environment for
+	// the camera to be used (the window, cursor, etc.)
+	virtual void enable() = 0;
 
 	// Process input common for all CameraControllers
-	virtual void registerInput();
-	void defaultInput();
+	virtual void registerDefaultInput();
 
-	vec3& getPosition();
+	// Process camera input common for all CameraControllers
+	void processDefaultInput();
 };

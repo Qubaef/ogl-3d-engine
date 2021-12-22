@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include <map>
+
+#include "KeyState.h"
 #include "../../Engine/Include/Common.h"
 
 using namespace glm;
@@ -22,13 +24,6 @@ struct InputState
 	vec2 mouse_scroll_position;
 	double mouse_scroll_y_offset;
 
-	enum KeyState
-	{
-		NOT_PRESSED,
-		JUST_PRESSED,
-		HOLD_PRESSED
-	};
-
 	// Inputs which are specified by user to check them every frame
 	// You can specify them by setting key registration in inputManager()
 	std::map<int, KeyState> keysStates;
@@ -43,15 +38,19 @@ struct InputState
 	}
 
 	// Set registration of key of given number
-	void register_key(int glfw_key_number)
+	void registerKey(int glfw_key_number)
 	{
-		keysStates[glfw_key_number] = NOT_PRESSED;
+		if(keysStates.find(glfw_key_number) == keysStates.end())
+		{
+			keysStates[glfw_key_number] = NOT_PRESSED;
+		}
 	}
 
 	// Check if key of given number is pressed
-	KeyState if_key_pressed(int glfw_key_number)
+	KeyState ifKeyPressed(int glfw_key_number)
 	{
 		auto it = keysStates.find(glfw_key_number);
+
 		if (it != keysStates.end())
 		{
 			return it->second;
@@ -62,7 +61,7 @@ struct InputState
 		}
 	}
 
-	bool if_mouse_scroll_moved()
+	bool ifMouseScrollMoved()
 	{
 		if (mouse_scroll_moved)
 		{

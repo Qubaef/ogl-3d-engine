@@ -43,3 +43,13 @@ vec3 Camera::getDirection()
 {
 	return cameraDirection;
 }
+
+void Camera::setPosition(vec3 positionVec)
+{
+	this->cameraPosition = positionVec;
+}
+
+void Camera::setDirection(vec3 directionVec)
+{
+	this->cameraDirection = directionVec;
+}

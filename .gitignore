@@ -260,6 +260,9 @@ paket-files/
 __pycache__/
 *.pyc
 
+# VsCode
+.vscode/
+
 # Tracy collected data
 output.tracy
 
