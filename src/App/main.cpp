@@ -1,6 +1,9 @@
 #include "Engine/Engine.h"
+#include "CameraControllers/CameraManager.h"
 #include "CameraControllers/OverviewCameraController.h"
 #include "CameraControllers/FirstPersonCameraController.h"
+#include "CameraControllers/MenuUseCameraController.h"
+
 #include "Renderables/Terrain/SimpleMeshTerrainManager.h"
 #include "Renderables/BaseGui.h"
 #include "Renderables/Skybox.h"
@@ -58,18 +61,21 @@ int main()
 		"src/Shaderfiles/FramebufferShader.frag");
 	enginePtr->registerShader(framebufferShader);
 	
-	/* Register camera */
-	enginePtr->registerCamera(reinterpret_cast<Camera*>(new FirstPersonCameraController(enginePtr, new InputManager(enginePtr))));
-	// enginePtr->registerCamera(reinterpret_cast<Camera*>(new OverviewCameraController(enginePtr, new InputManager(enginePtr))));
+	/* Register camera manager */
+	CameraManager* cameraManager = new CameraManager(enginePtr, inputManager);
+	cameraManager->addCamera(new MenuUseCameraController(enginePtr, inputManager));
+	cameraManager->addCamera(new FirstPersonCameraController(enginePtr, inputManager));
+	cameraManager->addCamera(new OverviewCameraController(enginePtr, inputManager));
+	enginePtr->registerProcessable(cameraManager);
 
 	/* Register processing and rendering tasks */
-	enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new Sphere(enginePtr)));
-	enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new SingleMeshLodTerrain(enginePtr, 5000, 5000, 8)));
+	enginePtr->registerProcessable(new Sphere(enginePtr));
+	enginePtr->registerProcessable(new SingleMeshLodTerrain(enginePtr, 5000, 5000, 8));
 	// enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new SimpleMeshTerrainManager(enginePtr, SimpleMeshTerrainManager::SIMPLEX)));
-	enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new Skybox(enginePtr)));
+	enginePtr->registerProcessable(new Skybox(enginePtr));
 
 	// enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new Framebuffer(enginePtr)));
-	enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new BaseGui(enginePtr)));
+	enginePtr->registerProcessable(new BaseGui(enginePtr));
 
 
 	// Start the Engine

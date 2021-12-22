@@ -20,7 +20,7 @@ CameraController::CameraController(Engine* enginePtr, InputManager* p_input_mana
 	this->cameraUp = vec3(0, 1, 0);
 
 	generate_matrices();
-	registerInput();
+	registerDefaultInput();
 
 	// Set default DrawMode
 	draw_mode = FILLED;
@@ -50,7 +50,7 @@ CameraController::CameraController(Engine* enginePtr, InputManager* p_input_mana
 	this->cameraUp = vec3(0, 1, 0);
 
 	generate_matrices();
-	registerInput();
+	registerDefaultInput();
 
 	// Set default DrawMode
 	draw_mode = FILLED;
@@ -143,29 +143,22 @@ void CameraController::updateMVP()
 }
 
 
-void CameraController::registerInput()
+void CameraController::registerDefaultInput()
 {
 	ZoneScoped;
 
 	inputManagerPtr->register_key_event(GLFW_KEY_P);
 }
 
-void CameraController::defaultInput()
+void CameraController::processDefaultInput()
 {
 	ZoneScoped;
 
 	inputManagerPtr->process_input();
 	InputState& inputState = inputManagerPtr->get_input_state();
 
-	if (inputState.if_key_pressed(GLFW_KEY_P) == InputState::JUST_PRESSED)
+	if (inputState.ifKeyPressed(GLFW_KEY_P) == JUST_PRESSED)
 	{
 		toggleDrawMode();
 	}
-}
-
-vec3& CameraController::getPosition()
-{
-	ZoneScoped;
-
-	return cameraPosition;
 }

@@ -28,7 +28,7 @@ public:
 	InputState& process_input();
 
 	// Register event for key of given number
-	void register_key_event(int glfw_key_number);
+	void register_key_event(int glfwKeyNumber);
 
 	// Mouse scroll event
 	void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -40,5 +40,6 @@ public:
 
 	// Getters
 	InputState& get_input_state();
+	KeyState getKeyState(int glfwKeyNumber);
 	vec2 get_mouse_pos();
 };

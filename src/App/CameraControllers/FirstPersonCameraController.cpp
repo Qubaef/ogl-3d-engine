@@ -4,32 +4,20 @@
 FirstPersonCameraController::FirstPersonCameraController(Engine* enginePtr, InputManager* p_input_manager) :
 	CameraController(enginePtr, p_input_manager, 0.8)
 {
-	ZoneScoped;
-
-	// Hide the mouse and enable unlimited movement
-	glfwSetInputMode(windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-	registerInput();
 }
 
 
 FirstPersonCameraController::FirstPersonCameraController(Engine* enginePtr, InputManager* p_input_manager, vec3 position, float vertical_angle, float horizontal_angle) :
 	CameraController(enginePtr, p_input_manager, 0.8, position, vertical_angle, horizontal_angle)
 {
-	ZoneScoped;
-
-	// Hide the mouse and enable unlimited movement
-	glfwSetInputMode(windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-	registerInput();
 }
 
 
-void FirstPersonCameraController::registerInput()
+void FirstPersonCameraController::registerDefaultInput()
 {
 	ZoneScoped;
 
-	CameraController::registerInput();
+	CameraController::registerDefaultInput();
 
 	inputManagerPtr->register_key_event(GLFW_KEY_W);
 	inputManagerPtr->register_key_event(GLFW_KEY_S);
@@ -90,33 +78,33 @@ void FirstPersonCameraController::updatePerFrame()
 	vec3 movement_vector = vec3(0, 0, 0);
 
 	// Move forward
-	if (inputState.if_key_pressed(GLFW_KEY_W) != InputState::NOT_PRESSED) {
+	if (inputState.ifKeyPressed(GLFW_KEY_W) != NOT_PRESSED) {
 		movement_vector += directionFlattened * delta_time;
 	}
 	// Move backward
-	if (inputState.if_key_pressed(GLFW_KEY_S) != InputState::NOT_PRESSED) {
+	if (inputState.ifKeyPressed(GLFW_KEY_S) != NOT_PRESSED) {
 		movement_vector -= directionFlattened * delta_time;
 	}
 	// Move upwards
-	if (inputState.if_key_pressed(GLFW_KEY_SPACE) != InputState::NOT_PRESSED) {
+	if (inputState.ifKeyPressed(GLFW_KEY_SPACE) != NOT_PRESSED) {
 		movement_vector += vec3(0, 1, 0) * delta_time;
 	}
 	// Move downwards
-	if (inputState.if_key_pressed(GLFW_KEY_LEFT_SHIFT) != InputState::NOT_PRESSED) {
+	if (inputState.ifKeyPressed(GLFW_KEY_LEFT_SHIFT) != NOT_PRESSED) {
 		movement_vector -= vec3(0, 1, 0) * delta_time;
 	}
 	// Strafe right
-	if (inputState.if_key_pressed(GLFW_KEY_D) != InputState::NOT_PRESSED) {
+	if (inputState.ifKeyPressed(GLFW_KEY_D) != NOT_PRESSED) {
 		movement_vector += camera_right * delta_time;
 	}
 	// Strafe left
-	if (inputState.if_key_pressed(GLFW_KEY_A) != InputState::NOT_PRESSED) {
+	if (inputState.ifKeyPressed(GLFW_KEY_A) != NOT_PRESSED) {
 		movement_vector -= camera_right * delta_time;
 	}
 
 	float speedMultiplier;
 	// Speedup
-	if (inputState.if_key_pressed(GLFW_KEY_E) != InputState::NOT_PRESSED) {
+	if (inputState.ifKeyPressed(GLFW_KEY_E) != NOT_PRESSED) {
 		speedMultiplier = 10;
 	}
 	else
@@ -134,5 +122,14 @@ void FirstPersonCameraController::updatePerFrame()
 	updateMVP();
 
 	// Process default input
-	defaultInput();
+	processDefaultInput();
+}
+
+void FirstPersonCameraController::enable()
+{
+	// Hide the mouse and enable unlimited movement
+	glfwSetInputMode(windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	inputManagerPtr->reset_mouse_pos(SCREEN_W / 2, SCREEN_H / 2);
+
+	registerDefaultInput();
 }

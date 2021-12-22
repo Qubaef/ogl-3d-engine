@@ -3,26 +3,12 @@
 OverviewCameraController::OverviewCameraController(Engine* enginePtr, InputManager* p_input_manager) :
 	CameraController(enginePtr, p_input_manager, 0.8)
 {
-	ZoneScoped;
-
-	// Show the mouse
-	glfwSetInputMode(windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-
-	// Calculate real angles values
-	calculate_angles();
 }
 
 
 OverviewCameraController::OverviewCameraController(Engine* enginePtr, InputManager* p_input_manager, vec3 position, float vertical_angle, float horizontal_angle) :
 	CameraController(enginePtr, p_input_manager, 0.8, position, vertical_angle, horizontal_angle)
 {
-	ZoneScoped;
-
-	// Show the mouse
-	glfwSetInputMode(windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-
-	// Calculate real angles values
-	calculate_angles();
 }
 
 
@@ -64,11 +50,11 @@ vec3 OverviewCameraController::calculate_midpoint()
 }
 
 
-void OverviewCameraController::registerInput()
+void OverviewCameraController::registerDefaultInput()
 {
 	ZoneScoped;
 
-	CameraController::registerInput();
+	CameraController::registerDefaultInput();
 }
 
 
@@ -134,7 +120,6 @@ void OverviewCameraController::updatePerFrame()
 		}
 
 		vec3 mid_point = calculate_midpoint();
-		// printf_s("x: %f z: %f\n", mid_point.x, mid_point.z);
 		float dist = distance(mid_point, cameraPosition);
 
 		// Position : Spherical coordinates to Cartesian coordinates conversion
@@ -147,7 +132,7 @@ void OverviewCameraController::updatePerFrame()
 		cameraDirection = normalize(mid_point - cameraPosition);
 	}
 
-	if (inputState.if_mouse_scroll_moved())
+	if (inputState.ifMouseScrollMoved())
 	{
 		// Set height multiplier for non linear zooming
 		float height_multiplier = cameraPosition.y;
@@ -169,5 +154,14 @@ void OverviewCameraController::updatePerFrame()
 	updateMVP();
 
 	// Process default input
-	defaultInput();
+	processDefaultInput();
+}
+
+void OverviewCameraController::enable()
+{
+	// Show the mouse
+	glfwSetInputMode(windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
+	// Calculate real angles values
+	calculate_angles();
 }

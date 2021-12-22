@@ -254,6 +254,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\App\CameraControllers\CameraManager.cpp" />
+    <ClCompile Include="src\App\CameraControllers\MenuUseCameraController.cpp" />
     <ClCompile Include="src\App\Renderables\Framebuffer.cpp" />
     <ClCompile Include="src\App\Renderables\LodTerrain\Heightmap.cpp" />
     <ClCompile Include="src\App\Renderables\Sphere.cpp" />
@@ -302,6 +304,9 @@
     <ClCompile Include="tracy\TracyClient.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\App\CameraControllers\CameraManager.h" />
+    <ClInclude Include="src\App\CameraControllers\KeyState.h" />
+    <ClInclude Include="src\App\CameraControllers\MenuUseCameraController.h" />
     <ClInclude Include="src\App\Renderables\Framebuffer.h" />
     <ClInclude Include="src\App\Renderables\LodTerrain\Heightmap.h" />
     <ClInclude Include="src\App\Renderables\LodTerrain\QuadTerrainNode.h" />
