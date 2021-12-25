@@ -14,8 +14,8 @@ struct ConstProperties
 	
 	// Window properties
 	const char* windowName = "Engine";
-	const int windowWidth = 1280;
-	const int windowHeight = 720;
+	const int windowWidth = 2560;
+	const int windowHeight = 1440;
 
 	// TODO: Move camera properties to camera class
 	// Camera properties

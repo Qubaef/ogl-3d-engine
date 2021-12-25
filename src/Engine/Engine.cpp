@@ -355,6 +355,11 @@ ConstProperties& Engine::getConstProperties()
 	return constProperties;
 }
 
+MessageBus& Engine::getMessageBus()
+{
+	return messageBus;
+}
+
 
 void Engine::registerShader(Shader& shader)
 {
@@ -411,6 +416,9 @@ int Engine::run()
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+
+		// Publish message bus
+		messageBus.publish();
 
 		// Perform preprocess phase
 		processableQueue->preprocess();

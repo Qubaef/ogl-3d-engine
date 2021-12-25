@@ -10,6 +10,7 @@
 #include "Renderables/Sphere.h"
 #include "Renderables/Framebuffer.h"
 #include "Renderables/LodTerrain/SingleMeshLodTerrain.h"
+#include "Renderables/GuiEntityManager/EntityManager.h"
 
 int main()
 {
@@ -73,6 +74,7 @@ int main()
 	enginePtr->registerProcessable(new SingleMeshLodTerrain(enginePtr, 5000, 5000, 8));
 	// enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new SimpleMeshTerrainManager(enginePtr, SimpleMeshTerrainManager::SIMPLEX)));
 	enginePtr->registerProcessable(new Skybox(enginePtr));
+	enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new EntityManager(enginePtr)));
 
 	// enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new Framebuffer(enginePtr)));
 	enginePtr->registerProcessable(new BaseGui(enginePtr));

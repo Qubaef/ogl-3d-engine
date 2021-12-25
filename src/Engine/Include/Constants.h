@@ -10,8 +10,8 @@ constexpr auto SKYBOX_SHADER_PATH_VERTEX = "src/Shaderfiles/SkyBoxVertexShader.v
 constexpr auto SKYBOX_SHADER_PATH_FRAGMENT = "src/Shaderfiles/SkyBoxFragmentShader.frag";
 
 // Engine parameters
-constexpr auto SCREEN_W = 1280;
-constexpr auto SCREEN_H = 720;
+constexpr auto SCREEN_W = 2560;
+constexpr auto SCREEN_H = 1440;
 constexpr auto CAMERA_FOV = 45;
 constexpr auto CAMERA_NEAR_CLIPPING = 1.f;
 constexpr auto CAMERA_FAR_CLIPPING = 20000.f;
