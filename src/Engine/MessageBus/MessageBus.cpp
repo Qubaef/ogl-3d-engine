@@ -1,5 +1,7 @@
 ﻿#include "MessageBus.h"
 
+#include "Engine/Logger/Logger.h"
+
 IMessanger *MessageBus::getMessanger(int index)
 {
     // Synchronize access to messangersList
@@ -8,6 +10,7 @@ IMessanger *MessageBus::getMessanger(int index)
     // Find messanger from messangersList
     if (index < 0 || index >= messangersList.size())
     {
+        mtx.unlock();
         return nullptr;
     }
 
@@ -17,6 +20,48 @@ IMessanger *MessageBus::getMessanger(int index)
     mtx.unlock();
 
     return messanger;
+}
+
+IMessanger* MessageBus::getRecipient(MessageRecipient messageRecipient)
+{
+    int index = -1;
+    std::map<const char*, int, StringComparator>::iterator itName;
+    std::map<int, int>::iterator itId;
+    std::map<IMessanger*, int>::iterator itMessanger;
+
+    switch (messageRecipient.recipientType)
+    {
+    case MessageRecipient::RecipientType::NAME:
+        // Find index from name
+        itName = nameToIndexDict.find(messageRecipient.name);
+        if (itName != nameToIndexDict.end())
+        {
+            index = itName->second;
+        }
+        break;
+    case MessageRecipient::RecipientType::ID:
+        // Find index from ids
+        itId = idToIndexDict.find(messageRecipient.id);
+        if (itId != idToIndexDict.end())
+        {
+            index = itId->second;
+        }
+        break;
+    case MessageRecipient::RecipientType::MESSANGER:
+	    itMessanger = messangerToIndexDict.find(messageRecipient.messanger);
+        if (itMessanger != messangerToIndexDict.end())
+        {
+            index = itMessanger->second;
+        }
+        break;
+    }
+
+    if (index < 0 || index >= messangersList.size())
+    {
+        return nullptr;
+    }
+
+    return messangersList[index];
 }
 
 std::vector<Message *> MessageBus::getMessages(const char *messangerName)
@@ -60,6 +105,7 @@ std::vector<Message *> MessageBus::getMessages(IMessanger *messanger)
     auto it = messangerToMessagesDict.find(messanger);
     if (it == messangerToMessagesDict.end())
     {
+        mtx.unlock();
         return std::vector<Message *>();
     }
 
@@ -74,48 +120,44 @@ std::vector<Message *> MessageBus::getMessages(IMessanger *messanger)
 
 void MessageBus::sendMessage(Message *message, IMessanger *sender, const char *recipientName)
 {
-    // Get IMessanger's index in nameToIndexDict
-    auto it = nameToIndexDict.find(recipientName);
-    if (it == nameToIndexDict.end())
-    {
-        return;
-    }
+    // Synchronize access to messangerToMessagesDict
+    mtx.lock();
 
-    // Get IMessanger by index
-    IMessanger *recipient = getMessanger(it->second);
+    message->sender = sender;
 
-    // Send message to messanger
-    sendMessage(message, sender, recipient);
+    // Add message to pendingMessagesList
+    pendingMessages.emplace_back(MessageRecipient(recipientName), message);
+
+    // Release access to messangerToMessagesDict
+    mtx.unlock();
 }
 
 void MessageBus::sendMessage(Message *message, IMessanger *sender, int id)
 {
-    // Get IMessanger's index in idToIndexDict
-    auto it = idToIndexDict.find(id);
-    if (it == idToIndexDict.end())
-    {
-        return;
-    }
+    // Synchronize access to messangerToMessagesDict
+    mtx.lock();
 
-    // Get IMessanger by index
-    IMessanger *recipient = getMessanger(it->second);
+    message->sender = sender;
 
-    // Send message to sender
-    sendMessage(message, sender, recipient);
+    // Add message to pendingMessagesList
+    pendingMessages.emplace_back(MessageRecipient(id), message);
+
+    // Release access to messangerToMessagesDict
+    mtx.unlock();
 }
 
 void MessageBus::sendMessage(Message *message, IMessanger *sender, IMessanger *recipient)
 {
-    if (sender == nullptr || recipient == nullptr)
-    {
-        return;
-    }
+    // Synchronize access to messangerToMessagesDict
+    mtx.lock();
 
     message->sender = sender;
-    message->recipient = recipient;
 
-    // Add message to pendingMessages
-    pendingMessages.push_back(message);
+    // Add message to pendingMessagesList
+    pendingMessages.emplace_back(MessageRecipient(recipient), message);
+
+    // Release access to messangerToMessagesDict
+    mtx.unlock();
 }
 
 void MessageBus::emitMessage(IMessanger *messanger, Message *message)
@@ -124,6 +166,8 @@ void MessageBus::emitMessage(IMessanger *messanger, Message *message)
     auto it = messangerToSubscribersDict.find(messanger);
     if (it == messangerToSubscribersDict.end())
     {
+        // Subscribers list has to be present
+        _ASSERT(false);
         return;
     }
 
@@ -143,6 +187,7 @@ bool MessageBus::subscribe(IMessanger *messanger, const char *targetMessangerNam
     auto it = nameToIndexDict.find(targetMessangerName);
     if (it == nameToIndexDict.end())
     {
+        LOG.ERROR("Cannot subscribe. No recipient named: %s", targetMessangerName);
         return false;
     }
 
@@ -159,6 +204,7 @@ bool MessageBus::subscribe(IMessanger *messanger, int targetMessangerId)
     auto it = idToIndexDict.find(targetMessangerId);
     if (it == idToIndexDict.end())
     {
+        LOG.ERROR("Cannot subscribe. No recipient with id: %d", targetMessangerId);
         return false;
     }
 
@@ -213,6 +259,7 @@ bool MessageBus::unsubscribe(IMessanger *messanger, const char *targetMessangerN
     auto it = nameToIndexDict.find(targetMessangerName);
     if (it == nameToIndexDict.end())
     {
+        LOG.ERROR("Cannot unsubscribe. No recipient named: %s", targetMessangerName);
         return false;
     }
 
@@ -229,6 +276,7 @@ bool MessageBus::unsubscribe(IMessanger *messanger, int targetMessangerId)
     auto it = idToIndexDict.find(targetMessangerId);
     if (it == idToIndexDict.end())
     {
+        LOG.ERROR("Cannot unsubscribe. No recipient with id: %d", targetMessangerId);
         return false;
     }
 
@@ -248,6 +296,7 @@ bool MessageBus::unsubscribe(IMessanger *messanger, IMessanger *targetMessanger)
     auto it = messangerToSubscribersDict.find(messanger);
     if (it == messangerToSubscribersDict.end())
     {
+        // Messanger HAS TO have subscribers
         _ASSERT(false);
 
         mtx.unlock();
@@ -325,12 +374,21 @@ void MessageBus::publish()
         messages.clear();
     }
 
-    // Assign all pending messages to messangerToMessagesDict by recipients
-    for (Message *message : pendingMessages)
+    // Assign all pending messages to messangerToMessagesDict by messangers
+    // Iterate through all messangers backwards and pop message after sending
+    for (int i = pendingMessages.size() - 1; i >= 0; i--)
     {
-        if (message->recipient != nullptr)
+        std::pair<MessageRecipient, Message*> message = pendingMessages[i];
+        pendingMessages.pop_back();
+
+        // Get message's recipient
+        IMessanger *recipient = getRecipient(message.first);
+        if (recipient != nullptr)
         {
-            messangerToMessagesDict[message->recipient].push_back(message);
+            message.second->recipient = recipient;
+            messangerToMessagesDict[recipient].push_back(message.second);
         }
     }
+
+    mtx.unlock();
 }

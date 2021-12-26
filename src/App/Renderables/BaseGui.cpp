@@ -18,16 +18,12 @@ void BaseGui::preprocess()
 	// static float f = 0.0f;
 	// static int counter = 0;
 
-	// int w, h;
-	// glfwGetWindowSize(enginePtr->getGlWindow(), &w, &h);
-
-	ImVec2 size(400, 100);
-	// ImVec2 pos(w - size[0], h - size[1]);
-	ImVec2 pos(0, 0);
-
-	ImGui::SetNextWindowSize(size, ImGuiCond_Once);
-	ImGui::SetNextWindowPos(pos, ImGuiCond_Once);
-	ImGui::Begin("BaseGui", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);                          // Create a window called "Hello, world!" and append into it.
+	//
+	// Performance monitor 
+	//
+	ImGui::SetNextWindowSize(ImVec2(400, 100), ImGuiCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
+	ImGui::Begin("Performance monitor", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);                          // Create a window called "Hello, world!" and append into it.
 
 	// ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
 	// ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
@@ -59,7 +55,6 @@ void BaseGui::preprocess()
 	ImGui::Text("%.3f ms/frame (%.1f FPS)", frameTime, frameRate);
 
 	vec3 cameraPos = enginePtr->getCamera()->getPosition();
-	
 	ImGui::Text("Camera pos x: %.2f, y: %.2f, z: %.2f", cameraPos[0], cameraPos[1], cameraPos[2]);
 	ImGui::End();
 }

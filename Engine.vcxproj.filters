@@ -422,6 +422,21 @@
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityManager.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\FundamentalProperty.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\MessageBus\MessageRecipient.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\PropertyRegisterMessage.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\OnPropertyChangeMessage.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\Property.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="tracy\profiler\build\win32\x64\Debug\Tracy.exe">

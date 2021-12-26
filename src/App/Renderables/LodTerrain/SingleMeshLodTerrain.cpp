@@ -2,10 +2,16 @@
 
 #include "Engine/Engine.h"
 
+#include "../GuiEntityManager/PropertyRegisterMessage.h"
+
 SingleMeshLodTerrain::SingleMeshLodTerrain(Engine* enginePtr, int size, int density, int minLodPatchSize)
-	: IProcessable(enginePtr), size(size), density(density), minLodPatchSize(minLodPatchSize)
+	: IProcessable(enginePtr), size(size), density(density), minLodPatchSize(minLodPatchSize),
+	IMessanger(&enginePtr->getMessageBus(), "SingleMeshLodTerrain")
 {
 	shaderPtr = enginePtr->getShaderByName("TerrainLod");
+
+	sendMessage(new PropertyRegisterMessage("variable1",0,100,50,50),
+		"EntityManager");
 
 	// Initialize terrainQuadTree
 	terrainQuadTree = new QuadTerrainNode(-size / 2, -size / 2, size);
@@ -110,7 +116,6 @@ SingleMeshLodTerrain::SingleMeshLodTerrain(Engine* enginePtr, int size, int dens
 
 void SingleMeshLodTerrain::preprocess()
 {
-
 }
 
 void SingleMeshLodTerrain::process()

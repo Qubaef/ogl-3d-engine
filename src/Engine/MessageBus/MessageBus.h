@@ -9,6 +9,7 @@
 // #include "../CpuPipeline/IProcessable.h"
 #include "Message.h"
 #include "IMessanger.h"
+#include "MessageRecipient.h"
 
 // Comparator for names dictionary
 // TODO: Move to file containing common symbols
@@ -30,11 +31,14 @@ class MessageBus
 
 	std::map<int, int> idToIndexDict;
 	std::map<const char*, int, StringComparator> nameToIndexDict;
+	std::map<IMessanger*, int> messangerToIndexDict;
 
-	std::vector<Message*> pendingMessages;
+	// std::vector<Message*> pendingMessages;
+	std::vector<std::pair<MessageRecipient, Message*>> pendingMessages;
 
 
 	IMessanger* getMessanger(int index);
+	IMessanger* getRecipient(MessageRecipient messageRecipient);
 
 	// Get messages for specific messanger
 	std::vector<Message*> getMessages(const char* messangerName);

@@ -12,7 +12,7 @@ struct Message
 
 
 	// Force abstract
-	virtual ~Message() = 0;
+	virtual ~Message() = default;
 };
 
 #endif

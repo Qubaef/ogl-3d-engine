@@ -61,7 +61,7 @@ int main()
 		"src/Shaderfiles/FramebufferShader.vert",
 		"src/Shaderfiles/FramebufferShader.frag");
 	enginePtr->registerShader(framebufferShader);
-	
+
 	/* Register camera manager */
 	CameraManager* cameraManager = new CameraManager(enginePtr, inputManager);
 	cameraManager->addCamera(new MenuUseCameraController(enginePtr, inputManager));
@@ -74,11 +74,10 @@ int main()
 	enginePtr->registerProcessable(new SingleMeshLodTerrain(enginePtr, 5000, 5000, 8));
 	// enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new SimpleMeshTerrainManager(enginePtr, SimpleMeshTerrainManager::SIMPLEX)));
 	enginePtr->registerProcessable(new Skybox(enginePtr));
-	enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new EntityManager(enginePtr)));
+	enginePtr->registerProcessable(new EntityManager(enginePtr));
 
 	// enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new Framebuffer(enginePtr)));
 	enginePtr->registerProcessable(new BaseGui(enginePtr));
-
 
 	// Start the Engine
 	enginePtr->run();

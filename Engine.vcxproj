@@ -312,6 +312,10 @@
     <ClInclude Include="src\App\CameraControllers\MenuUseCameraController.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityManager.h" />
     <ClInclude Include="src\App\Renderables\Framebuffer.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\FundamentalProperty.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\OnPropertyChangeMessage.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\Property.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\PropertyRegisterMessage.h" />
     <ClInclude Include="src\App\Renderables\LodTerrain\Heightmap.h" />
     <ClInclude Include="src\App\Renderables\LodTerrain\QuadTerrainNode.h" />
     <ClInclude Include="src\App\Renderables\Sphere.h" />
@@ -366,6 +370,7 @@
     <ClInclude Include="src\Engine\MessageBus\IMessanger.h" />
     <ClInclude Include="src\Engine\MessageBus\Message.h" />
     <ClInclude Include="src\Engine\MessageBus\MessageBus.h" />
+    <ClInclude Include="src\Engine\MessageBus\MessageRecipient.h" />
     <ClInclude Include="src\Engine\Properties\ConstProperties.h" />
     <ClInclude Include="src\Engine\Properties\RenderProperties.h" />
     <ClInclude Include="src\Engine\Properties\TimeProperties.h" />
