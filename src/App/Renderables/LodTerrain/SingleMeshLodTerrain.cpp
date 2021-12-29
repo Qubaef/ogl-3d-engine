@@ -2,15 +2,25 @@
 
 #include "Engine/Engine.h"
 
-#include "../GuiEntityManager/PropertyRegisterMessage.h"
+#include "App/Renderables/GuiEntityManager/Messages/RegisterPropertyMessage.h"
+#include "App/Renderables/GuiEntityManager/Messages/RegisterEntityMessage.h"
+#include "App/Renderables/GuiEntityManager/EntityProperties/IntPropertyContinuousModifier.h"
+#include "App/Renderables/GuiEntityManager/EntityProperties/Vec3PropertyContinuousModifier.h"
 
 SingleMeshLodTerrain::SingleMeshLodTerrain(Engine* enginePtr, int size, int density, int minLodPatchSize)
-	: IProcessable(enginePtr), size(size), density(density), minLodPatchSize(minLodPatchSize),
-	IMessanger(&enginePtr->getMessageBus(), "SingleMeshLodTerrain")
+	: IProcessable(enginePtr), IMessanger(&enginePtr->getMessageBus(), "SingleMeshLodTerrain"),
+	size(size), density(density), minLodPatchSize(minLodPatchSize)
 {
 	shaderPtr = enginePtr->getShaderByName("TerrainLod");
 
-	sendMessage(new PropertyRegisterMessage("variable1",0,100,50,50),
+	sendMessage(new RegisterEntityMessage(""), "EntityManager");
+
+	//sendMessage(new RegisterPropertyMessage("SingleMeshLodTerrain",
+	//  new IntPropertyContinuousModifier("terrainOffset", -1000, 1000, 0, terrainOffset.y)),
+	//	"EntityManager");
+
+	sendMessage(new RegisterPropertyMessage("SingleMeshLodTerrain",
+		new Vec3PropertyContinuousModifier("terrainOffset", -1000, 1000, 0, terrainOffset)),
 		"EntityManager");
 
 	// Initialize terrainQuadTree
@@ -33,6 +43,7 @@ SingleMeshLodTerrain::SingleMeshLodTerrain(Engine* enginePtr, int size, int dens
 
 	uniformId_terrainDensity = glGetUniformLocation(shaderPtr->get_ID(), "terrainDensity");
 	uniformId_terrainSize = glGetUniformLocation(shaderPtr->get_ID(), "terrainSize");
+	uniformId_terrainOffset = glGetUniformLocation(shaderPtr->get_ID(), "terrainOffset");
 
 	uniformId_viewPos = glGetUniformLocation(shaderPtr->get_ID(), "viewPos");
 
@@ -162,6 +173,7 @@ void SingleMeshLodTerrain::render()
 
 	glUniform1f(uniformId_terrainDensity, density);
 	glUniform1f(uniformId_terrainSize, size);
+	glUniform3f(uniformId_terrainOffset, terrainOffset.x, terrainOffset.y, terrainOffset.z);
 
 	glUniform3f(uniformId_viewPos, viewPos.x, viewPos.y, viewPos.z);
 

@@ -3,7 +3,7 @@
 #ifndef ON_PROPERTY_CHANGE_MESSAGE_H
 #define ON_PROPERTY_CHANGE_MESSAGE_H
 
-#include "FundamentalProperty.h"
+#include "FundamentalPropertyModifier.h"
 #include "Engine/MessageBus/Message.h"
 
 template <typename T>
@@ -16,7 +16,7 @@ public:
 		: name(name), value(value)
 	{
 		if (!std::is_fundamental_v<T>) {
-			// Property has to be fundamental type
+			// GuiProperty has to be fundamental type
 			_ASSERT(false);
 		}
 	}

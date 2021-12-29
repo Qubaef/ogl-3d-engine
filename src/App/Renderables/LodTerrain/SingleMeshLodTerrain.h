@@ -28,6 +28,7 @@ class SingleMeshLodTerrain : public IProcessable, public IMessanger
 	GLuint uniformId_terrainHeight;
 	GLuint uniformId_terrainDensity;
 	GLuint uniformId_terrainSize;
+	GLuint uniformId_terrainOffset;
 
 	GLuint uniformId_viewPos;
 
@@ -37,6 +38,7 @@ class SingleMeshLodTerrain : public IProcessable, public IMessanger
 	const int size;
 	const int density;
 	const int minLodPatchSize;
+	vec3 terrainOffset = vec3(0,0,0);
 
 	// Buffers common for all sectors
 	Vbo vbo_vertex;

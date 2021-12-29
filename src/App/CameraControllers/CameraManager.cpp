@@ -1,10 +1,21 @@
 ﻿#include "CameraManager.h"
 
 #include "Engine/Engine.h"
+#include "App/Renderables/GuiEntityManager/Messages/RegisterEntityMessage.h"
+#include "App/Renderables/GuiEntityManager/Messages/RegisterPropertyMessage.h"
+#include "App/Renderables/GuiEntityManager/EntityProperties/IntPropertyWatcher.h"
 
-CameraManager::CameraManager(Engine* enginePtr, InputManager* inputManagerPtr) : IProcessable(enginePtr), inputManagerPtr(inputManagerPtr)
+CameraManager::CameraManager(Engine* enginePtr, InputManager* inputManagerPtr)
+	: IProcessable(enginePtr), IMessanger(&enginePtr->getMessageBus(), "CameraManager"),
+	inputManagerPtr(inputManagerPtr)
 {
+	sendMessage(new RegisterEntityMessage(""), "EntityManager");
+
 	inputManagerPtr->register_key_event(CAMERA_TOGGLE_KEY);
+
+	sendMessage(new RegisterPropertyMessage("CameraManager",
+		new IntPropertyWatcher("cameraIndex", currentCameraIndex)),
+		"EntityManager");
 }
 
 void CameraManager::enableCamera(CameraController* cameraControllerPtr)

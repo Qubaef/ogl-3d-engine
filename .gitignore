@@ -269,6 +269,9 @@ output.tracy
 # Imgui data
 imgui.ini
 
+# Ionide
+.ionide/
+
 # debug profiles
 debug-profile-collect/
 debug-profile-parallel/
@@ -281,3 +284,4 @@ apitrace/
 
 # Heightmap texture
 Heightmap.tga
+.ionide

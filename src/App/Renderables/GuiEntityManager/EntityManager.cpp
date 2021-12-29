@@ -3,47 +3,37 @@
 #include "Engine/Engine.h"
 #include "Engine/MessageBus/MessageBus.h"
 
-#include "EntityFundamentalPropertyMessage.h"
-#include "PropertyRegisterMessage.h"
+#include "Messages/RegisterEntityMessage.h"
+#include "Messages/RegisterPropertyMessage.h"
 
-bool EntityManager::addEntityProperty(const char* entityName, Property* property)
+bool EntityManager::addEntity(const char* parentPath, const char* entityName)
 {
-	std::vector<Property*>& propertiesList = entitiesPropertiesDict[entityName];
+	// Add entity to the gui entries tree
+	GuiEntry& parent = rootEntry.createBranch(parentPath);
+	parent.addChild(new GuiEntry(entityName));
 
-	// Check if property already exists in the list
-	for (Property* propertyInList : propertiesList)
-	{
-		// Compare property names
-		if (strcmp(propertyInList->name, property->name) == 0)
-		{
-			// Property already exists in the list
-			return false;
-		}
-	}
-
-	// Add property to the list
-	propertiesList.push_back(property);
 	return true;
 }
 
-EntityManager::EntityManager(Engine* enginePtr)
-	: IProcessable(enginePtr), IMessanger(&enginePtr->getMessageBus(), "EntityManager")
+bool EntityManager::addEntityProperty(const char* entityPath, GuiProperty* property)
 {
-	//MessageBus* messageBus = new MessageBus();
-	//messageBus.
+	// Find given entity
+	GuiEntry* entity = rootEntry.findEntry(entityPath);
 
+	if(entity != nullptr)
+	{
+		entity->addChild(property);
+		return true;
+	}
 
-	//// Registration
-	//enginePtr->messageBus.subscribe(this, "recipient");
+	return false;
+}
 
-	//// Download of messages
-	//messagesList = enginePtr->messageBus.getMessages();
-
-	//// Sending a message
-	//Message message();
-	//enginePtr->messageBus.emitMessage(message);
-	//// Or
-	//enginePtr->messageBus.sendMessage(message, "recipient");
+EntityManager::EntityManager(Engine* enginePtr)
+	: IProcessable(enginePtr),
+	IMessanger(&enginePtr->getMessageBus(), "EntityManager"),
+	rootEntry(GuiEntry("Entities", ROOT))
+{
 }
 
 void EntityManager::preprocess()
@@ -53,18 +43,19 @@ void EntityManager::preprocess()
 void EntityManager::process()
 {
 	const auto messages = getMessages();
-	
+
 	for (Message* message : messages)
 	{
-		try
+		if(RegisterEntityMessage* registerEntityMessage = dynamic_cast<RegisterEntityMessage*>(message))
 		{
-			PropertyRegisterMessage<int>* propertyRegisterMessage = dynamic_cast<PropertyRegisterMessage<int>*>(message);
-			Property* newProperty = new FundamentalProperty(propertyRegisterMessage->getProperty());
-			addEntityProperty(propertyRegisterMessage->sender->getName(), newProperty);
+			addEntity(registerEntityMessage->getParentPath(), registerEntityMessage->sender->getName());
 			continue;
 		}
-		catch (std::bad_cast& e)
+
+		if(RegisterPropertyMessage* registerPropertyMessage = dynamic_cast<RegisterPropertyMessage*>(message))
 		{
+			addEntityProperty(registerPropertyMessage->getEntityPath(), registerPropertyMessage->getProperty());
+			continue;
 		}
 	}
 }
@@ -81,21 +72,7 @@ void EntityManager::render()
 	ImGui::SetNextWindowPos(ImVec2(enginePtr->getConstProperties().windowWidth - entityEditorWidth, 0), ImGuiCond_Once);
 	ImGui::Begin("Entity editor", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
-	// Iterate over all entities properties
-	for (auto& entityPropertiesPair : entitiesPropertiesDict)
-	{
-		const char* entityName = entityPropertiesPair.first;
-		std::vector<Property*>& entityPropertiesList = entityPropertiesPair.second;
-
-		// Entity name
-		ImGui::Text(entityName);
-
-		// Entity properties
-		for (Property* entityProperty : entityPropertiesList)
-		{
-			entityProperty->display();
-		}
-	}
+	rootEntry.display();
 
 	ImGui::End();
 }

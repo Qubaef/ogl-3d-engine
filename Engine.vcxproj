@@ -113,7 +113,7 @@
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)src\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(ProjectDir)imgui\;$(ProjectDir)src\;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)src\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
@@ -258,6 +258,13 @@
     <ClCompile Include="src\App\CameraControllers\MenuUseCameraController.cpp" />
     <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityManager.cpp" />
     <ClCompile Include="src\App\Renderables\Framebuffer.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousModifier.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyNotifyModifier.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyWatcher.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\Vec3PropertyContinuousModifier.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\GuiEntry\GuiEntry.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\Messages\RegisterEntityMessage.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\Messages\RegisterPropertyMessage.cpp" />
     <ClCompile Include="src\App\Renderables\LodTerrain\Heightmap.cpp" />
     <ClCompile Include="src\App\Renderables\Sphere.cpp" />
     <ClCompile Include="src\App\Renderables\LodTerrain\SingleMeshLodTerrain.cpp" />
@@ -312,10 +319,17 @@
     <ClInclude Include="src\App\CameraControllers\MenuUseCameraController.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityManager.h" />
     <ClInclude Include="src\App\Renderables\Framebuffer.h" />
-    <ClInclude Include="src\App\Renderables\GuiEntityManager\FundamentalProperty.h" />
-    <ClInclude Include="src\App\Renderables\GuiEntityManager\OnPropertyChangeMessage.h" />
-    <ClInclude Include="src\App\Renderables\GuiEntityManager\Property.h" />
-    <ClInclude Include="src\App\Renderables\GuiEntityManager\PropertyRegisterMessage.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousModifier.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyWatcher.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\Vec3PropertyContinuousModifier.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\GuiEntry\EntryType.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyNotifyModifier.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\GuiEntry\GuiEntry.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\IDisplayable.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\Messages\OnPropertyChangeMessage.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\GuiProperty.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\Messages\RegisterEntityMessage.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\Messages\RegisterPropertyMessage.h" />
     <ClInclude Include="src\App\Renderables\LodTerrain\Heightmap.h" />
     <ClInclude Include="src\App\Renderables\LodTerrain\QuadTerrainNode.h" />
     <ClInclude Include="src\App\Renderables\Sphere.h" />

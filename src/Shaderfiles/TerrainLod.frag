@@ -29,7 +29,6 @@ uniform Material material;
 uniform DirectionalLight dir_light;
 
 uniform float nodeSize;
-uniform sampler2D terrainHeight;
 
 //
 // Ouputs

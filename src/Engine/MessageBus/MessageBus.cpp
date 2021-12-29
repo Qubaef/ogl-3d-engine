@@ -375,11 +375,10 @@ void MessageBus::publish()
     }
 
     // Assign all pending messages to messangerToMessagesDict by messangers
-    // Iterate through all messangers backwards and pop message after sending
-    for (int i = pendingMessages.size() - 1; i >= 0; i--)
+    // Iterate through all messangers and clear after sending
+    for (int i = 0; i < pendingMessages.size(); i++)
     {
         std::pair<MessageRecipient, Message*> message = pendingMessages[i];
-        pendingMessages.pop_back();
 
         // Get message's recipient
         IMessanger *recipient = getRecipient(message.first);
@@ -389,6 +388,9 @@ void MessageBus::publish()
             messangerToMessagesDict[recipient].push_back(message.second);
         }
     }
+
+    // Clear pending messages
+    pendingMessages.clear();
 
     mtx.unlock();
 }

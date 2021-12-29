@@ -225,6 +225,27 @@
     <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityManager.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\Messages\RegisterPropertyMessage.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\Messages\RegisterEntityMessage.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\GuiEntry\GuiEntry.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyNotifyModifier.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousModifier.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\Vec3PropertyContinuousModifier.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyWatcher.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App\CameraControllers\CameraController.h">
@@ -422,19 +443,40 @@
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityManager.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\App\Renderables\GuiEntityManager\FundamentalProperty.h">
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyNotifyModifier.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\MessageBus\MessageRecipient.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\App\Renderables\GuiEntityManager\PropertyRegisterMessage.h">
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\Messages\RegisterPropertyMessage.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\App\Renderables\GuiEntityManager\OnPropertyChangeMessage.h">
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\Messages\OnPropertyChangeMessage.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\App\Renderables\GuiEntityManager\Property.h">
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\GuiProperty.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\Messages\RegisterEntityMessage.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\GuiEntry\GuiEntry.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\IDisplayable.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\GuiEntry\EntryType.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousModifier.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\Vec3PropertyContinuousModifier.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyWatcher.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>
