@@ -15,6 +15,7 @@
 #include "CpuPipeline/ProcessableQueue.h"
 #include "Camera/Camera.h"
 #include "Shaders/ShaderManager.h"
+#include "MessageBus/MessageBus.h"
 
 
 class Engine
@@ -32,7 +33,7 @@ private:
 	// =====================================================
 
 	// Pointer to window handle
-	GLFWwindow* engineWindowPtr = NULL;
+	GLFWwindow* engineWindowPtr = nullptr;
 
 	// Container keeping references to all Processables registered to the engine
 	std::vector<IProcessable*> processableList;
@@ -46,7 +47,10 @@ private:
 
 	// User-defined camera/input manager, which presence is obligatory
 	// Camera updates are performed outside process/render queues
-	Camera* cameraPtr = NULL;
+	Camera* cameraPtr = nullptr;
+
+	// Message bus allowing communication of engine's components
+	MessageBus messageBus;
 
 	// =====================================================
 	// ======================= Methods
@@ -101,6 +105,9 @@ public:
 
 	// Return global engine's render properties
 	ConstProperties& getConstProperties();
+
+	// Return engine's message bus
+	MessageBus& getMessageBus();
 
 	// Register new Shader in the Engine
 	void registerShader(Shader& shaderPtr);

@@ -16,6 +16,7 @@ uniform vec2 viewport;
 uniform sampler2D terrainHeight;
 uniform float terrainDensity;
 uniform float terrainSize;
+uniform vec3 terrainOffset;
 
 //
 // Inputs
@@ -139,8 +140,8 @@ float tessLevelDist(vec3 cameraPos, int coordId1, int coordId2)
 {
 	vec4 p1 = gl_in[coordId1].gl_Position;
 	vec4 p2 = gl_in[coordId2].gl_Position;
-	p1.y = texture(terrainHeight, vec2(p1.x, p1.z) / terrainSize + 0.5).x;
-	p2.y = texture(terrainHeight, vec2(p2.x, p2.z) / terrainSize + 0.5).x;
+	p1.y = texture(terrainHeight, vec2(p1.x, p1.z) / terrainSize + 0.5).x + terrainOffset.y;
+	p2.y = texture(terrainHeight, vec2(p2.x, p2.z) / terrainSize + 0.5).x + terrainOffset.y;
 	float dist1 = distance(cameraPos, vec3(p1));
 	float dist2 = distance(cameraPos, vec3(p2));
 
@@ -177,8 +178,8 @@ float tessLevelSphere(int coordId1, int coordId2)
 	vec4 p1 = gl_in[coordId1].gl_Position;
 	vec4 p2 = gl_in[coordId2].gl_Position;
 
-	p1.y = texture(terrainHeight, vec2(p1.x, p1.z) / terrainSize + 0.5).x;
-	p2.y = texture(terrainHeight, vec2(p2.x, p2.z) / terrainSize + 0.5).x;
+	p1.y = texture(terrainHeight, vec2(p1.x, p1.z) / terrainSize + 0.5).x + terrainOffset.y;
+	p2.y = texture(terrainHeight, vec2(p2.x, p2.z) / terrainSize + 0.5).x + terrainOffset.y;
 
 	vec4 center = 0.5 * (p1 + p2);
 	vec4 view1 = matMv * center;
@@ -228,8 +229,8 @@ float getDistance(int coordId1, int coordId2)
 	vec4 p1 = gl_in[coordId1].gl_Position;
 	vec4 p2 = gl_in[coordId2].gl_Position;
 
-	p1.y = texture(terrainHeight, vec2(p1.x, p1.z) / terrainSize).x;
-	p2.y = texture(terrainHeight, vec2(p2.x, p2.z) / terrainSize).x;
+	p1.y = texture(terrainHeight, vec2(p1.x, p1.z) / terrainSize).x + terrainOffset.y;
+	p2.y = texture(terrainHeight, vec2(p2.x, p2.z) / terrainSize).x + terrainOffset.y;
 
 	return distance(p1, p2);
 }

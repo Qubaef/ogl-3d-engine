@@ -11,6 +11,7 @@ uniform mat4 matP;
 uniform sampler2D terrainHeight;
 uniform float terrainDensity;
 uniform float terrainSize;
+uniform vec3 terrainOffset;
 
 //
 // Inputs
@@ -65,12 +66,12 @@ vec3 pt_pi(in vec3 q, in vec3 p, in vec3 n)
 
 float getHeight(vec2 p)
 {
-	return texture(terrainHeight, vec2(p.x, p.y) / terrainSize + 0.5).x;
+	return texture(terrainHeight, vec2(p.x, p.y) / terrainSize + 0.5).x + terrainOffset.y;
 }
 
 vec3 getPosHeight(vec3 p)
 {
-	return vec3(p.x, texture(terrainHeight, vec2(p.x, p.z) / terrainSize).x, p.z);
+	return vec3(p.x, texture(terrainHeight, vec2(p.x, p.z) / terrainSize + 0.5).x + terrainOffset.y, p.z);
 }
 
 // Get the normal at the given point
@@ -102,11 +103,14 @@ vec3 getNormal(vec3 p) {
 
 void main()
 {
+	// TODO: Cleanup below code
 	// Calculate the vertex position using the four original points and interpolate depneding on the tessellation coordinates
 	gl_Position = interpolate4(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_in[2].gl_Position, gl_in[3].gl_Position);
 
 	// Sample the heightmap and offset y position of vertex
 	gl_Position.y = getHeight(vec2(gl_Position.x, gl_Position.z));
+	vec3 p_texture = gl_Position.xyz;
+	gl_Position.xz += terrainOffset.xz;
 
 	// Store worldspace position in separate variable
 	vec3 p = gl_Position.xyz;
@@ -117,8 +121,7 @@ void main()
 	// Project the vertex to clip space and send it along
 	gl_Position = matP * matMv * gl_Position;
 
-	tese_normal = getNormal(p);
-
+	tese_normal = getNormal(p_texture);
 	// Calculate angle for steepness calculation
 	float angle = degrees(acos(dot(vec3(0, 1, 0), tese_normal)));
 

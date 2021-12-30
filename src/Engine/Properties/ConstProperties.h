@@ -5,13 +5,13 @@ struct ConstProperties
 	// Engine execution mode
 	enum EXECUTION_MODE
 	{
-		REGULAR,
+		RELEASE,
 		DEBUG,
 		TESTS,
 	};
 
 	EXECUTION_MODE executionMode = DEBUG;
-	
+
 	// Window properties
 	const char* windowName = "Engine";
 	const int windowWidth = 1280;

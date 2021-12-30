@@ -113,7 +113,7 @@
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)src\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(ProjectDir)imgui\;$(ProjectDir)src\;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)src\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
@@ -256,7 +256,15 @@
   <ItemGroup>
     <ClCompile Include="src\App\CameraControllers\CameraManager.cpp" />
     <ClCompile Include="src\App\CameraControllers\MenuUseCameraController.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityManager.cpp" />
     <ClCompile Include="src\App\Renderables\Framebuffer.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousModifier.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyNotifyModifier.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyWatcher.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\Vec3PropertyContinuousModifier.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\GuiEntry\GuiEntry.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\Messages\RegisterEntityMessage.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\Messages\RegisterPropertyMessage.cpp" />
     <ClCompile Include="src\App\Renderables\LodTerrain\Heightmap.cpp" />
     <ClCompile Include="src\App\Renderables\Sphere.cpp" />
     <ClCompile Include="src\App\Renderables\LodTerrain\SingleMeshLodTerrain.cpp" />
@@ -299,6 +307,8 @@
     <ClCompile Include="src\Engine\Lights\LightPoint.cpp" />
     <ClCompile Include="src\Engine\Logger\Logger.cpp" />
     <ClCompile Include="src\Engine\CpuPipeline\IProcessable.cpp" />
+    <ClCompile Include="src\Engine\MessageBus\IMessanger.cpp" />
+    <ClCompile Include="src\Engine\MessageBus\MessageBus.cpp" />
     <ClCompile Include="src\Engine\Shaders\Shader.cpp" />
     <ClCompile Include="src\Engine\Shaders\ShaderManager.cpp" />
     <ClCompile Include="tracy\TracyClient.cpp" />
@@ -307,7 +317,20 @@
     <ClInclude Include="src\App\CameraControllers\CameraManager.h" />
     <ClInclude Include="src\App\CameraControllers\KeyState.h" />
     <ClInclude Include="src\App\CameraControllers\MenuUseCameraController.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityManager.h" />
     <ClInclude Include="src\App\Renderables\Framebuffer.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousModifier.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyWatcher.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\Vec3PropertyContinuousModifier.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\GuiEntry\EntryType.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyNotifyModifier.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\GuiEntry\GuiEntry.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\IDisplayable.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\IMessageCollector.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\Messages\OnPropertyChangeMessage.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\GuiProperty.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\Messages\RegisterEntityMessage.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\Messages\RegisterPropertyMessage.h" />
     <ClInclude Include="src\App\Renderables\LodTerrain\Heightmap.h" />
     <ClInclude Include="src\App\Renderables\LodTerrain\QuadTerrainNode.h" />
     <ClInclude Include="src\App\Renderables\Sphere.h" />
@@ -359,6 +382,10 @@
     <ClInclude Include="src\Engine\Lights\LightDirectional.h" />
     <ClInclude Include="src\Engine\Lights\LightPoint.h" />
     <ClInclude Include="src\Engine\Logger\Logger.h" />
+    <ClInclude Include="src\Engine\MessageBus\IMessanger.h" />
+    <ClInclude Include="src\Engine\MessageBus\Message.h" />
+    <ClInclude Include="src\Engine\MessageBus\MessageBus.h" />
+    <ClInclude Include="src\Engine\MessageBus\MessageRecipient.h" />
     <ClInclude Include="src\Engine\Properties\ConstProperties.h" />
     <ClInclude Include="src\Engine\Properties\RenderProperties.h" />
     <ClInclude Include="src\Engine\Properties\TimeProperties.h" />

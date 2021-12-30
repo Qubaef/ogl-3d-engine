@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include <vector>
-
 #include "Heightmap.h"
 #include "Engine/CpuPipeline/IProcessable.h"
 #include "Engine/Engine.h"
@@ -9,8 +7,10 @@
 #include "Engine/Common/Vao.h"
 #include "Engine/Common/Vbo.h"
 
+#include "Engine/MessageBus/IMessanger.h"
 
-class SingleMeshLodTerrain : public IProcessable
+
+class SingleMeshLodTerrain : public IProcessable, public IMessanger
 {
 	Vao vao_main;
 	Shader* shaderPtr = nullptr;
@@ -28,6 +28,7 @@ class SingleMeshLodTerrain : public IProcessable
 	GLuint uniformId_terrainHeight;
 	GLuint uniformId_terrainDensity;
 	GLuint uniformId_terrainSize;
+	GLuint uniformId_terrainOffset;
 
 	GLuint uniformId_viewPos;
 
@@ -37,6 +38,7 @@ class SingleMeshLodTerrain : public IProcessable
 	const int size;
 	const int density;
 	const int minLodPatchSize;
+	vec3 terrainOffset = vec3(0,0,0);
 
 	// Buffers common for all sectors
 	Vbo vbo_vertex;

@@ -4,8 +4,9 @@
 #include "../../Engine/CpuPipeline/IProcessable.h"
 #include "CameraController.h"
 #include "InputManager.h"
+#include "Engine/MessageBus/IMessanger.h"
 
-class CameraManager : public IProcessable
+class CameraManager : public IProcessable, public IMessanger
 {
 	const int CAMERA_TOGGLE_KEY = GLFW_KEY_T;
 
