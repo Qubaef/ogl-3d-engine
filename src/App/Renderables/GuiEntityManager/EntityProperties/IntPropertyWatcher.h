@@ -2,15 +2,13 @@
 
 #include "GuiProperty.h"
 
-struct IntPropertyWatcher : GuiProperty
+struct IntPropertyWatcher : public GuiProperty
 {
 	const int& value;
 
 	IntPropertyWatcher(const char* name, const int& value);
 
 	void display() override;
-
-	void getMessage() override;
 
 	~IntPropertyWatcher() override = default;
 };

@@ -1,10 +1,11 @@
 #include "IntPropertyNotifyModifier.h"
 
 #include "imgui.h"
+#include "App/Renderables/GuiEntityManager/Messages/OnPropertyChangeMessage.h"
 
 IntPropertyNotifyModifier::
-IntPropertyNotifyModifier(const char* name, int minValue, int maxValue, int defaultValue, int value)
-	: GuiProperty(name), minValue(minValue), maxValue(maxValue), defaultValue(defaultValue), value(value)
+IntPropertyNotifyModifier(const char* recipientName, const char* name, int minValue, int maxValue, int defaultValue, int value)
+	: GuiProperty(name), recipientName(recipientName), minValue(minValue), maxValue(maxValue), defaultValue(defaultValue), value(value)
 {
 }
 
@@ -15,12 +16,8 @@ void IntPropertyNotifyModifier::display()
 	{
 		ImGui::SameLine();
 
-		// TODO: Notify the entity manager that the property has changed
+		sendMessage(new OnPropertyChangeMessage(name, value),
+			recipientName);
 		ImGui::Text("Update sent!");
 	}
-}
-
-void IntPropertyNotifyModifier::getMessage()
-{
-	// TODO:
 }

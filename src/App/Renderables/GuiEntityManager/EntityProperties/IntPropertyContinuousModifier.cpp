@@ -12,7 +12,3 @@ void IntPropertyContinuousModifier::display()
 {
 	ImGui::DragInt(name, &value, 1, minValue, maxValue, "%d", ImGuiSliderFlags_AlwaysClamp);
 }
-
-void IntPropertyContinuousModifier::getMessage()
-{
-}

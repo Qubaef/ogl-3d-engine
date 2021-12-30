@@ -4,16 +4,15 @@
 
 struct IntPropertyNotifyModifier : GuiProperty
 {
+	const char* recipientName;
 	int minValue;
 	int maxValue;
 	int defaultValue;
 	int value;
 
-	IntPropertyNotifyModifier(const char* name, int minValue, int maxValue, int defaultValue, int value);
+	IntPropertyNotifyModifier(const char* recipientName, const char* name, int minValue, int maxValue, int defaultValue, int value);
 
 	void display() override;
-
-	void getMessage() override;
 
 	~IntPropertyNotifyModifier() override = default;
 };

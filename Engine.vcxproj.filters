@@ -479,6 +479,9 @@
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyWatcher.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\IMessageCollector.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="tracy\profiler\build\win32\x64\Debug\Tracy.exe">

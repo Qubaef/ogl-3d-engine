@@ -17,10 +17,13 @@ bool EntityManager::addEntity(const char* parentPath, const char* entityName)
 
 bool EntityManager::addEntityProperty(const char* entityPath, GuiProperty* property)
 {
+	// Set message collector to entity manager
+	property->setMessageCollector(this);
+	
 	// Find given entity
 	GuiEntry* entity = rootEntry.findEntry(entityPath);
 
-	if(entity != nullptr)
+	if (entity != nullptr)
 	{
 		entity->addChild(property);
 		return true;
@@ -42,17 +45,32 @@ void EntityManager::preprocess()
 
 void EntityManager::process()
 {
+	// Send pending messages to the message bus
+	pendingMessagesMutex.lock();
+
+	for (const auto messageWRecipient : pendingMessages)
+	{
+		sendMessage(
+			messageWRecipient.first,
+			messageWRecipient.second);
+	}
+
+	pendingMessages.clear();
+
+	pendingMessagesMutex.unlock();
+
+	// Acquire all messages from the message bus
 	const auto messages = getMessages();
 
 	for (Message* message : messages)
 	{
-		if(RegisterEntityMessage* registerEntityMessage = dynamic_cast<RegisterEntityMessage*>(message))
+		if (RegisterEntityMessage* registerEntityMessage = dynamic_cast<RegisterEntityMessage*>(message))
 		{
 			addEntity(registerEntityMessage->getParentPath(), registerEntityMessage->sender->getName());
 			continue;
 		}
 
-		if(RegisterPropertyMessage* registerPropertyMessage = dynamic_cast<RegisterPropertyMessage*>(message))
+		if (RegisterPropertyMessage* registerPropertyMessage = dynamic_cast<RegisterPropertyMessage*>(message))
 		{
 			addEntityProperty(registerPropertyMessage->getEntityPath(), registerPropertyMessage->getProperty());
 			continue;
@@ -75,6 +93,18 @@ void EntityManager::render()
 	rootEntry.display();
 
 	ImGui::End();
+}
+
+void EntityManager::addMessage(Message* message, const char* recipient)
+{
+	// Lock mutex
+	pendingMessagesMutex.lock();
+
+	// Add message to pending messages
+	pendingMessages.emplace_back(message, recipient);
+
+	// Unlock mutex
+	pendingMessagesMutex.unlock();
 }
 
 

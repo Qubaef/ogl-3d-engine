@@ -12,7 +12,3 @@ void IntPropertyWatcher::display()
 {
 	ImGui::LabelText(name, "%d", value);
 }
-
-void IntPropertyWatcher::getMessage()
-{
-}

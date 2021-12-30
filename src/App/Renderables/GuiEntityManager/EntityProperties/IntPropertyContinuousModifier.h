@@ -13,7 +13,5 @@ struct IntPropertyContinuousModifier : GuiProperty
 
 	void display() override;
 
-	void getMessage() override;
-
 	~IntPropertyContinuousModifier() override = default;
 };

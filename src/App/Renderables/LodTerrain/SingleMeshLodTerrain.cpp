@@ -4,8 +4,10 @@
 
 #include "App/Renderables/GuiEntityManager/Messages/RegisterPropertyMessage.h"
 #include "App/Renderables/GuiEntityManager/Messages/RegisterEntityMessage.h"
+#include "App/Renderables/GuiEntityManager/Messages/OnPropertyChangeMessage.h"
 #include "App/Renderables/GuiEntityManager/EntityProperties/IntPropertyContinuousModifier.h"
 #include "App/Renderables/GuiEntityManager/EntityProperties/Vec3PropertyContinuousModifier.h"
+#include "App/Renderables/GuiEntityManager/EntityProperties/IntPropertyNotifyModifier.h"
 
 SingleMeshLodTerrain::SingleMeshLodTerrain(Engine* enginePtr, int size, int density, int minLodPatchSize)
 	: IProcessable(enginePtr), IMessanger(&enginePtr->getMessageBus(), "SingleMeshLodTerrain"),
@@ -21,6 +23,10 @@ SingleMeshLodTerrain::SingleMeshLodTerrain(Engine* enginePtr, int size, int dens
 
 	sendMessage(new RegisterPropertyMessage("SingleMeshLodTerrain",
 		new Vec3PropertyContinuousModifier("terrainOffset", -1000, 1000, 0, terrainOffset)),
+		"EntityManager");
+
+	sendMessage(new RegisterPropertyMessage("SingleMeshLodTerrain",
+		new IntPropertyNotifyModifier("SingleMeshLodTerrain", "notify variable", -1000, 1000, 0, 0)),
 		"EntityManager");
 
 	// Initialize terrainQuadTree
@@ -131,6 +137,21 @@ void SingleMeshLodTerrain::preprocess()
 
 void SingleMeshLodTerrain::process()
 {
+	// Acquire all messages from the message bus
+	const auto messages = getMessages();
+
+	for (Message* message : messages)
+	{
+		if (OnPropertyChangeMessage* propertyChangeMessage = dynamic_cast<OnPropertyChangeMessage*>(message))
+		{
+			if(strcmp(propertyChangeMessage->getName(), "notify variable") == 0)
+			{
+				LOG.INFO("'notify variable' is now: %d\n", propertyChangeMessage->getValue());
+			}
+			continue;
+		}
+	}
+
 	// Update Nodes
 	glm::vec3 pos = enginePtr->getCamera()->getPosition();
 	pos.y = 0;

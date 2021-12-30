@@ -13,7 +13,3 @@ void Vec3PropertyContinuousModifier::display()
 	ImGui::DragFloat3(name, reinterpret_cast<float*>(&value), 0.5f, minValue, maxValue,
 		nullptr, ImGuiSliderFlags_AlwaysClamp);
 }
-
-void Vec3PropertyContinuousModifier::getMessage()
-{
-}

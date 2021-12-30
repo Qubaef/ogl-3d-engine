@@ -14,7 +14,5 @@ struct Vec3PropertyContinuousModifier : GuiProperty
 
 	void display() override;
 
-	void getMessage() override;
-
 	~Vec3PropertyContinuousModifier() override = default;
 };

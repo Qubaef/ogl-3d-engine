@@ -326,6 +326,7 @@
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyNotifyModifier.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\GuiEntry\GuiEntry.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\IDisplayable.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\IMessageCollector.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\Messages\OnPropertyChangeMessage.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\GuiProperty.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\Messages\RegisterEntityMessage.h" />

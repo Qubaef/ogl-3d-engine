@@ -3,22 +3,16 @@
 #ifndef ON_PROPERTY_CHANGE_MESSAGE_H
 #define ON_PROPERTY_CHANGE_MESSAGE_H
 
-#include "FundamentalPropertyModifier.h"
 #include "Engine/MessageBus/Message.h"
 
-template <typename T>
 class OnPropertyChangeMessage : public Message
 {
 	const char* name;
-	T value;
+	int value;
 public:
-	OnPropertyChangeMessage(const char* name, T value)
+	OnPropertyChangeMessage(const char* name, int value)
 		: name(name), value(value)
 	{
-		if (!std::is_fundamental_v<T>) {
-			// GuiProperty has to be fundamental type
-			_ASSERT(false);
-		}
 	}
 
 	~OnPropertyChangeMessage() override
@@ -30,7 +24,7 @@ public:
 		return name;
 	}
 
-	T getValue()
+	int getValue()
 	{
 		return value;
 	}

@@ -2,15 +2,17 @@
 #ifndef ENTITY_MANAGER_H
 #define ENTITY_MANAGER_H
 
+#include <mutex>
+
 #include "../../../Engine/CpuPipeline/IProcessable.h"
 #include "Engine/MessageBus/IMessanger.h"
 
 #include "GuiEntry/GuiEntry.h"
+#include "EntityProperties/GuiProperty.h"
+#include "IMessageCollector.h"
 
 
-struct GuiProperty;
-
-class EntityManager : public IProcessable, public IMessanger
+class EntityManager : public IProcessable, public IMessanger, public IMessageCollector
 {
 	const char* DISPLAY_NAME = "Entity manager";
 
@@ -24,18 +26,18 @@ class EntityManager : public IProcessable, public IMessanger
 	// return true if property was added successfully
 	bool addEntityProperty(const char* entityPath, GuiProperty* property);
 
-	// TODO: container for all pending messages from entities and properties
-	// std::vector<Message*> pendingMessages;
-	//
-	// TODO: all entities and properties receive callback to function to insert message to pendingMessages
-	// TODO: modification of pendingMessages is synchronized 
-
+	// Container for all pending messages from entities and properties
+	std::vector<std::pair<Message*, const char*>> pendingMessages;
+	// Mutex for pending messages
+	std::mutex pendingMessagesMutex;
 public:
 	EntityManager(Engine* enginePtr);
 
 	void preprocess() override;
 	void process() override;
 	void render() override;
+
+	void addMessage(Message* message, const char* recipient) override;
 };
 
 #endif
