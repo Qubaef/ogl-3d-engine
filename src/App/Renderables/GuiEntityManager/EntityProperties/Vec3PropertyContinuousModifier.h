@@ -10,7 +10,7 @@ struct Vec3PropertyContinuousModifier : GuiProperty
 	float defaultValue;
 	glm::vec3& value;
 
-	Vec3PropertyContinuousModifier(const char* name, float minValue, float maxValue, float defaultValue, glm::vec3& value);
+	Vec3PropertyContinuousModifier(std::string name, float minValue, float maxValue, float defaultValue, glm::vec3& value);
 
 	void display() override;
 

@@ -10,7 +10,7 @@ struct IntPropertyNotifyModifier : GuiProperty
 	int defaultValue;
 	int value;
 
-	IntPropertyNotifyModifier(const char* recipientName, const char* name, int minValue, int maxValue, int defaultValue, int value);
+	IntPropertyNotifyModifier(const char* recipientName, std::string name, int minValue, int maxValue, int defaultValue, int value);
 
 	void display() override;
 

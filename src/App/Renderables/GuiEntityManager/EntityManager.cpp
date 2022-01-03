@@ -5,6 +5,7 @@
 
 #include "Messages/RegisterEntityMessage.h"
 #include "Messages/RegisterPropertyMessage.h"
+#include "Messages/OnPropertyChangeMessage.h"
 
 bool EntityManager::addEntity(const char* parentPath, const char* entityName)
 {
@@ -21,11 +22,11 @@ bool EntityManager::addEntityProperty(const char* entityPath, GuiProperty* prope
 	property->setMessageCollector(this);
 	
 	// Find given entity
-	GuiEntry* entity = rootEntry.findEntry(entityPath);
+	GuiEntry* entry = rootEntry.findEntry(entityPath);
 
-	if (entity != nullptr)
+	if (entry != nullptr)
 	{
-		entity->addChild(property);
+		entry->addChild(property);
 		return true;
 	}
 

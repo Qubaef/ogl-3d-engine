@@ -137,6 +137,15 @@ void SingleMeshLodTerrain::preprocess()
 
 void SingleMeshLodTerrain::process()
 {
+	//static int counter = 0;
+	//for(int i = 0; i < 100; i++)
+	//{
+	//	sendMessage(new RegisterPropertyMessage("SingleMeshLodTerrain",
+	//		new IntPropertyNotifyModifier("SingleMeshLodTerrain", std::to_string(i) + "notify variable", INT_MIN, INT_MAX, 0, counter)),
+	//		"EntityManager");
+	//}
+	//counter++;
+	
 	// Acquire all messages from the message bus
 	const auto messages = getMessages();
 

@@ -5,10 +5,58 @@
 #include "App/Renderables/GuiEntityManager/IDisplayable.h"
 #include "EntryType.h"
 
-
 struct GuiEntry : public IDisplayable
 {
-private:
+	friend bool operator==(const GuiEntry& lhs, const GuiEntry& rhs)
+	{
+		return lhs.name == rhs.name
+			&& lhs.type == rhs.type;
+	}
+
+	friend bool operator!=(const GuiEntry& lhs, const GuiEntry& rhs)
+	{
+		return !(lhs == rhs);
+	}
+
+	GuiEntry(const GuiEntry& other)
+		: IDisplayable(other),
+		  name(other.name),
+		  childrenList(other.childrenList),
+		  type(other.type)
+	{
+	}
+
+	GuiEntry(GuiEntry&& other) noexcept
+		: IDisplayable(std::move(other)),
+		  name(std::move(other.name)),
+		  childrenList(std::move(other.childrenList)),
+		  type(other.type)
+	{
+	}
+
+	GuiEntry& operator=(const GuiEntry& other)
+	{
+		if (this == &other)
+			return *this;
+		IDisplayable::operator =(other);
+		childrenList = other.childrenList;
+		type = other.type;
+		name = other.name;
+		return *this;
+	}
+
+	GuiEntry& operator=(GuiEntry&& other) noexcept
+	{
+		if (this == &other)
+			return *this;
+		IDisplayable::operator =(std::move(other));
+		childrenList = std::move(other.childrenList);
+		type = other.type;
+		name = std::move(other.name);
+		return *this;
+	}
+
+protected:
 	static const char PATH_SPLITTER = '/';
 	std::string name;
 	std::vector<IDisplayable*> childrenList;
@@ -25,6 +73,9 @@ public:
 	void display() override;
 
 	void addChild(IDisplayable* displayable);
+	void addChild(GuiEntry* entry);
+
+	std::string getName();
 
 	// Create branch for given path
 	// If child with expected name exists, create branch inside it

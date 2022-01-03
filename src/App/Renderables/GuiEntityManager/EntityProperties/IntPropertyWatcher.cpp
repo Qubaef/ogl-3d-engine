@@ -3,12 +3,12 @@
 #include "imgui.h"
 
 IntPropertyWatcher::
-IntPropertyWatcher(const char* name, const int& value)
+IntPropertyWatcher(std::string name, const int& value)
 	: GuiProperty(name), value(value)
 {
 }
 
 void IntPropertyWatcher::display()
 {
-	ImGui::LabelText(name, "%d", value);
+	ImGui::LabelText(name.c_str(), "%d", value);
 }
