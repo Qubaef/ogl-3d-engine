@@ -18,7 +18,7 @@ class ProcessableQueue
 	std::queue<Task> tasksQueue;
 
 	// Task type defining which function does it keep
-	enum ProcessableType
+	enum class ProcessableType
 	{
 		PREPROCESS,
 		PROCESS,

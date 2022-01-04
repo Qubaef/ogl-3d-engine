@@ -11,19 +11,19 @@ void SimpleMeshTerrainManager::terrainInit(int x, int y, int pointsPerLine)
 	// Initialize terrain object
 	switch (terrainType)
 	{
-	case FLAT:
+	case TERRAIN_TYPE::FLAT:
 		shaderPtr = enginePtr->getShaderByName("LightingShader");
 		terrainPtr = reinterpret_cast<Terrain*>(new FlatTerrain(x, y, 1, 1, pointsPerLine, shaderPtr));
 		break;
-	case RANDOM:
+	case TERRAIN_TYPE::RANDOM:
 		shaderPtr = enginePtr->getShaderByName("LightingShader");
 		terrainPtr = reinterpret_cast<Terrain*>(new RandomTerrain(x, y, 1, 1, pointsPerLine, shaderPtr));
 		break;
-	case WATER:
+	case TERRAIN_TYPE::WATER:
 		shaderPtr = enginePtr->getShaderByName("WaterShader");
 		terrainPtr = reinterpret_cast<Terrain*>(new WaterTerrain(x, y, 1, 1, pointsPerLine, shaderPtr));
 		break;
-	case SIMPLEX:
+	case TERRAIN_TYPE::SIMPLEX:
 		shaderPtr = enginePtr->getShaderByName("LightingShader");
 		terrainPtr = reinterpret_cast<Terrain*>(new SimplexTerrainChunk(x, y, 1, 1, pointsPerLine, shaderPtr));
 		break;
@@ -78,7 +78,7 @@ void SimpleMeshTerrainManager::preprocess()
 
 	ImGui::End();
 
-	if (terrainType == SIMPLEX)
+	if (terrainType == TERRAIN_TYPE::SIMPLEX)
 	{
 		SimplexTerrainChunk* simplexTerrainPtr = dynamic_cast<SimplexTerrainChunk*>(terrainPtr);
 		SimplexNoiseWrapper simplexNoiseParams = simplexTerrainPtr->getSimplexNoise();

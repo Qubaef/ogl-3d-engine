@@ -1,5 +1,6 @@
 #include "FirstPersonCameraController.h"
 #include "../../Engine/Include/Constants.h"
+#include "../../Engine/Engine.h"
 
 FirstPersonCameraController::FirstPersonCameraController(Engine* enginePtr, InputManager* p_input_manager) :
 	CameraController(enginePtr, p_input_manager, 0.8)
@@ -41,14 +42,17 @@ void FirstPersonCameraController::updatePerFrame()
 	// Get mouse position
 	vec2 mouse_pos = inputManagerPtr->get_mouse_pos();
 
-	// TODO: replace constexprs with const properties of the engine
-	// Reset mouse position for next frame
-	inputManagerPtr->reset_mouse_pos(SCREEN_W / 2, SCREEN_H / 2);
+	const int windowWidth = enginePtr->getConstProperties().windowWidth;
+	const int windowHeight = enginePtr->getConstProperties().windowHeight;
 
-	// TODO: replace constexprs with const properties of the engine
+	// Reset mouse position for next frame
+	inputManagerPtr->reset_mouse_pos(
+		windowWidth / 2,
+		windowHeight / 2);
+
 	// Compute new orientation
-	initial_horizontal_angle += mouse_sensitivity / 1000 * float(SCREEN_W / 2 - mouse_pos.x);
-	initial_vertical_angle += mouse_sensitivity / 1000 * float(SCREEN_H / 2 - mouse_pos.y);
+	initial_horizontal_angle += mouse_sensitivity / 1000 * (static_cast<float>(windowWidth) / 2 - mouse_pos.x);
+	initial_vertical_angle += mouse_sensitivity / 1000 * (static_cast<float>(windowHeight) / 2 - mouse_pos.y);
 
 	// restrict vertical rotation
 	if (initial_vertical_angle > radians(89.f))
@@ -78,33 +82,33 @@ void FirstPersonCameraController::updatePerFrame()
 	vec3 movement_vector = vec3(0, 0, 0);
 
 	// Move forward
-	if (inputState.ifKeyPressed(GLFW_KEY_W) != NOT_PRESSED) {
+	if (inputState.ifKeyPressed(GLFW_KEY_W) != KeyState::NOT_PRESSED) {
 		movement_vector += directionFlattened * delta_time;
 	}
 	// Move backward
-	if (inputState.ifKeyPressed(GLFW_KEY_S) != NOT_PRESSED) {
+	if (inputState.ifKeyPressed(GLFW_KEY_S) != KeyState::NOT_PRESSED) {
 		movement_vector -= directionFlattened * delta_time;
 	}
 	// Move upwards
-	if (inputState.ifKeyPressed(GLFW_KEY_SPACE) != NOT_PRESSED) {
+	if (inputState.ifKeyPressed(GLFW_KEY_SPACE) != KeyState::NOT_PRESSED) {
 		movement_vector += vec3(0, 1, 0) * delta_time;
 	}
 	// Move downwards
-	if (inputState.ifKeyPressed(GLFW_KEY_LEFT_SHIFT) != NOT_PRESSED) {
+	if (inputState.ifKeyPressed(GLFW_KEY_LEFT_SHIFT) != KeyState::NOT_PRESSED) {
 		movement_vector -= vec3(0, 1, 0) * delta_time;
 	}
 	// Strafe right
-	if (inputState.ifKeyPressed(GLFW_KEY_D) != NOT_PRESSED) {
+	if (inputState.ifKeyPressed(GLFW_KEY_D) != KeyState::NOT_PRESSED) {
 		movement_vector += camera_right * delta_time;
 	}
 	// Strafe left
-	if (inputState.ifKeyPressed(GLFW_KEY_A) != NOT_PRESSED) {
+	if (inputState.ifKeyPressed(GLFW_KEY_A) != KeyState::NOT_PRESSED) {
 		movement_vector -= camera_right * delta_time;
 	}
 
 	float speedMultiplier;
 	// Speedup
-	if (inputState.ifKeyPressed(GLFW_KEY_E) != NOT_PRESSED) {
+	if (inputState.ifKeyPressed(GLFW_KEY_E) != KeyState::NOT_PRESSED) {
 		speedMultiplier = 10;
 	}
 	else
@@ -129,7 +133,10 @@ void FirstPersonCameraController::enable()
 {
 	// Hide the mouse and enable unlimited movement
 	glfwSetInputMode(windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	inputManagerPtr->reset_mouse_pos(SCREEN_W / 2, SCREEN_H / 2);
+	inputManagerPtr->reset_mouse_pos(
+		enginePtr->getConstProperties().windowWidth / 2,
+		enginePtr->getConstProperties().windowHeight / 2
+	);
 
 	registerDefaultInput();
 }

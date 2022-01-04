@@ -8,7 +8,7 @@ struct GuiProperty : public GuiEntry
 {
 	friend bool operator==(const GuiProperty& lhs, const GuiProperty& rhs)
 	{
-		return static_cast<const GuiEntry&>(lhs) == static_cast<const GuiEntry&>(rhs);
+		return static_cast<const GuiEntry&>(lhs) == rhs;
 	}
 
 	friend bool operator!=(const GuiProperty& lhs, const GuiProperty& rhs)

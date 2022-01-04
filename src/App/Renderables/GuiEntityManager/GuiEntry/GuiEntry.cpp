@@ -31,7 +31,7 @@ void GuiEntry::display()
 {
 	switch (type)
 	{
-	case ROOT:
+	case ENTRY_TYPE::ROOT:
 		if (ImGui::CollapsingHeader(name.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			for (IDisplayable* child : childrenList)
@@ -41,7 +41,7 @@ void GuiEntry::display()
 			}
 		}
 		break;
-	case HEADER:
+	case ENTRY_TYPE::HEADER:
 		if (ImGui::TreeNode(name.c_str()), ImGuiTreeNodeFlags_DefaultOpen)
 		{
 			for (IDisplayable* child : childrenList)
@@ -52,7 +52,7 @@ void GuiEntry::display()
 			ImGui::TreePop();
 		}
 		break;
-	case REGULAR:
+	case ENTRY_TYPE::REGULAR:
 		if (ImGui::TreeNode(name.c_str()))
 		{
 			for (IDisplayable* child : childrenList)

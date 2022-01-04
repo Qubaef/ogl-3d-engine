@@ -284,13 +284,6 @@
     <ClCompile Include="src\App\CameraControllers\OverviewCameraController.cpp" />
     <ClCompile Include="src\App\main.cpp" />
     <ClCompile Include="src\App\Renderables\Skybox.cpp" />
-    <ClCompile Include="src\App\Renderables\TerrainTmp\DynamicTerrain.cpp" />
-    <ClCompile Include="src\App\Renderables\TerrainTmp\Quad.cpp" />
-    <ClCompile Include="src\App\Renderables\TerrainTmp\QuadPoint.cpp" />
-    <ClCompile Include="src\App\Renderables\TerrainTmp\QuadTreeLOD.cpp" />
-    <ClCompile Include="src\App\Renderables\TerrainTmp\SimpleTerrain.cpp" />
-    <ClCompile Include="src\App\Renderables\TerrainTmp\_FlatTerrain.cpp" />
-    <ClCompile Include="src\App\Renderables\TerrainTmp\_Terrain.cpp" />
     <ClCompile Include="src\App\Renderables\Terrain\FlatTerrain.cpp" />
     <ClCompile Include="src\App\Renderables\Terrain\RandomTerrain.cpp" />
     <ClCompile Include="src\App\Renderables\Terrain\SimplexNoise.cpp" />
@@ -353,13 +346,6 @@
     <ClInclude Include="src\App\CameraControllers\InputState.h" />
     <ClInclude Include="src\App\CameraControllers\OverviewCameraController.h" />
     <ClInclude Include="src\App\Renderables\Skybox.h" />
-    <ClInclude Include="src\App\Renderables\TerrainTmp\DynamicTerrain.h" />
-    <ClInclude Include="src\App\Renderables\TerrainTmp\Quad.h" />
-    <ClInclude Include="src\App\Renderables\TerrainTmp\QuadPoint.h" />
-    <ClInclude Include="src\App\Renderables\TerrainTmp\QuadTreeLOD.h" />
-    <ClInclude Include="src\App\Renderables\TerrainTmp\SimpleTerrain.h" />
-    <ClInclude Include="src\App\Renderables\TerrainTmp\_FlatTerrain.h" />
-    <ClInclude Include="src\App\Renderables\TerrainTmp\_Terrain.h" />
     <ClInclude Include="src\App\Renderables\Terrain\FlatTerrain.h" />
     <ClInclude Include="src\App\Renderables\Terrain\RandomTerrain.h" />
     <ClInclude Include="src\App\Renderables\Terrain\SimplexNoise.h" />

@@ -44,7 +44,7 @@ void CameraManager::preprocess()
 	}
 
 	// Toggle camera if user CAMERA_TOGGLE_KEY was pressed
-	if (inputManagerPtr->getKeyState(CAMERA_TOGGLE_KEY) == JUST_PRESSED)
+	if (inputManagerPtr->getKeyState(CAMERA_TOGGLE_KEY) == KeyState::JUST_PRESSED)
 	{
 		const int newCameraIndex = (currentCameraIndex + 1) % cameraControllersList.size();
 		if (newCameraIndex != currentCameraIndex) {

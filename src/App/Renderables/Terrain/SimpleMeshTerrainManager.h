@@ -19,7 +19,7 @@ class SimpleMeshTerrainManager : public IProcessable
 	void terrainInit(int x, int y, int pointsPerLine);
 
 public:
-	enum TERRAIN_TYPE
+	enum class TERRAIN_TYPE
 	{
 		FLAT,
 		RANDOM,

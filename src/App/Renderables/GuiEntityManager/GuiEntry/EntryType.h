@@ -1,6 +1,6 @@
 #pragma once
 
-enum ENTRY_TYPE
+enum class ENTRY_TYPE
 {
 	ROOT,
     HEADER,

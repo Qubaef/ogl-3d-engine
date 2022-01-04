@@ -12,7 +12,7 @@ CameraController::CameraController(Engine* enginePtr, InputManager* p_input_mana
 	this->inputManagerPtr = p_input_manager;
 
 	// set initial values of camera
-	this->cameraPosition = vec3(0, 1000, 0);
+	this->cameraPosition = vec3(0, 0, 0);
 	this->cameraDirection = normalize(vec3(
 		cos(initial_vertical_angle) * sin(initial_horizontal_angle),
 		sin(initial_vertical_angle),
@@ -20,10 +20,10 @@ CameraController::CameraController(Engine* enginePtr, InputManager* p_input_mana
 	this->cameraUp = vec3(0, 1, 0);
 
 	generate_matrices();
-	registerDefaultInput();
+	CameraController::registerDefaultInput();
 
 	// Set default DrawMode
-	draw_mode = FILLED;
+	draw_mode = DrawMode::FILLED;
 
 	// get time since of first init
 	this->last_time = glfwGetTime();
@@ -50,10 +50,10 @@ CameraController::CameraController(Engine* enginePtr, InputManager* p_input_mana
 	this->cameraUp = vec3(0, 1, 0);
 
 	generate_matrices();
-	registerDefaultInput();
+	CameraController::registerDefaultInput();
 
 	// Set default DrawMode
-	draw_mode = FILLED;
+	draw_mode = DrawMode::FILLED;
 
 	// get time since of first init
 	this->last_time = glfwGetTime();
@@ -77,7 +77,7 @@ float CameraController::calculate_time()
 
 	// calculate time since last frame
 	current_time = glfwGetTime();
-	float delta_time = current_time - last_time;
+	const float delta_time = current_time - last_time;
 	last_time = current_time;
 
 	return delta_time;
@@ -87,14 +87,14 @@ void CameraController::toggleDrawMode()
 {
 	ZoneScoped;
 
-	if (draw_mode == FILLED)
+	if (draw_mode == DrawMode::FILLED)
 	{
-		draw_mode = WIREFRAME;
+		draw_mode = DrawMode::WIREFRAME;
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 	else
 	{
-		draw_mode = FILLED;
+		draw_mode = DrawMode::FILLED;
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 }
@@ -105,12 +105,12 @@ void CameraController::updateProjection()
 	ZoneScoped;
 
 	// update Projection matrix
-	// TODO: replace constexprs with const properties of the engine
 	Projection = perspective(
-		radians((float)CAMERA_FOV),				// FOV
-		(float)SCREEN_W / (float)SCREEN_H,		// aspect ratio
-		CAMERA_NEAR_CLIPPING,					// near clipping plane
-		CAMERA_FAR_CLIPPING						// far clipping pane
+		radians(static_cast<float>(enginePtr->getConstProperties().cameraFov)),	// FOV
+		static_cast<float>(enginePtr->getConstProperties().windowWidth) /
+		static_cast<float>(enginePtr->getConstProperties().windowHeight),		// aspect ratio
+		enginePtr->getConstProperties().cameraNearClipping,						// near clipping plane
+		enginePtr->getConstProperties().cameraFarClipping						// far clipping pane
 	);
 }
 
@@ -157,7 +157,7 @@ void CameraController::processDefaultInput()
 	inputManagerPtr->process_input();
 	InputState& inputState = inputManagerPtr->get_input_state();
 
-	if (inputState.ifKeyPressed(GLFW_KEY_P) == JUST_PRESSED)
+	if (inputState.ifKeyPressed(GLFW_KEY_P) == KeyState::JUST_PRESSED)
 	{
 		toggleDrawMode();
 	}

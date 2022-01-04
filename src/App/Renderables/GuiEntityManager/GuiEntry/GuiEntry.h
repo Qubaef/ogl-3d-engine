@@ -67,7 +67,7 @@ protected:
 	std::pair<std::string, std::string> getNextChild(const std::string& path);
 public:
 
-	GuiEntry(std::string name, ENTRY_TYPE type = REGULAR);
+	GuiEntry(std::string name, ENTRY_TYPE type = ENTRY_TYPE::REGULAR);
 
 	// Display entry and all its children
 	void display() override;

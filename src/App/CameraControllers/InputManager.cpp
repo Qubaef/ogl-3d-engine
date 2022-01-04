@@ -69,18 +69,18 @@ InputState& InputManager::process_input()
 	{
 		if (glfwGetKey(p_window, keyState.first) == GLFW_PRESS)
 		{
-			if (keyState.second == NOT_PRESSED)
+			if (keyState.second == KeyState::NOT_PRESSED)
 			{
-				keyState.second = JUST_PRESSED;
+				keyState.second = KeyState::JUST_PRESSED;
 			}
 			else
 			{
-				keyState.second = HOLD_PRESSED;
+				keyState.second = KeyState::HOLD_PRESSED;
 			}
 		}
-		else if (glfwGetKey(p_window, keyState.first) == GLFW_RELEASE && keyState.second != NOT_PRESSED)
+		else if (glfwGetKey(p_window, keyState.first) == GLFW_RELEASE && keyState.second != KeyState::NOT_PRESSED)
 		{
-			keyState.second = NOT_PRESSED;
+			keyState.second = KeyState::NOT_PRESSED;
 		}
 	}
 

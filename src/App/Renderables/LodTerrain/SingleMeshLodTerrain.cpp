@@ -17,10 +17,6 @@ SingleMeshLodTerrain::SingleMeshLodTerrain(Engine* enginePtr, int size, int dens
 
 	sendMessage(new RegisterEntityMessage(""), "EntityManager");
 
-	//sendMessage(new RegisterPropertyMessage("SingleMeshLodTerrain",
-	//  new IntPropertyContinuousModifier("terrainOffset", -1000, 1000, 0, terrainOffset.y)),
-	//	"EntityManager");
-
 	sendMessage(new RegisterPropertyMessage("SingleMeshLodTerrain",
 		new Vec3PropertyContinuousModifier("terrainOffset", -1000, 1000, 0, terrainOffset)),
 		"EntityManager");
@@ -137,15 +133,6 @@ void SingleMeshLodTerrain::preprocess()
 
 void SingleMeshLodTerrain::process()
 {
-	//static int counter = 0;
-	//for(int i = 0; i < 100; i++)
-	//{
-	//	sendMessage(new RegisterPropertyMessage("SingleMeshLodTerrain",
-	//		new IntPropertyNotifyModifier("SingleMeshLodTerrain", std::to_string(i) + "notify variable", INT_MIN, INT_MAX, 0, counter)),
-	//		"EntityManager");
-	//}
-	//counter++;
-	
 	// Acquire all messages from the message bus
 	const auto messages = getMessages();
 

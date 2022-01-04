@@ -30,6 +30,9 @@ class EntityManager : public IProcessable, public IMessanger, public IMessageCol
 	std::vector<std::pair<Message*, const char*>> pendingMessages;
 	// Mutex for pending messages
 	std::mutex pendingMessagesMutex;
+
+	// Send all pending messages
+	void sendPendingMessages();
 public:
 	EntityManager(Engine* enginePtr);
 

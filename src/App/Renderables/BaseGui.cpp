@@ -46,7 +46,7 @@ void BaseGui::preprocess()
 	static int memoryAllocatedPlotUpdateFreq = plotUpdateFreq;
 
 	PROCESS_MEMORY_COUNTERS_EX pmc;
-	GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
+	GetProcessMemoryInfo(GetCurrentProcess(), reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&pmc), sizeof(pmc));
 	DWORDLONG physMemUsedByMe = pmc.WorkingSetSize;
 	float physMemUsedByMeMegabytes = physMemUsedByMe / 1000000;
 
