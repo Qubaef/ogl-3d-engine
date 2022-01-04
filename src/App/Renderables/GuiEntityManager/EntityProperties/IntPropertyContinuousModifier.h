@@ -9,7 +9,7 @@ struct IntPropertyContinuousModifier : GuiProperty
 	int defaultValue;
 	int& value;
 
-	IntPropertyContinuousModifier(const char* name, int minValue, int maxValue, int defaultValue, int& value);
+	IntPropertyContinuousModifier(std::string name, int minValue, int maxValue, int defaultValue, int& value);
 
 	void display() override;
 

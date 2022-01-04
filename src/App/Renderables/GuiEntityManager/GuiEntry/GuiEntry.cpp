@@ -29,9 +29,9 @@ GuiEntry::GuiEntry(std::string name, ENTRY_TYPE type)
 
 void GuiEntry::display()
 {
-	switch(type)
+	switch (type)
 	{
-	case ROOT:
+	case ENTRY_TYPE::ROOT:
 		if (ImGui::CollapsingHeader(name.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			for (IDisplayable* child : childrenList)
@@ -41,7 +41,7 @@ void GuiEntry::display()
 			}
 		}
 		break;
-	case HEADER:
+	case ENTRY_TYPE::HEADER:
 		if (ImGui::TreeNode(name.c_str()), ImGuiTreeNodeFlags_DefaultOpen)
 		{
 			for (IDisplayable* child : childrenList)
@@ -52,7 +52,7 @@ void GuiEntry::display()
 			ImGui::TreePop();
 		}
 		break;
-	case REGULAR:
+	case ENTRY_TYPE::REGULAR:
 		if (ImGui::TreeNode(name.c_str()))
 		{
 			for (IDisplayable* child : childrenList)
@@ -69,12 +69,36 @@ void GuiEntry::display()
 
 }
 
-void GuiEntry::addChild(IDisplayable *displayable)
+void GuiEntry::addChild(IDisplayable* displayable)
 {
 	childrenList.push_back(displayable);
 }
 
-GuiEntry &GuiEntry::createBranch(const std::string path)
+void GuiEntry::addChild(GuiEntry* entry)
+{
+	for (auto& child : childrenList)
+	{
+		if (const auto childEntry = dynamic_cast<GuiEntry*>(child))
+		{
+			if (*entry == *childEntry)
+			{
+				delete child;
+				child = entry;
+
+				return;
+			}
+		}
+	}
+
+	addChild(static_cast<IDisplayable*>(entry));
+}
+
+std::string GuiEntry::getName()
+{
+	return name;
+}
+
+GuiEntry& GuiEntry::createBranch(const std::string path)
 {
 	// Process path
 	const auto nextChildData = getNextChild(path);
@@ -91,9 +115,9 @@ GuiEntry &GuiEntry::createBranch(const std::string path)
 	}
 
 	// Find child with expected name
-	for (IDisplayable *child : childrenList)
+	for (IDisplayable* child : childrenList)
 	{
-		if(GuiEntry *guiEntry = dynamic_cast<GuiEntry *>(child))
+		if (GuiEntry* guiEntry = dynamic_cast<GuiEntry*>(child))
 		{
 			if (guiEntry->name == entryName)
 			{
@@ -104,12 +128,12 @@ GuiEntry &GuiEntry::createBranch(const std::string path)
 	}
 
 	// If child with expected name doesn't exist, create new entry and branch relative to it
-	GuiEntry *newEntry = new GuiEntry(entryName);
-	addChild(newEntry);
+	GuiEntry* newEntry = new GuiEntry(entryName);
+	addChild(static_cast<IDisplayable*>(newEntry));
 	return newEntry->createBranch(newPath);
 }
 
-GuiEntry *GuiEntry::findEntry(const std::string path)
+GuiEntry* GuiEntry::findEntry(const std::string path)
 {
 	// Process path
 	const auto nextChildData = getNextChild(path);
@@ -126,9 +150,9 @@ GuiEntry *GuiEntry::findEntry(const std::string path)
 	}
 
 	// Find child with expected name
-	for (IDisplayable *child : childrenList)
+	for (IDisplayable* child : childrenList)
 	{
-		if(GuiEntry *guiEntry = dynamic_cast<GuiEntry *>(child))
+		if (GuiEntry* guiEntry = dynamic_cast<GuiEntry*>(child))
 		{
 			if (guiEntry->name == entryName)
 			{

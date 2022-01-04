@@ -1,7 +1,7 @@
 ﻿#include "Sphere.h"
 
-Sphere::Sphere(Engine* enginePtr)
-	: IProcessable(enginePtr), pos(vec3(0, 1, 0))
+Sphere::Sphere(Engine* enginePtr, vec3 pos)
+	: IProcessable(enginePtr), pos(pos)
 {
 	shaderPtr = enginePtr->getShaderByName("LightingShader");
 

@@ -6,13 +6,11 @@
 #include <map>
 #include <vector>
 
-// #include "../CpuPipeline/IProcessable.h"
 #include "Message.h"
 #include "IMessanger.h"
 #include "MessageRecipient.h"
 
 // Comparator for names dictionary
-// TODO: Move to file containing common symbols
 struct StringComparator
 {
 	bool operator()(char const* a, char const* b) const
@@ -38,7 +36,7 @@ class MessageBus
 
 
 	IMessanger* getMessanger(int index);
-	IMessanger* getRecipient(MessageRecipient messageRecipient);
+	IMessanger* getRecipient(const MessageRecipient& messageRecipient);
 
 	// Get messages for specific messanger
 	std::vector<Message*> getMessages(const char* messangerName);

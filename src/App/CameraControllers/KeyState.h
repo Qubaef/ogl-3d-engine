@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-enum KeyState
+enum class KeyState
 {
 	NOT_PRESSED,
 	JUST_PRESSED,

@@ -105,27 +105,6 @@
     <ClCompile Include="src\App\Renderables\Terrain\WaterTerrain.cpp">
       <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="src\App\Renderables\TerrainTmp\Quad.cpp">
-      <Filter>Pliki źródłowe\App\Renderables\Terrains\DynamicQuadtreeLOD</Filter>
-    </ClCompile>
-    <ClCompile Include="src\App\Renderables\TerrainTmp\QuadPoint.cpp">
-      <Filter>Pliki źródłowe\App\Renderables\Terrains\DynamicQuadtreeLOD</Filter>
-    </ClCompile>
-    <ClCompile Include="src\App\Renderables\TerrainTmp\QuadTreeLOD.cpp">
-      <Filter>Pliki źródłowe\App\Renderables\Terrains\DynamicQuadtreeLOD</Filter>
-    </ClCompile>
-    <ClCompile Include="src\App\Renderables\TerrainTmp\_FlatTerrain.cpp">
-      <Filter>Pliki źródłowe\App\Renderables\Terrains</Filter>
-    </ClCompile>
-    <ClCompile Include="src\App\Renderables\TerrainTmp\_Terrain.cpp">
-      <Filter>Pliki źródłowe\App\Renderables\Terrains</Filter>
-    </ClCompile>
-    <ClCompile Include="src\App\Renderables\TerrainTmp\DynamicTerrain.cpp">
-      <Filter>Pliki źródłowe\App\Renderables\Terrains</Filter>
-    </ClCompile>
-    <ClCompile Include="src\App\Renderables\TerrainTmp\SimpleTerrain.cpp">
-      <Filter>Pliki źródłowe\App\Renderables\Terrains</Filter>
-    </ClCompile>
     <ClCompile Include="src\App\Renderables\TestEntity.cpp">
       <Filter>Pliki źródłowe\App\Renderables</Filter>
     </ClCompile>
@@ -280,27 +259,6 @@
     </ClInclude>
     <ClInclude Include="src\App\Renderables\Terrain\WaterTerrain.h">
       <Filter>Pliki źródłowe\App\Renderables\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="src\App\Renderables\TerrainTmp\Quad.h">
-      <Filter>Pliki źródłowe\App\Renderables\Terrains\DynamicQuadtreeLOD</Filter>
-    </ClInclude>
-    <ClInclude Include="src\App\Renderables\TerrainTmp\QuadPoint.h">
-      <Filter>Pliki źródłowe\App\Renderables\Terrains\DynamicQuadtreeLOD</Filter>
-    </ClInclude>
-    <ClInclude Include="src\App\Renderables\TerrainTmp\QuadTreeLOD.h">
-      <Filter>Pliki źródłowe\App\Renderables\Terrains\DynamicQuadtreeLOD</Filter>
-    </ClInclude>
-    <ClInclude Include="src\App\Renderables\TerrainTmp\_FlatTerrain.h">
-      <Filter>Pliki źródłowe\App\Renderables\Terrains</Filter>
-    </ClInclude>
-    <ClInclude Include="src\App\Renderables\TerrainTmp\_Terrain.h">
-      <Filter>Pliki źródłowe\App\Renderables\Terrains</Filter>
-    </ClInclude>
-    <ClInclude Include="src\App\Renderables\TerrainTmp\DynamicTerrain.h">
-      <Filter>Pliki źródłowe\App\Renderables\Terrains</Filter>
-    </ClInclude>
-    <ClInclude Include="src\App\Renderables\TerrainTmp\SimpleTerrain.h">
-      <Filter>Pliki źródłowe\App\Renderables\Terrains</Filter>
     </ClInclude>
     <ClInclude Include="src\App\Renderables\TestEntity.h">
       <Filter>Pliki źródłowe\App\Renderables</Filter>

@@ -24,7 +24,7 @@ protected:
 	double last_time;
 	double current_time;
 
-	enum DrawMode
+	enum class DrawMode
 	{
 		FILLED,
 		WIREFRAME

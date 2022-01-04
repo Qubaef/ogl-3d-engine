@@ -3,25 +3,24 @@
 struct ConstProperties
 {
 	// Engine execution mode
-	enum EXECUTION_MODE
+	enum class EXECUTION_MODE
 	{
 		RELEASE,
 		DEBUG,
 		TESTS,
 	};
 
-	EXECUTION_MODE executionMode = DEBUG;
+	EXECUTION_MODE executionMode = EXECUTION_MODE::DEBUG;
 
 	// Window properties
 	const char* windowName = "Engine";
-	const int windowWidth = 1280;
-	const int windowHeight = 720;
+	const int windowWidth = 2560;
+	const int windowHeight = 1440;
 
-	// TODO: Move camera properties to camera class
 	// Camera properties
 	const unsigned cameraFov = 45;
-	const float cameraNearClipping = 5.f;
-	const float cameraFarClipping = 100000.f;
+	const float cameraNearClipping = 1.f;
+	const float cameraFarClipping = 20000.f;
 
 	// Lights properties
 	const int maxPointLightsNumber = 16;

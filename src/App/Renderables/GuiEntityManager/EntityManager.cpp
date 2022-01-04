@@ -5,6 +5,7 @@
 
 #include "Messages/RegisterEntityMessage.h"
 #include "Messages/RegisterPropertyMessage.h"
+#include "Messages/OnPropertyChangeMessage.h"
 
 bool EntityManager::addEntity(const char* parentPath, const char* entityName)
 {
@@ -19,23 +20,37 @@ bool EntityManager::addEntityProperty(const char* entityPath, GuiProperty* prope
 {
 	// Set message collector to entity manager
 	property->setMessageCollector(this);
-	
-	// Find given entity
-	GuiEntry* entity = rootEntry.findEntry(entityPath);
 
-	if (entity != nullptr)
+	// Find given entity
+	GuiEntry* entry = rootEntry.findEntry(entityPath);
+
+	if (entry != nullptr)
 	{
-		entity->addChild(property);
+		entry->addChild(property);
 		return true;
 	}
 
 	return false;
 }
 
+void EntityManager::sendPendingMessages()
+{
+	pendingMessagesMutex.lock();
+
+	for (const auto& [message, recipient] : pendingMessages)
+	{
+		sendMessage(message, recipient);
+	}
+
+	pendingMessages.clear();
+
+	pendingMessagesMutex.unlock();
+}
+
 EntityManager::EntityManager(Engine* enginePtr)
 	: IProcessable(enginePtr),
 	IMessanger(&enginePtr->getMessageBus(), "EntityManager"),
-	rootEntry(GuiEntry("Entities", ROOT))
+	rootEntry(GuiEntry("Entities", ENTRY_TYPE::ROOT))
 {
 }
 
@@ -45,19 +60,8 @@ void EntityManager::preprocess()
 
 void EntityManager::process()
 {
-	// Send pending messages to the message bus
-	pendingMessagesMutex.lock();
-
-	for (const auto messageWRecipient : pendingMessages)
-	{
-		sendMessage(
-			messageWRecipient.first,
-			messageWRecipient.second);
-	}
-
-	pendingMessages.clear();
-
-	pendingMessagesMutex.unlock();
+	// Send pending messages to the recipients
+	sendPendingMessages();
 
 	// Acquire all messages from the message bus
 	const auto messages = getMessages();
@@ -88,7 +92,7 @@ void EntityManager::render()
 
 	ImGui::SetNextWindowSize(ImVec2(entityEditorWidth, entityEditorHeight), ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(enginePtr->getConstProperties().windowWidth - entityEditorWidth, 0), ImGuiCond_Once);
-	ImGui::Begin("Entity editor", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+	ImGui::Begin(DISPLAY_NAME, nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
 	rootEntry.display();
 

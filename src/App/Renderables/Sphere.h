@@ -30,7 +30,7 @@ class Sphere : public IProcessable
 	std::vector<int> indicesData;
 
 public:
-	Sphere(Engine* enginePtr);
+	Sphere(Engine* enginePtr, vec3 pos = vec3(0, 1, 0));
 
 	void preprocess() override;
 

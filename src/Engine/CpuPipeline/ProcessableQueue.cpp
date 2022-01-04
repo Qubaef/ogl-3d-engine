@@ -38,28 +38,28 @@ void ProcessableQueue::refreshQueue()
 	{
 		switch (phase)
 		{
-		case PREPROCESS:
+		case ProcessableType::PREPROCESS:
 			if (processable->ifDefinedPreprocess())
 			{
 				tasksQueue.push(Task(processable, &IProcessable::preprocess));
 			}
 			break;
-		case PROCESS:
+		case ProcessableType::PROCESS:
 			if (processable->ifDefinedProcess())
 			{
 				tasksQueue.push(Task(processable, &IProcessable::process));
 			}
 			break;
-		case RENDER:
+		case ProcessableType::RENDER:
 			if (processable->ifDefinedRender())
 			{
 				tasksQueue.push(Task(processable, &IProcessable::render));
 			}
 			break;
-		case NONE: break;
+		case ProcessableType::NONE:
+			break;
 		default:;
-		};
-
+		}
 	}
 
 	// Lock access to the taskQueue
@@ -137,7 +137,7 @@ void ProcessableQueue::preprocess()
 	while (!ifFinished());
 
 	// Set proper Phase
-	phase = PREPROCESS;
+	phase = ProcessableType::PREPROCESS;
 
 	// Refresh queue
 	refreshQueue();
@@ -164,7 +164,7 @@ void ProcessableQueue::process()
 	while (!ifFinished());
 
 	// Set proper Phase
-	phase = PROCESS;
+	phase = ProcessableType::PROCESS;
 
 	std::unique_lock<std::mutex> mutexLockGuard(conditionalVariableMutex);
 
@@ -184,7 +184,7 @@ void ProcessableQueue::render()
 	while (!ifFinished());
 
 	// Set proper Phase
-	phase = RENDER;
+	phase = ProcessableType::RENDER;
 
 	// Refresh queue
 	refreshQueue();

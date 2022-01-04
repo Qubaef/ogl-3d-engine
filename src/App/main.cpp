@@ -69,7 +69,6 @@ int main()
 	cameraManager->addCamera(new OverviewCameraController(enginePtr, inputManager));
 	enginePtr->registerProcessable(cameraManager);
 
-	/* Register processing and rendering tasks */
 	enginePtr->registerProcessable(new Sphere(enginePtr));
 	enginePtr->registerProcessable(new SingleMeshLodTerrain(enginePtr, 5000, 5000, 8));
 	// enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new SimpleMeshTerrainManager(enginePtr, SimpleMeshTerrainManager::SIMPLEX)));
