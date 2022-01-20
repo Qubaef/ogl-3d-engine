@@ -293,7 +293,7 @@ bool Engine::checkOglErrors(const char* location)
 		case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
 		}
 		LOG.ERROR("%s Opengl error in %s\n", error.c_str(), location);
- 		result = true;
+    		result = true;
 	}
 
 	return result;
@@ -372,11 +372,6 @@ Shader* Engine::getShaderByName(std::string name)
 	return this->shaderManagerPtr->getShaderByName(name);
 }
 
-void Engine::setDirectionalLight()
-{
-
-}
-
 bool Engine::registerProcessable(IProcessable* processablePtr)
 {
 	ZoneScoped;
@@ -395,6 +390,11 @@ void Engine::registerCamera(Camera* cameraPtr)
 Camera* Engine::getCamera()
 {
 	return this->cameraPtr;
+}
+
+ShaderManager* Engine::getShaderManager()
+{
+	return this->shaderManagerPtr;
 }
 
 

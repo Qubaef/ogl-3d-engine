@@ -115,9 +115,6 @@ public:
 	// Get Shader By Name
 	Shader* getShaderByName(std::string name);
 
-	// Register directional Light for 
-	void setDirectionalLight();
-
 	// Register new IProcessable static task in the Engine
 	bool registerProcessable(IProcessable* processablePtr);
 
@@ -126,6 +123,9 @@ public:
 
 	// Return engine's camera
 	Camera* getCamera();
+
+	// Return engine's shaderManager
+	ShaderManager* getShaderManager();
 
 	// Check for ogl errors
 	bool checkOglErrors(const char* location);

@@ -258,6 +258,7 @@
     <ClCompile Include="src\App\CameraControllers\MenuUseCameraController.cpp" />
     <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityManager.cpp" />
     <ClCompile Include="src\App\Renderables\Framebuffer.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\FloatPropertyContinuousModifier.cpp" />
     <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousModifier.cpp" />
     <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyNotifyModifier.cpp" />
     <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyWatcher.cpp" />
@@ -265,6 +266,7 @@
     <ClCompile Include="src\App\Renderables\GuiEntityManager\GuiEntry\GuiEntry.cpp" />
     <ClCompile Include="src\App\Renderables\GuiEntityManager\Messages\RegisterEntityMessage.cpp" />
     <ClCompile Include="src\App\Renderables\GuiEntityManager\Messages\RegisterPropertyMessage.cpp" />
+    <ClCompile Include="src\App\Renderables\Interior.cpp" />
     <ClCompile Include="src\App\Renderables\LodTerrain\Heightmap.cpp" />
     <ClCompile Include="src\App\Renderables\Sphere.cpp" />
     <ClCompile Include="src\App\Renderables\LodTerrain\SingleMeshLodTerrain.cpp" />
@@ -312,6 +314,7 @@
     <ClInclude Include="src\App\CameraControllers\MenuUseCameraController.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityManager.h" />
     <ClInclude Include="src\App\Renderables\Framebuffer.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\FloatPropertyContinuousModifier.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousModifier.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyWatcher.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\Vec3PropertyContinuousModifier.h" />
@@ -324,6 +327,7 @@
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\GuiProperty.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\Messages\RegisterEntityMessage.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\Messages\RegisterPropertyMessage.h" />
+    <ClInclude Include="src\App\Renderables\Interior.h" />
     <ClInclude Include="src\App\Renderables\LodTerrain\Heightmap.h" />
     <ClInclude Include="src\App\Renderables\LodTerrain\QuadTerrainNode.h" />
     <ClInclude Include="src\App\Renderables\Sphere.h" />
@@ -380,12 +384,16 @@
     <ClInclude Include="src\Engine\Shaders\ShaderManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Shaderfiles\DepthShader.vert" />
+    <None Include="src\Shaderfiles\DepthShader.frag" />
     <None Include="src\Shaderfiles\FragmentShader.frag" />
     <None Include="src\Shaderfiles\FramebufferShader.frag" />
     <None Include="src\Shaderfiles\FramebufferShader.vert" />
     <None Include="src\Shaderfiles\HeightmapGenerationShader.comp" />
     <None Include="src\Shaderfiles\LightingFragmentShader.frag" />
     <None Include="src\Shaderfiles\LightingVertexShader.vert" />
+    <None Include="src\Shaderfiles\ShadowMappingShader.frag" />
+    <None Include="src\Shaderfiles\ShadowMappingShader.vert" />
     <None Include="src\Shaderfiles\SkyboxFragmentShader.frag" />
     <None Include="src\Shaderfiles\SkyboxVertexShader.vert" />
     <None Include="src\Shaderfiles\TerrainLod.frag" />

@@ -21,11 +21,18 @@ void ShaderManager::initializeLights()
 	ZoneScoped;
 
 	// Initialize directional light
+	//directionalLight = new LightDirectional(
+	//	vec3(0.3f, 0.3f, 0.3f),
+	//	vec3(0.7f, 0.7f, 0.7f),
+	//	vec3(1.f, 1.f, 1.f),
+	//	vec3(10.f, -1.f, 10.f));
+
 	directionalLight = new LightDirectional(
 		vec3(0.3f, 0.3f, 0.3f),
 		vec3(0.7f, 0.7f, 0.7f),
 		vec3(1.f, 1.f, 1.f),
-		vec3(10.f, -1.f, 10.f));
+		vec3(.5f, 1.f, .5f)
+	);
 
 	// Set the number of point lights
 	int usedPointLightsNumber = 0;

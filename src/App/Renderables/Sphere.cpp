@@ -27,7 +27,6 @@ Sphere::Sphere(Engine* enginePtr, vec3 pos)
 		}
 	}
 
-	bool oddRow = false;
 	for (int y = 0; y < ySegments; ++y)
 	{
 		for (int x = 0; x < xSegments; ++x)
@@ -135,7 +134,7 @@ void Sphere::render()
 		GL_TRIANGLES,			// mode
 		indicesData.size(),		// count
 		GL_UNSIGNED_INT,		// type
-		(void*)0				// element array buffer offset
+		0				// element array buffer offset
 	);
 
 	glCullFace(GL_FRONT);

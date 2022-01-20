@@ -121,8 +121,8 @@ void CameraController::updateView()
 	// update View matrix
 	View = glm::lookAt(
 		cameraPosition,						// the position of your camera, in world space
-		cameraPosition + cameraDirection,		// where you want to look at, in world space
-		cameraUp								// up vector (0,1,0) on default
+		cameraPosition + cameraDirection,	// where you want to look at, in world space
+		cameraUp							// up vector (0,1,0) on default
 	);
 }
 

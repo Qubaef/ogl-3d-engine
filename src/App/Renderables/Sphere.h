@@ -7,7 +7,7 @@
 
 class Sphere : public IProcessable
 {
-	// Shader used for SimpleMeshTerrainManager
+	// Shader used for Sphere
 	Shader* shaderPtr;
 
 	// Handles to view matrices ids
@@ -35,7 +35,7 @@ public:
 	void preprocess() override;
 
 	void process() override;
-	
+
 	void render() override;
 
 	~Sphere() override = default;
