@@ -1,15 +1,25 @@
 ﻿#include "ShaderManager.h"
 #include "../../Engine/Engine.h"
+#include "App/Renderables/GuiEntityManager/EntityProperties/Vec3PropertyContinuousModifier.h"
+#include "App/Renderables/GuiEntityManager/Messages/RegisterEntityMessage.h"
+#include "App/Renderables/GuiEntityManager/Messages/RegisterPropertyMessage.h"
 
 ShaderManager::ShaderManager(Engine* enginePtr) :
+	IMessanger(&enginePtr->getMessageBus(), "ShaderManager"),
 	enginePtr(enginePtr)
 {
 	ZoneScoped;
 
 	initializeLights();
 
+	sendMessage(new RegisterEntityMessage(""), "EntityManager");
+
+	sendMessage(new RegisterPropertyMessage("ShaderManager",
+		new Vec3PropertyContinuousModifier("directionalLight", -1, 1, 0, directionalLight->getDirectionRef())),
+		"EntityManager");
+
 	// Init unchangeable uniforms
-	for (auto shaderPair : shaderCollection)
+	for (const auto shaderPair : shaderCollection)
 	{
 		shaderPair.second->use();
 		shaderPair.second->set_int(pointLightsCountName, actualPointLightsNumber);
@@ -147,7 +157,7 @@ void ShaderManager::updateDirectionalLight(Shader* shaderPtr) const
 		shaderPtr->set_vec3(directionalLightName + ".ambient", directionalLight->getColorAmbient());
 		shaderPtr->set_vec3(directionalLightName + ".diffuse", directionalLight->getColorDiffuse());
 		shaderPtr->set_vec3(directionalLightName + ".specular", directionalLight->getColorSpecular());
-		shaderPtr->set_vec3(directionalLightName + ".direction", directionalLight->getDirection());
+		shaderPtr->set_vec3(directionalLightName + ".direction", directionalLight->getDirectionVal());
 	}
 }
 

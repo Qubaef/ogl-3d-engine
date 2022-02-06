@@ -1,10 +1,12 @@
 ﻿#include "IntPropertyWatcher.h"
 
+#include <utility>
+
 #include "imgui.h"
 
 IntPropertyWatcher::
 IntPropertyWatcher(std::string name, const int& value)
-	: GuiProperty(name), value(value)
+	: GuiProperty(std::move(name)), value(value)
 {
 }
 

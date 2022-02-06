@@ -5,7 +5,7 @@
 #include "App/Renderables/GuiEntityManager/Messages/RegisterPropertyMessage.h"
 #include "App/Renderables/GuiEntityManager/Messages/RegisterEntityMessage.h"
 #include "App/Renderables/GuiEntityManager/Messages/OnPropertyChangeMessage.h"
-#include "App/Renderables/GuiEntityManager/EntityProperties/IntPropertyContinuousModifier.h"
+#include "App/Renderables/GuiEntityManager/EntityProperties/IntPropertyContinuousDragModifier.h"
 #include "App/Renderables/GuiEntityManager/EntityProperties/Vec3PropertyContinuousModifier.h"
 #include "App/Renderables/GuiEntityManager/EntityProperties/IntPropertyNotifyModifier.h"
 

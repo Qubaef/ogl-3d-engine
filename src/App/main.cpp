@@ -56,7 +56,10 @@ int main()
 
 	Shader shadowMappingShader = Shader("ShadowMappingShader",
 		"src/Shaderfiles/ShadowMappingShader.vert",
-		"src/Shaderfiles/ShadowMappingShader.frag");
+		"src/Shaderfiles/ShadowMappingShader.frag",
+		nullptr,
+		nullptr,
+		"src/Shaderfiles/ShadowMappingShader.geom");
 	enginePtr->registerShader(shadowMappingShader);
 
 	Shader waterShader = Shader("WaterShader",
@@ -112,7 +115,7 @@ void loadInteriorScene(Engine* enginePtr, InputManager* inputManager)
 	enginePtr->registerProcessable(cameraManager);
 
 	// enginePtr->registerProcessable(new SimpleMeshTerrainManager(enginePtr, SimpleMeshTerrainManager::TERRAIN_TYPE::FLAT));
-	enginePtr->registerProcessable(new Sphere(enginePtr));
+	// enginePtr->registerProcessable(new Sphere(enginePtr, vec3(5, 5, 5)));
 	enginePtr->registerProcessable(new Skybox(enginePtr));
 	enginePtr->registerProcessable(new EntityManager(enginePtr));
 	enginePtr->registerProcessable(new Interior(enginePtr));

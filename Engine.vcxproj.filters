@@ -216,7 +216,7 @@
     <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyNotifyModifier.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousModifier.cpp">
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousDragModifier.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\Vec3PropertyContinuousModifier.cpp">
@@ -229,6 +229,15 @@
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\FloatPropertyContinuousModifier.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\TexturePropertyWatcher.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\BoolPropertyTrueFalseSwitch.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousSliderModifier.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
@@ -434,7 +443,7 @@
     <ClInclude Include="src\App\Renderables\GuiEntityManager\GuiEntry\EntryType.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousModifier.h">
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousDragModifier.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\Vec3PropertyContinuousModifier.h">
@@ -450,6 +459,15 @@
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\FloatPropertyContinuousModifier.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\TexturePropertyWatcher.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\BoolPropertyTrueFalseSwitch.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousSliderModifier.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>

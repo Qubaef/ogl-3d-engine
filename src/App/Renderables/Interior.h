@@ -7,10 +7,24 @@
 
 class Interior : public IProcessable, public IMessanger
 {
-	float SHADOW_LIGHT_MULTIPLIER = 100;
-	float orthoSize = 100;
-	float nearPane = 1.f;
-	float fearPane = 200.f;
+	unsigned shadowMapLayerTexture;
+	bool debug = false;
+	// float maxShadowBias = 0.02;
+	float shadowStrength = 0.65f;
+	std::vector<float> maxShadowCascadeBiasList;
+	float tmp = 1.0f;
+
+	float zMult = 3.9f;
+	std::vector<float> shadowCascadeLevels;
+	int layer = 0;
+	unsigned int matricesUBO;
+
+	// Shadows
+	unsigned int depthFramebuffer;
+	const unsigned int DEPTH_MAP_RES = 4096;
+
+	std::vector<unsigned> shadowMapTextures;
+	unsigned int lightDepthMaps;
 
     // Shader used for Interior
 	Shader* shaderPtr;
@@ -51,10 +65,8 @@ class Interior : public IProcessable, public IMessanger
 	unsigned int quadVAO = 0;
 	unsigned int quadVBO;
 
-	// Shadows
-	unsigned int depthMapFBO;
-	const unsigned int SHADOW_WIDTH = 2048, SHADOW_HEIGHT = 2048;
-	unsigned int depthMap;
+	std::vector<glm::mat4> getLightSpaceMatrices();
+	std::vector<glm::vec4> getFrustumCornersWorldSpace(const glm::mat4& proj, const glm::mat4& view);
 
 	void generateBox(vec3 pos, int scale);
 
@@ -63,7 +75,7 @@ class Interior : public IProcessable, public IMessanger
 	void generateWall(vec2 wall, vec3 direction);
 
 
-	mat4 calculateLightSpaceMatrix();
+	mat4 calculateLightSpaceMatrix(const float nearPlane, const float farPlane);
 
 
 	void setupDepthShaderAndMatrices();

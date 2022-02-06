@@ -10,5 +10,5 @@ FloatPropertyContinuousModifier(std::string name, float minValue, float maxValue
 
 void FloatPropertyContinuousModifier::display()
 {
-	ImGui::DragFloat(name.c_str(), &value, 1, minValue, maxValue, "%f");
+	ImGui::DragFloat(name.c_str(), &value, (maxValue - minValue) / 1000, minValue, maxValue, "%f");
 }

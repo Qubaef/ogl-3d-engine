@@ -293,7 +293,7 @@ bool Engine::checkOglErrors(const char* location)
 		case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
 		}
 		LOG.ERROR("%s Opengl error in %s\n", error.c_str(), location);
-    		result = true;
+    	result = true;
 	}
 
 	return result;

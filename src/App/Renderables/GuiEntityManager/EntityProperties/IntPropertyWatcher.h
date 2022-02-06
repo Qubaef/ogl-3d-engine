@@ -2,7 +2,7 @@
 
 #include "GuiProperty.h"
 
-struct IntPropertyWatcher : public GuiProperty
+struct IntPropertyWatcher : GuiProperty
 {
 	const int& value;
 

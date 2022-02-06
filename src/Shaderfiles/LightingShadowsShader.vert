@@ -7,21 +7,18 @@ uniform mat4 MVP;
 uniform mat4 V;
 uniform mat4 M;
 uniform mat3 M_inverted;
-uniform mat4 lightSpaceMatrix;
 
 out VS_OUT {
     vec3 FragPos;
     vec3 Normal;
-    vec4 FragPosLightSpace;
 } vs_out;
 
 
 void main() {
 
 	// Output position of the vertex, in clip space : MVP * position
-	gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
+	gl_Position =  MVP * vec4(vertexPosition_modelspace, 1);
 
 	vs_out.FragPos = vec3(M * vec4(vertexPosition_modelspace, 1.0));
 	vs_out.Normal = normalize(M_inverted * vertexNormal_modelspace);
-	vs_out.FragPosLightSpace = lightSpaceMatrix * vec4(vs_out.FragPos, 1.0);
 }

@@ -259,9 +259,12 @@
     <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityManager.cpp" />
     <ClCompile Include="src\App\Renderables\Framebuffer.cpp" />
     <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\FloatPropertyContinuousModifier.cpp" />
-    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousModifier.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousDragModifier.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousSliderModifier.cpp" />
     <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyNotifyModifier.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\BoolPropertyTrueFalseSwitch.cpp" />
     <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyWatcher.cpp" />
+    <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\TexturePropertyWatcher.cpp" />
     <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\Vec3PropertyContinuousModifier.cpp" />
     <ClCompile Include="src\App\Renderables\GuiEntityManager\GuiEntry\GuiEntry.cpp" />
     <ClCompile Include="src\App\Renderables\GuiEntityManager\Messages\RegisterEntityMessage.cpp" />
@@ -315,8 +318,11 @@
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityManager.h" />
     <ClInclude Include="src\App\Renderables\Framebuffer.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\FloatPropertyContinuousModifier.h" />
-    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousModifier.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousDragModifier.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\BoolPropertyTrueFalseSwitch.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousSliderModifier.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyWatcher.h" />
+    <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\TexturePropertyWatcher.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\Vec3PropertyContinuousModifier.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\GuiEntry\EntryType.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyNotifyModifier.h" />

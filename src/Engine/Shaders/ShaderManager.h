@@ -10,12 +10,13 @@
 #include "../Lights/LightDirectional.h"
 #include "../Lights/LightPoint.h"
 #include "Shader.h"
+#include "Engine/MessageBus/IMessanger.h"
 
 using namespace glm;
 
 class Engine;
 
-class ShaderManager
+class ShaderManager : public IMessanger
 {
 private:
 	Engine* enginePtr;

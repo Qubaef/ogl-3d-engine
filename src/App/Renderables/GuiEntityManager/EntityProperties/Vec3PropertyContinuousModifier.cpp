@@ -10,6 +10,6 @@ Vec3PropertyContinuousModifier(std::string name, float minValue, float maxValue,
 
 void Vec3PropertyContinuousModifier::display()
 {
-	ImGui::DragFloat3(name.c_str(), reinterpret_cast<float*>(&value), 0.5f, minValue, maxValue,
+	ImGui::DragFloat3(name.c_str(), reinterpret_cast<float*>(&value), (maxValue - minValue) / 1000, minValue, maxValue,
 		nullptr, ImGuiSliderFlags_AlwaysClamp);
 }
