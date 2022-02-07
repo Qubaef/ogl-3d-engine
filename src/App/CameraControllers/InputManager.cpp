@@ -1,7 +1,9 @@
 ﻿#include "InputManager.h"
 
-#include "../../Engine/Engine.h"
+#include "Engine/Engine.h"
 #include "KeyState.h"
+
+using namespace glm;
 
 void InputManager::set_window_user_pointer()
 {
@@ -35,11 +37,11 @@ void InputManager::bind_mouse_click_event()
 }
 
 
-InputManager::InputManager(Engine* enginePtr)
+InputManager::InputManager(Engine& engine)
 {
 	ZoneScoped;
 
-	p_window = enginePtr->getGlWindow();
+	p_window = engine.getGlWindow();
 
 	// Set custom user pointer, to make binding possible
 	set_window_user_pointer();

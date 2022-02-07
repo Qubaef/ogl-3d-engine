@@ -1,13 +1,13 @@
 ﻿#include "OverviewCameraController.h"
 
-OverviewCameraController::OverviewCameraController(Engine* enginePtr, InputManager* p_input_manager) :
-	CameraController(enginePtr, p_input_manager, 0.8)
+OverviewCameraController::OverviewCameraController(Engine& engine, InputManager* p_input_manager) :
+	CameraController(engine, p_input_manager, 0.8)
 {
 }
 
 
-OverviewCameraController::OverviewCameraController(Engine* enginePtr, InputManager* p_input_manager, vec3 position, float vertical_angle, float horizontal_angle) :
-	CameraController(enginePtr, p_input_manager, 0.8, position, vertical_angle, horizontal_angle)
+OverviewCameraController::OverviewCameraController(Engine& engine, InputManager* p_input_manager, vec3 position, float vertical_angle, float horizontal_angle) :
+	CameraController(engine, p_input_manager, 0.8, position, vertical_angle, horizontal_angle)
 {
 }
 

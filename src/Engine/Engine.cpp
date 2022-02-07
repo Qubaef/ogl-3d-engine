@@ -1,19 +1,40 @@
 ﻿#include <iostream>
 
 #include "Engine.h"
+
 #include "Exceptions/InitializationException.h"
-#include "../App/Renderables/TestEntity.h"
+#include "App/Renderables/TestEntity.h"
+#include "DebugLib/Log.h"
+
+#include "Renderer/OpenGl/Init.h"
+#include "Renderer/OpenGl/Validate.h"
 
 
 /* OpenGL initialization phase methods */
 
-void Engine::startPhaseOpenglInit()
+void Engine::startPhaseRendererInit()
 {
-	ZoneScoped;
+	// Initialize Glfw
+	engineWindowPtr = initGlfw (
+		props.consts.windowWidth,
+		props.consts.windowHeight,
+		props.consts.windowName,
+		true
+	);
 
-	initialize_GLFW();
-	initialize_window();
-	initialize_GLEW();
+	// Verify Glfw window
+	if (engineWindowPtr == nullptr) {
+		glfwTerminate();
+		throw InitializationException("Failed to open Glfw window", __FUNCTION__);
+	}
+
+	// Initialize Glew
+	if(initGlew() == false)
+	{
+		glfwTerminate();
+		throw InitializationException("Failed to initialize Glew", __FUNCTION__);
+	}
+
 
 	TracyGpuContext;
 
@@ -45,60 +66,6 @@ void Engine::startPhaseOpenglInit()
 		work_grp_cnt[0], work_grp_cnt[1], work_grp_cnt[2]);
 }
 
-void Engine::initialize_GLFW()
-{
-	ZoneScoped;
-
-	// Initialise GLFW
-	glewExperimental = true;												// Needed for core profile
-
-	if (!glfwInit())
-	{
-		throw InitializationException("Failed to initialize GLFW.", "initialize_GLFW");
-	}
-
-	glfwWindowHint(GLFW_SAMPLES, 4);									// 4x antialiasing
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);						// We want OpenGL 3
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);					// Enable debug context
-	// glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);					// To make MacOS happy; should not be needed
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);		// We don't want the old OpenGL
-}
-
-void Engine::initialize_window()
-{
-	ZoneScoped;
-
-	// Open a window and create its OpenGL context
-	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
-
-	engineWindowPtr = glfwCreateWindow(constProperties.windowWidth, constProperties.windowHeight,
-		constProperties.windowName, NULL, NULL);
-
-	if (engineWindowPtr == NULL) {
-		glfwTerminate();
-		throw InitializationException("Failed to open GLFW window.", "initialize_window");
-	}
-}
-
-void Engine::initialize_GLEW()
-{
-	ZoneScoped;
-
-	// Initialise GLEW
-	if (engineWindowPtr == NULL)
-	{
-		glfwTerminate();
-		throw InitializationException("Window was not properly initialized.", "initialize_GLEW");
-	}
-
-	glfwMakeContextCurrent(engineWindowPtr);
-
-	if (glewInit() != GLEW_OK) {
-		glfwTerminate();
-		throw InitializationException("Failed to initialize GLEW", "initialize_GLEW");
-	}
-}
 
 void Engine::setDefaultOglParameters()
 {
@@ -146,173 +113,38 @@ void Engine::startPhaseEnginePrep()
 	ZoneScoped;
 
 	//// Set default Engine properties
-	setDefaultsRenderProperties();
+	setDefaultsPropertiesRender();
 	setDefaultsTimeProperties();
 
 	// Initialize ShaderManager and insert all used shaders to it
-	shaderManagerPtr = new ShaderManager(this);
+	shaderManagerPtr = new ShaderManager(*this);
 
 	//// Initialize worker threads in preRenderQueue
 	processableQueue = new ProcessableQueue(2);
 }
 
-//void Engine::runEnginePrepTests()
-//{
-//	ZoneScoped;
-//
-//	//// SafeTaskQueue tests
-//	if (false)
-//	{
-//		// SafeTaskQueue test initialize:
-//		TestEntity testEntity(this);
-//		Task testTask(reinterpret_cast<IProcessable*>(&testEntity), &IProcessable::process);
-//		int testSize = 100;
-//		for (int i = 0; i < testSize; i++)
-//		{
-//			preRenderQueue.pushTaskPermanently(testTask);
-//		}
-//
-//		// Test 1
-//		INFO.PERFORMANCE("Test 1\n");
-//		auto t1 = std::chrono::high_resolution_clock::now();
-//		for (int i = 0; i < testSize; i++)
-//		{
-//			testEntity.process();
-//		}
-//		auto t2 = std::chrono::high_resolution_clock::now();
-//
-//		INFO.PERFORMANCE("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
-//
-//		// Test 1.5
-//		INFO.PERFORMANCE("Test 1.5\n");
-//		t1 = std::chrono::high_resolution_clock::now();
-//		preRenderQueue.refreshCycle();
-//		preRenderQueue.processQueue();
-//		t2 = std::chrono::high_resolution_clock::now();
-//
-//		INFO.PERFORMANCE("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
-//
-//		//// Test 2
-//		INFO.PERFORMANCE("Test 2\n");
-//		preRenderQueue.runWorkers(2);
-//		t1 = std::chrono::high_resolution_clock::now();
-//		preRenderQueue.refreshCycle();
-//		while (!preRenderQueue.ifFinished());
-//		t2 = std::chrono::high_resolution_clock::now();
-//
-//		INFO.PERFORMANCE("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
-//
-//		//// Test 3
-//		INFO.PERFORMANCE("Test 3\n");
-//		preRenderQueue.runWorkers(8);
-//		t1 = std::chrono::high_resolution_clock::now();
-//		preRenderQueue.refreshCycle();
-//		while (!preRenderQueue.ifFinished());
-//		t2 = std::chrono::high_resolution_clock::now();
-//
-//		INFO.PERFORMANCE("Res: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
-//	}
-//
-//	//// Fopen test
-//	if (false)
-//	{
-//		// Fopen initialization
-//		FILE* pFile;
-//		int testSize = 1000;
-//		const char* filename1 = "t1";
-//		const char* filename2 = "t2";
-//		char buffer[] = "Test message\n";
-//
-//		// Test 1
-//		INFO.PERFORMANCE("Test 1\n");
-//		auto t1 = std::chrono::high_resolution_clock::now();
-//
-//		pFile = fopen(filename1, "w");
-//		for (int i = 0; i < testSize; i++)
-//		{
-//			fwrite(buffer, sizeof(char), sizeof(buffer), pFile);
-//		}
-//		fclose(pFile);
-//
-//		auto t2 = std::chrono::high_resolution_clock::now();
-//		INFO.PERFORMANCE("Test result: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
-//
-//		// Test 2
-//		INFO.PERFORMANCE("Test 2\n");
-//		t1 = std::chrono::high_resolution_clock::now();
-//
-//		for (int i = 0; i < testSize; i++)
-//		{
-//			pFile = fopen(filename1, "w");
-//			fwrite(buffer, sizeof(char), sizeof(buffer), pFile);
-//			fclose(pFile);
-//		}
-//
-//		t2 = std::chrono::high_resolution_clock::now();
-//		INFO.PERFORMANCE("Test result: %lld mic\n", std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
-//	}
-//}
-
-void Engine::setDefaultsRenderProperties()
+void Engine::setDefaultsPropertiesRender()
 {
 	ZoneScoped;
 }
 
 void Engine::setDefaultsTimeProperties()
 {
-	ZoneScoped;
-
-	timeProperties.lastPrintTimestamp = glfwGetTime();
-	timeProperties.lastFrameTimestamp = timeProperties.lastPrintTimestamp;
-	timeProperties.printInterval = 1.0;
-	timeProperties.processedFramesNumber = 0;
-	timeProperties.lastFrameDelta = 0;
+	props.time.lastPrintTimestamp = glfwGetTime();
+	props.time.lastFrameTimestamp = props.time.lastPrintTimestamp;
+	props.time.printInterval = 1.0;
+	props.time.processedFramesNumber = 0;
+	props.time.lastFrameDelta = 0;
 }
-
-
-/* Runtime phase methods */
-
-bool Engine::checkOglErrors(const char* location)
-{
-	ZoneScoped;
-
-	GLenum errorCode;
-	bool result = false;
-
-	while ((errorCode = glGetError()) != GL_NO_ERROR)
-	{
-		std::string error;
-		switch (errorCode)
-		{
-		case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
-		case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
-		case GL_INVALID_OPERATION:             error = "INVALID_OPERATION"; break;
-		case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
-		case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
-		case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
-		case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
-		}
-		LOG.ERROR("%s Opengl error in %s\n", error.c_str(), location);
-    	result = true;
-	}
-
-	return result;
-}
-
 
 /* Public interface methods */
 
 Engine::Engine()
 {
-	ZoneScoped;
-
-	// Initialize Engine.Log
-	LOG.init(true, true, true, true, true);
-
 	try
 	{
 		// Start OpenGL Initialization Phase
-		startPhaseOpenglInit();
+		startPhaseRendererInit();
 	}
 	catch (InitializationException& e) {
 		LOG.ERROR("Exception: %s\n Message: %s\n, Location: %s\n", e.get_type(), e.get_msg(), e.get_func());
@@ -332,27 +164,21 @@ GLFWwindow* Engine::getGlWindow()
 }
 
 
-RenderProperties& Engine::getRenderProperties()
+PropertiesRender& Engine::getRenderProps()
 {
-	ZoneScoped;
-
-	return renderProperties;
+	return props.render;
 }
 
 
-TimeProperties& Engine::getTimeProperties()
+PropertiesTime& Engine::getTimeProps()
 {
-	ZoneScoped;
-
-	return timeProperties;
+	return props.time;
 }
 
 
-ConstProperties& Engine::getConstProperties()
+PropertiesConst& Engine::getConstProps()
 {
-	ZoneScoped;
-
-	return constProperties;
+	return props.consts;
 }
 
 MessageBus& Engine::getMessageBus()
@@ -458,7 +284,7 @@ int Engine::run()
 		glfwPollEvents();
 
 		// Check for OpenGl rendering errors
-		checkOglErrors("runtimeLoop");
+		checkOglErrors(__FUNCTION__);
 
 		// Tracy Profiler: End frame mark
 		FrameMark;

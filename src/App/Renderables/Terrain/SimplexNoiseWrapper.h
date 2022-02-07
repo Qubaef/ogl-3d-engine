@@ -4,14 +4,14 @@
 
 struct SimplexNoiseWrapper
 {
-	float amplitude = 150.0;
-	float frequency = 0.0018;
-	float lacunarity = 3.0;
-	float persistance = 0.25;
+	float amplitude = 150.0f;
+	float frequency = 0.0018f;
+	float lacunarity = 3.0f;
+	float persistance = 0.25f;
 	int terrainLayers = 5;
 
-	float noiseOffsetX = 50;
-	float noiseOffsetZ = 50;
+	float noiseOffsetX = 50.f;
+	float noiseOffsetZ = 50.f;
 
 	float getSimplexNoiseValue(float x, float z)
 	{

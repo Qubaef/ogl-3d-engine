@@ -1,6 +1,6 @@
 #pragma once
-#include "../../Engine/CpuPipeline/IProcessable.h"
-#include "../../Engine/Engine.h"
+#include "Engine/CpuPipeline/IProcessable.h"
+#include "Engine/Engine.h"
 
 class BaseGui : public IProcessable
 {
@@ -10,7 +10,7 @@ class BaseGui : public IProcessable
 	static const int allocatedMemoryLength = 100;
 	float allocatedMemory[frameTimesLength] = {0};
 public:
-	BaseGui(Engine* enginePtr);
+	BaseGui(Engine& engine);
 
 	void process() override;
 
@@ -19,5 +19,4 @@ public:
 	void render() override;
 
 	~BaseGui() override = default;
-
 };

@@ -18,7 +18,7 @@ class Sphere : public IProcessable
 	unsigned xSegments = 30;
 	unsigned ySegments = 30;
 	unsigned radius = 1;
-	vec3 pos;
+	glm::vec3 pos;
 
 	Vao mainVao;
 	Vbo vertexBuffer;
@@ -30,7 +30,7 @@ class Sphere : public IProcessable
 	std::vector<int> indicesData;
 
 public:
-	Sphere(Engine* enginePtr, vec3 pos = vec3(0, 1, 0));
+	Sphere(Engine& engine, glm::vec3 pos = glm::vec3(0, 1, 0));
 
 	void preprocess() override;
 

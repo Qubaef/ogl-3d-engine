@@ -1,8 +1,4 @@
 ﻿#pragma once
-#ifndef PROCESSABLE_H
-#define PROCESSABLE_H
-
-#include "../Include/Common.h"
 
 class Engine;
 
@@ -17,10 +13,10 @@ protected:
 	const int renderFlag = 1 << 2;
 	// const int postprocessFlag = 1 << 3;
 
-	Engine* enginePtr;
+	Engine& engine;
 
 public:
-	IProcessable(Engine* enginePtr);
+	IProcessable(Engine& engine);
 
 	// Operation characteristics:
 	// * performed in main thread
@@ -56,5 +52,3 @@ public:
 	// To provide that IProcessable is abstract class
 	virtual ~IProcessable() = default;
 };
-
-#endif

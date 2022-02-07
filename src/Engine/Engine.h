@@ -1,37 +1,36 @@
 ﻿#pragma once
-#ifndef ENGINE_H
-#define ENGINE_H
 
 #include <vector>
+#include "Include/Common.h"
 
 /* Engine properties */
-#include "Properties/RenderProperties.h"
-#include "Properties/TimeProperties.h"
-#include "Properties/ConstProperties.h"
+#include "Properties/PropertiesRender.h"
+#include "Properties/PropertiesTime.h"
+#include "Properties/PropertiesConst.h"
+#include "Properties/Properties.h"
 
 /* Obligatory engine includes */
 #include "CpuPipeline/IProcessable.h"
-
 #include "CpuPipeline/ProcessableQueue.h"
-#include "Camera/Camera.h"
-#include "Shaders/ShaderManager.h"
-#include "MessageBus/MessageBus.h"
+
+#include "Components/Camera/Camera.h"
+#include "Components/Shaders/ShaderManager.h"
+#include "Components/MessageBus/MessageBus.h"
 
 
 class Engine
 {
-private:
+
 	// =====================================================
 	// ======================= Engine's properties
 	// =====================================================
-	RenderProperties renderProperties;
-	TimeProperties timeProperties;
-	ConstProperties constProperties;
+public:
+	Properties props;
 
 	// =====================================================
 	// ==================== Engine's mandatory variables
 	// =====================================================
-
+private:
 	// Pointer to window handle
 	GLFWwindow* engineWindowPtr = nullptr;
 
@@ -58,17 +57,8 @@ private:
 
 	/* OpenGL initialization phase methods */
 
-	// Start OpenGl Initialization Phase
-	void startPhaseOpenglInit();
-
-	// Initialize GLFW library
-	void initialize_GLFW();
-
-	// Initialize Engine Window
-	void initialize_window();
-
-	// Initialize GLEW library
-	void initialize_GLEW();
+	// Start Renderer Initialization Phase
+	void startPhaseRendererInit();
 
 	// Set OpenGL Engine parameters
 	void setDefaultOglParameters();
@@ -79,11 +69,11 @@ private:
 	// Start Engine Preparation Phase
 	void startPhaseEnginePrep();
 
-	// Set default values of RenderProperties
+	// Set default values of PropertiesRender
 	// [Note: not a constructor, cause default value sometimes requires library call]
-	void setDefaultsRenderProperties();
+	void setDefaultsPropertiesRender();
 
-	// Set default values of TimeProperties
+	// Set default values of PropertiesTime
 	// [Note: not a constructor, cause default value sometimes requires library call]
 	void setDefaultsTimeProperties();
 
@@ -98,13 +88,13 @@ public:
 	GLFWwindow* getGlWindow();
 
 	// Return global engine's render properties
-	RenderProperties& getRenderProperties();
+	PropertiesRender& getRenderProps();
 
 	// Return global engine's render properties
-	TimeProperties& getTimeProperties();
+	PropertiesTime& getTimeProps();
 
 	// Return global engine's render properties
-	ConstProperties& getConstProperties();
+	PropertiesConst& getConstProps();
 
 	// Return engine's message bus
 	MessageBus& getMessageBus();
@@ -127,11 +117,6 @@ public:
 	// Return engine's shaderManager
 	ShaderManager* getShaderManager();
 
-	// Check for ogl errors
-	bool checkOglErrors(const char* location);
-
 	// Start Runtime Phase
 	int run();
 };
-
-#endif

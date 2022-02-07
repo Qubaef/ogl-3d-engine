@@ -1,14 +1,11 @@
 ﻿#pragma once
-#include <cstdlib>
-#include <string>
-#include <algorithm>
 
-#include "../../Engine/CpuPipeline/IProcessable.h"
+#include "Engine/CpuPipeline/IProcessable.h"
 
 class TestEntity : IProcessable
 {
 public:
-	TestEntity(Engine* enginePtr);
+	TestEntity(Engine& engine);
 	
 	void process() override;
 

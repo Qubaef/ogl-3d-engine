@@ -1,7 +1,7 @@
 #include "Heightmap.h"
 
 #include "Engine/Engine.h"
-#include "Engine/Logger/Logger.h"
+#include "DebugLib/Log.h"
 #include "Engine/Include/Common.h"
 #include "Engine/Common/ImageLibWrapper.h"
 
@@ -67,17 +67,17 @@ void Heightmap::update(SimplexNoiseWrapper noise)
 	delete[] data;
 }
 
-void Heightmap::updateGpu(Engine* enginePtr)
+void Heightmap::updateGpu(Engine& engine)
 {
 	ZoneScoped;
 
 	// Get and setup shader
-	Shader* shaderPtr = enginePtr->getShaderByName("HeightmapShader");
+	Shader* shaderPtr = engine.getShaderByName("HeightmapShader");
 	shaderPtr->use();
-	shaderPtr->set_float("size", size);
-	shaderPtr->set_float("density", density);
-	shaderPtr->set_float("frequency", 2600);
-	shaderPtr->set_float("amplitude", 2500);
+	shaderPtr->setFloat("size", size);
+	shaderPtr->setFloat("density", density);
+	shaderPtr->setFloat("frequency", 2600);
+	shaderPtr->setFloat("amplitude", 2500);
 
 	// Init texture
 	glGenTextures(1, &textureId);

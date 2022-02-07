@@ -36,7 +36,7 @@ class Interior : public IProcessable, public IMessanger
 	GLuint ViewMatrixID;
 	GLuint ModelMatrixID;
 
-    vec3 pos;
+	glm::vec3 pos;
 
 	// Interior
     float scaleX = 1000;
@@ -68,14 +68,14 @@ class Interior : public IProcessable, public IMessanger
 	std::vector<glm::mat4> getLightSpaceMatrices();
 	std::vector<glm::vec4> getFrustumCornersWorldSpace(const glm::mat4& proj, const glm::mat4& view);
 
-	void generateBox(vec3 pos, int scale);
+	void generateBox(glm::vec3 pos, int scale);
 
 	void generateFloor();
 
-	void generateWall(vec2 wall, vec3 direction);
+	void generateWall(glm::vec2 wall, glm::vec3 direction);
 
 
-	mat4 calculateLightSpaceMatrix(const float nearPlane, const float farPlane);
+	glm::mat4 calculateLightSpaceMatrix(const float nearPlane, const float farPlane);
 
 
 	void setupDepthShaderAndMatrices();
@@ -86,7 +86,7 @@ class Interior : public IProcessable, public IMessanger
 	void renderQuad();
 
 public:
-	Interior(Engine* enginePtr);
+	Interior(Engine& engine);
 
 	void preprocess() override;
 

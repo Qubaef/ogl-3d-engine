@@ -5,8 +5,11 @@
 #include "App/Renderables/GuiEntityManager/Messages/RegisterPropertyMessage.h"
 #include "App/Renderables/GuiEntityManager/EntityProperties/IntPropertyWatcher.h"
 
-CameraManager::CameraManager(Engine* enginePtr, InputManager* inputManagerPtr)
-	: IProcessable(enginePtr), IMessanger(&enginePtr->getMessageBus(), "CameraManager"),
+#include "CameraController.h"
+#include "InputManager.h"
+
+CameraManager::CameraManager(Engine& engine, InputManager* inputManagerPtr)
+	: IProcessable(engine), IMessanger(&engine.getMessageBus(), "CameraManager"),
 	inputManagerPtr(inputManagerPtr)
 {
 	sendMessage(new RegisterEntityMessage(""), "EntityManager");
@@ -21,7 +24,7 @@ CameraManager::CameraManager(Engine* enginePtr, InputManager* inputManagerPtr)
 void CameraManager::enableCamera(CameraController* cameraControllerPtr)
 {
 	cameraControllerPtr->enable();
-	enginePtr->registerCamera(cameraControllerPtr);
+	engine.registerCamera(cameraControllerPtr);
 }
 
 void CameraManager::addCamera(CameraController* cameraControllerPtr)

@@ -1,9 +1,6 @@
 ﻿#pragma once
 
-#ifndef REGISTER_ENTITY_MESSAGE_H
-#define REGISTER_ENTITY_MESSAGE_H
-
-#include "Engine/MessageBus/Message.h"
+#include "Engine/Components/MessageBus/Message.h"
 
 class RegisterEntityMessage : public Message
 {
@@ -16,5 +13,3 @@ public:
 
 	const char* getParentPath() const;
 };
-
-#endif

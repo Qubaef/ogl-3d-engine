@@ -11,6 +11,9 @@
 #include "GuiEntityManager/EntityProperties/Vec3PropertyContinuousModifier.h"
 #include "GuiEntityManager/Messages/RegisterEntityMessage.h"
 #include "GuiEntityManager/Messages/RegisterPropertyMessage.h"
+#include "Renderer/OpenGl/Validate.h"
+
+using namespace glm;
 
 void copyTextureArrayLayerToGL_TEXTURE_2D(unsigned targetTexture, unsigned textureArray, int layer, int width, int height) {
 	glCopyImageSubData(
@@ -20,11 +23,11 @@ void copyTextureArrayLayerToGL_TEXTURE_2D(unsigned targetTexture, unsigned textu
 	);
 }
 
-std::vector<glm::mat4> Interior::getLightSpaceMatrices()
+std::vector<mat4> Interior::getLightSpaceMatrices()
 {
-	float cameraNearPlane = enginePtr->getConstProperties().cameraNearClipping;
-	float cameraFarPlane = enginePtr->getConstProperties().cameraFarClipping;
-	std::vector<glm::mat4> ret;
+	float cameraNearPlane = engine.getConstProps().cameraNearClipping;
+	float cameraFarPlane = engine.getConstProps().cameraFarClipping;
+	std::vector<mat4> ret;
 
 	for (size_t i = 0; i < shadowCascadeLevels.size() + 1; ++i)
 	{
@@ -45,19 +48,19 @@ std::vector<glm::mat4> Interior::getLightSpaceMatrices()
 	return ret;
 }
 
-std::vector<glm::vec4> Interior::getFrustumCornersWorldSpace(const glm::mat4& proj, const glm::mat4& view)
+std::vector<vec4> Interior::getFrustumCornersWorldSpace(const mat4& proj, const mat4& view)
 {
-	const auto inv = glm::inverse(proj * view);
+	const auto inv = inverse(proj * view);
 
-	std::vector<glm::vec4> frustumCorners;
+	std::vector<vec4> frustumCorners;
 	for (unsigned int x = 0; x < 2; ++x)
 	{
 		for (unsigned int y = 0; y < 2; ++y)
 		{
 			for (unsigned int z = 0; z < 2; ++z)
 			{
-				const glm::vec4 pt =
-					inv * glm::vec4(
+				const vec4 pt =
+					inv * vec4(
 						2.0f * x - 1.0f,
 						2.0f * y - 1.0f,
 						2.0f * z - 1.0f,
@@ -282,12 +285,12 @@ void Interior::generateWall(vec2 wall, vec3 direction)
 
 mat4 Interior::calculateLightSpaceMatrix(const float nearPlane, const float farPlane)
 {
-	vec3 lightDir = enginePtr->getShaderManager()->getDirectionalLight().getDirectionVal();
-	Camera* cameraPtr = enginePtr->getCamera();
+	vec3 lightDir = engine.getShaderManager()->getDirectionalLight().getDirectionVal();
+	Camera* cameraPtr = engine.getCamera();
 
-	mat4 proj = glm::perspective(
-		(float)enginePtr->getConstProperties().cameraFov,
-		(float)enginePtr->getConstProperties().windowWidth / (float)enginePtr->getConstProperties().windowHeight,
+	mat4 proj = perspective(
+		(float)engine.getConstProps().cameraFov,
+		(float)engine.getConstProps().windowWidth / (float)engine.getConstProps().windowHeight,
 		nearPlane, farPlane
 	);
 
@@ -297,14 +300,14 @@ mat4 Interior::calculateLightSpaceMatrix(const float nearPlane, const float farP
 	vec3 targetPoint = vec3(0, 0, 0);
 	for (const auto& v : corners)
 	{
-		targetPoint += glm::vec3(v);
+		targetPoint += vec3(v);
 	}
 	targetPoint /= corners.size();
 
-	const auto lightView = glm::lookAt(
+	const auto lightView = lookAt(
 		targetPoint + normalize(lightDir),
 		targetPoint,
-		glm::vec3(0.0f, 1.0f, 0.0f)
+		vec3(0.0f, 1.0f, 0.0f)
 	);
 
 	float minX = std::numeric_limits<float>::max();
@@ -338,7 +341,7 @@ mat4 Interior::calculateLightSpaceMatrix(const float nearPlane, const float farP
 		maxZ *= zMult;
 	}
 
-	const glm::mat4 lightProjection = glm::ortho(
+	const mat4 lightProjection = ortho(
 		minX, maxX,
 		minY, maxY,
 		minZ, maxZ);
@@ -352,7 +355,7 @@ void Interior::setupDepthShaderAndMatrices()
 	glBindBuffer(GL_UNIFORM_BUFFER, matricesUBO);
 	for (size_t i = 0; i < lightMatrices.size(); ++i)
 	{
-		glBufferSubData(GL_UNIFORM_BUFFER, i * sizeof(glm::mat4x4), sizeof(glm::mat4x4), &lightMatrices[i]);
+		glBufferSubData(GL_UNIFORM_BUFFER, i * sizeof(mat4x4), sizeof(mat4x4), &lightMatrices[i]);
 	}
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
@@ -362,19 +365,19 @@ void Interior::setupDepthShaderAndMatrices()
 
 void Interior::setupShaderAndMatrices()
 {
-	Camera* cameraPtr = enginePtr->getCamera();
+	Camera* cameraPtr = engine.getCamera();
 
 	// Get pointers to matrices
-	glm::mat4* mvp = cameraPtr->getMVPMatrix();
-	glm::mat4* V = cameraPtr->getViewMatrix();
-	glm::mat4* M = cameraPtr->getModelMatrix();
+	mat4* mvp = cameraPtr->getMVPMatrix();
+	mat4* V = cameraPtr->getViewMatrix();
+	mat4* M = cameraPtr->getModelMatrix();
 
 	shaderPtr->use();
 
-	shaderPtr->set_vec3("material.ambient", vec3(0.0215, 0.1745, 0.0215));
-	shaderPtr->set_vec3("material.diffuse", vec3(0.07568, 0.61424, 0.07568));
-	shaderPtr->set_vec3("material.specular", vec3(0.633, 0.727811, 0.633));
-	shaderPtr->set_float("material.shininess", 2);
+	shaderPtr->setVec3("material.ambient", vec3(0.0215, 0.1745, 0.0215));
+	shaderPtr->setVec3("material.diffuse", vec3(0.07568, 0.61424, 0.07568));
+	shaderPtr->setVec3("material.specular", vec3(0.633, 0.727811, 0.633));
+	shaderPtr->setFloat("material.shininess", 2);
 
 	// Send transformation to the currently bound shader, in the "MVP" uniform
 	// This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
@@ -383,35 +386,35 @@ void Interior::setupShaderAndMatrices()
 	glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &(*M)[0][0]);
 
 	// Send M_inverted for optimization purposes (it is better to calculate it on cpu)
-	shaderPtr->set_mat3("M_inverted", mat3(transpose(inverse(*M))));
+	shaderPtr->setMat3("M_inverted", mat3(transpose(inverse(*M))));
 
 	// Send view position for specular component
-	shaderPtr->set_vec3("view_pos", cameraPtr->getPosition());
+	shaderPtr->setVec3("view_pos", cameraPtr->getPosition());
 
 	// Send camera Far Plane
-	shaderPtr->set_float("nearPlane", enginePtr->getConstProperties().cameraNearClipping);
-	shaderPtr->set_float("farPlane", enginePtr->getConstProperties().cameraFarClipping);
+	shaderPtr->setFloat("nearPlane", engine.getConstProps().cameraNearClipping);
+	shaderPtr->setFloat("farPlane", engine.getConstProps().cameraFarClipping);
 
 	// Send camera maxShadowBias
 	for (int i = 0; i < maxShadowCascadeBiasList.size(); ++i)
 	{
-		shaderPtr->set_float("maxShadowCascadeBias[" + std::to_string(i) + "]", maxShadowCascadeBiasList[i]);
+		shaderPtr->setFloat("maxShadowCascadeBias[" + std::to_string(i) + "]", maxShadowCascadeBiasList[i]);
 	}
 
 	// Send camera Far Plane
-	shaderPtr->set_float("shadowStrength", shadowStrength);
+	shaderPtr->setFloat("shadowStrength", shadowStrength);
 
-	shaderPtr->set_float("tmp", tmp);
+	shaderPtr->setFloat("tmp", tmp);
 
 	// Send camera Cascade numbers
-	shaderPtr->set_int("cascadeCount", shadowCascadeLevels.size());
+	shaderPtr->setInt("cascadeCount", shadowCascadeLevels.size());
 	for (int i = 0; i < shadowCascadeLevels.size(); ++i)
 	{
-		shaderPtr->set_float("cascadePlaneDistances[" + std::to_string(i) + "]", shadowCascadeLevels[i]);
+		shaderPtr->setFloat("cascadePlaneDistances[" + std::to_string(i) + "]", shadowCascadeLevels[i]);
 	}
 
 	// Set debug
-	shaderPtr->set_int("debug", debug);
+	shaderPtr->setInt("debug", debug);
 }
 
 void Interior::renderScene()
@@ -466,9 +469,9 @@ void Interior::renderQuad()
 	glBindVertexArray(0);
 }
 
-Interior::Interior(Engine* enginePtr)
-	: IProcessable(enginePtr),
-	IMessanger(&enginePtr->getMessageBus(), "Interior"),
+Interior::Interior(Engine& engine)
+	: IProcessable(engine),
+	IMessanger(&engine.getMessageBus(), "Interior"),
 	pos(0, 0, 0)
 {
 	sendMessage(new RegisterEntityMessage(""), "EntityManager");
@@ -489,17 +492,17 @@ Interior::Interior(Engine* enginePtr)
 		new FloatPropertyContinuousModifier("tmp", 0, 10, tmp, tmp)),
 		"EntityManager");
 
-	// shaderPtr = enginePtr->getShaderByName("MainShader");
-	shaderPtr = enginePtr->getShaderByName("LightingShadowsShader");
-	framebufferShaderPtr = enginePtr->getShaderByName("DepthShader");
-	shadowMappingShaderPtr = enginePtr->getShaderByName("ShadowMappingShader");
+	// shaderPtr = engine.getShaderByName("MainShader");
+	shaderPtr = engine.getShaderByName("LightingShadowsShader");
+	framebufferShaderPtr = engine.getShaderByName("DepthShader");
+	shadowMappingShaderPtr = engine.getShaderByName("ShadowMappingShader");
 
 	// Initialize view matrices
 	shaderPtr->use();
 
-	MvpMatrixID = glGetUniformLocation(shaderPtr->get_ID(), "MVP");
-	ViewMatrixID = glGetUniformLocation(shaderPtr->get_ID(), "V");
-	ModelMatrixID = glGetUniformLocation(shaderPtr->get_ID(), "M");
+	MvpMatrixID = glGetUniformLocation(shaderPtr->getId(), "MVP");
+	ViewMatrixID = glGetUniformLocation(shaderPtr->getId(), "V");
+	ModelMatrixID = glGetUniformLocation(shaderPtr->getId(), "M");
 
 	generateFloor();
 	generateWall(vec2(-1, 0), vec3(1, 0, 0));
@@ -521,7 +524,7 @@ Interior::Interior(Engine* enginePtr)
 	// select vertex VBO
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer.id);
 	// copy data to gpu memory (to VBO)
-	glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(glm::vec3), &vertexData[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(vec3), &vertexData[0], GL_STATIC_DRAW);
 	// redirect buffer to input of the shader
 	glVertexAttribPointer(
 		0,			// location in shader
@@ -538,7 +541,7 @@ Interior::Interior(Engine* enginePtr)
 	// select normals VBO
 	glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer.id);
 	// copy data to gpu memory (to VBO)
-	glBufferData(GL_ARRAY_BUFFER, normalsData.size() * sizeof(glm::vec3), &normalsData[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, normalsData.size() * sizeof(vec3), &normalsData[0], GL_STATIC_DRAW);
 	// redirect buffer to input of the shader
 	glVertexAttribPointer(
 		1,			// location in shader
@@ -569,7 +572,7 @@ Interior::Interior(Engine* enginePtr)
 	// select vertex VBO
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer2.id);
 	// copy data to gpu memory (to VBO)
-	glBufferData(GL_ARRAY_BUFFER, vertexData2.size() * sizeof(glm::vec3), &vertexData2[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertexData2.size() * sizeof(vec3), &vertexData2[0], GL_STATIC_DRAW);
 	// redirect buffer to input of the shader
 	glVertexAttribPointer(
 		0,			// location in shader
@@ -586,7 +589,7 @@ Interior::Interior(Engine* enginePtr)
 	// select normals VBO
 	glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer2.id);
 	// copy data to gpu memory (to VBO)
-	glBufferData(GL_ARRAY_BUFFER, normalsData2.size() * sizeof(glm::vec3), &normalsData2[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, normalsData2.size() * sizeof(vec3), &normalsData2[0], GL_STATIC_DRAW);
 	// redirect buffer to input of the shader
 	glVertexAttribPointer(
 		1,			// location in shader
@@ -599,12 +602,12 @@ Interior::Interior(Engine* enginePtr)
 	// enable attribute '1'
 	glEnableVertexAttribArray(1);
 
-	enginePtr->checkOglErrors("PreRender");
+	checkOglErrors(__FUNCTION__);
 
 	// Shadows
 
 	// Initliaze shadow cascades
-	const float farPlane = enginePtr->getConstProperties().cameraFarClipping;
+	const float farPlane = engine.getConstProps().cameraFarClipping;
 	shadowCascadeLevels.push_back(40);
 	shadowCascadeLevels.push_back(120);
 	shadowCascadeLevels.push_back(280);
@@ -632,11 +635,11 @@ Interior::Interior(Engine* enginePtr)
 		"EntityManager");
 
 	// Initialize shadow cascades biases
-	maxShadowCascadeBiasList.push_back(0.0050);
-	maxShadowCascadeBiasList.push_back(0.0352);
-	maxShadowCascadeBiasList.push_back(0.0767);
-	maxShadowCascadeBiasList.push_back(0.1650);
-	maxShadowCascadeBiasList.push_back(0.3280);
+	maxShadowCascadeBiasList.push_back(0.0050f);
+	maxShadowCascadeBiasList.push_back(0.0352f);
+	maxShadowCascadeBiasList.push_back(0.0767f);
+	maxShadowCascadeBiasList.push_back(0.1650f);
+	maxShadowCascadeBiasList.push_back(0.3280f);
 
 	sendMessage(new RegisterPropertyMessage("Interior",
 		new FloatPropertyContinuousModifier("maxShadowCascadeBias0", 0, 1, maxShadowCascadeBiasList[0], maxShadowCascadeBiasList[0])),
@@ -723,36 +726,36 @@ Interior::Interior(Engine* enginePtr)
 	sendMessage(
 		new RegisterPropertyMessage("Interior",
 			new TexturePropertyWatcher("shadowMapLayerTexture", shadowMapLayerTexture, DEPTH_MAP_RES, DEPTH_MAP_RES,
-				enginePtr->getConstProperties().windowWidth * 0.20, enginePtr->getConstProperties().windowWidth * 0.20)
+				engine.getConstProps().windowWidth * 0.20f, engine.getConstProps().windowWidth * 0.20f)
 		),
 		"EntityManager"
 	);
 
 	glGenBuffers(1, &matricesUBO);
 	glBindBuffer(GL_UNIFORM_BUFFER, matricesUBO);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(glm::mat4x4) * 16, nullptr, GL_STATIC_DRAW);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(mat4x4) * 16, nullptr, GL_STATIC_DRAW);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, matricesUBO);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-	enginePtr->checkOglErrors("PreRender");
+	checkOglErrors(__FUNCTION__);
 }
 
 void Interior::preprocess()
 {
-	enginePtr->checkOglErrors("PreRender");
+	checkOglErrors(__FUNCTION__);
 
 	// 1. first render to depth map
 	glViewport(0, 0, DEPTH_MAP_RES, DEPTH_MAP_RES);
 	glBindFramebuffer(GL_FRAMEBUFFER, depthFramebuffer);
 
-	enginePtr->checkOglErrors("PreRender");
+	checkOglErrors(__FUNCTION__);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST); // Enable depth testing
 	glDisable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 
-	enginePtr->checkOglErrors("PreRender");
+	checkOglErrors(__FUNCTION__);
 }
 
 void attachToFramebuffer(std::vector<unsigned>& textures, unsigned framebuffer)
@@ -773,7 +776,7 @@ void Interior::process()
 
 void Interior::render()
 {
-	enginePtr->checkOglErrors("PreRender");
+	checkOglErrors(__FUNCTION__);
 
 	//// 1. first render to depth map shadowMapLayerTexture
 	setupDepthShaderAndMatrices();
@@ -791,15 +794,15 @@ void Interior::render()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		framebufferShaderPtr->use();
-		framebufferShaderPtr->set_float("near_plane", enginePtr->getConstProperties().cameraNearClipping);
-		framebufferShaderPtr->set_float("far_plane", enginePtr->getConstProperties().cameraFarClipping);
-		framebufferShaderPtr->set_int("layer", layer);
+		framebufferShaderPtr->setFloat("near_plane", engine.getConstProps().cameraNearClipping);
+		framebufferShaderPtr->setFloat("far_plane", engine.getConstProps().cameraFarClipping);
+		framebufferShaderPtr->setInt("layer", layer);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D_ARRAY, lightDepthMaps);
 		// glBindTexture(GL_TEXTURE_2D, shadowMapTextures[layer]);
 		renderQuad();
 
-		enginePtr->checkOglErrors("AfterFramebuffer");
+		checkOglErrors(__FUNCTION__);
 	}
 
 	glEnable(GL_DEPTH_TEST); // Enable depth testing
@@ -810,8 +813,8 @@ void Interior::render()
 	{
 		// 2. then render scene as normal with shadow mapping (using depth map)
 		glViewport(0, 0,
-			enginePtr->getConstProperties().windowWidth,
-			enginePtr->getConstProperties().windowHeight
+			engine.getConstProps().windowWidth,
+			engine.getConstProps().windowHeight
 		);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -821,6 +824,6 @@ void Interior::render()
 		setupShaderAndMatrices();
 		renderScene();
 
-		enginePtr->checkOglErrors("AfterFramebuffer");
+		checkOglErrors(__FUNCTION__);
 	}
 }

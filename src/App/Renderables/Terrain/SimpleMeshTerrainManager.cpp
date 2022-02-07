@@ -1,10 +1,12 @@
 ﻿#include "SimpleMeshTerrainManager.h"
-#include "Engine/Camera/Camera.h"
+#include "Engine/Components/Camera/Camera.h"
 
 #include "FlatTerrain.h"
 #include "RandomTerrain.h"
 #include "WaterTerrain.h"
 #include "SimplexTerrainChunk.h"
+
+using namespace glm;
 
 void SimpleMeshTerrainManager::terrainInit(int x, int y, int pointsPerLine)
 {
@@ -12,24 +14,21 @@ void SimpleMeshTerrainManager::terrainInit(int x, int y, int pointsPerLine)
 	switch (terrainType)
 	{
 	case TERRAIN_TYPE::FLAT:
-		shaderPtr = enginePtr->getShaderByName("LightingShader");
+		shaderPtr = engine.getShaderByName("LightingShader");
 		terrainPtr = reinterpret_cast<Terrain*>(new FlatTerrain(x, y, 1, 1, pointsPerLine, shaderPtr));
 		break;
 	case TERRAIN_TYPE::RANDOM:
-		shaderPtr = enginePtr->getShaderByName("LightingShader");
+		shaderPtr = engine.getShaderByName("LightingShader");
 		terrainPtr = reinterpret_cast<Terrain*>(new RandomTerrain(x, y, 1, 1, pointsPerLine, shaderPtr));
 		break;
 	case TERRAIN_TYPE::WATER:
-		shaderPtr = enginePtr->getShaderByName("WaterShader");
+		shaderPtr = engine.getShaderByName("WaterShader");
 		terrainPtr = reinterpret_cast<Terrain*>(new WaterTerrain(x, y, 1, 1, pointsPerLine, shaderPtr));
 		break;
 	case TERRAIN_TYPE::SIMPLEX:
-		shaderPtr = enginePtr->getShaderByName("LightingShader");
+		shaderPtr = engine.getShaderByName("LightingShader");
 		terrainPtr = reinterpret_cast<Terrain*>(new SimplexTerrainChunk(x, y, 1, 1, pointsPerLine, shaderPtr));
 		break;
-		//shaderPtr = enginePtr->getShaderByName("LightingShader");
-		//terrainPtr = reinterpret_cast<Terrain*>(new LodTerrain(x, y, 1, 1, pointsPerLine, shaderPtr));
-		//break;
 	}
 
 	// Get Shader from initialized terrain
@@ -40,13 +39,13 @@ void SimpleMeshTerrainManager::terrainInit(int x, int y, int pointsPerLine)
 	// Initialize view matrices
 	shaderPtr->use();
 
-	MvpMatrixID = glGetUniformLocation(shaderPtr->get_ID(), "MVP");
-	ViewMatrixID = glGetUniformLocation(shaderPtr->get_ID(), "V");
-	ModelMatrixID = glGetUniformLocation(shaderPtr->get_ID(), "M");
+	MvpMatrixID = glGetUniformLocation(shaderPtr->getId(), "MVP");
+	ViewMatrixID = glGetUniformLocation(shaderPtr->getId(), "V");
+	ModelMatrixID = glGetUniformLocation(shaderPtr->getId(), "M");
 }
 
-SimpleMeshTerrainManager::SimpleMeshTerrainManager(Engine* enginePtr, TERRAIN_TYPE terrainType) :
-	IProcessable(enginePtr), terrainType(terrainType)
+SimpleMeshTerrainManager::SimpleMeshTerrainManager(Engine& engine, TERRAIN_TYPE terrainType) :
+	IProcessable(engine), terrainType(terrainType)
 {
 	ZoneScoped;
 
@@ -117,12 +116,12 @@ void SimpleMeshTerrainManager::render()
 {
 	ZoneScoped
 
-	Camera* cameraPtr = enginePtr->getCamera();
+	Camera* cameraPtr = engine.getCamera();
 
 	// Get pointers to matrices
-	glm::mat4* mvp = cameraPtr->getMVPMatrix();
-	glm::mat4* V = cameraPtr->getViewMatrix();
-	glm::mat4* M = cameraPtr->getModelMatrix();
+	mat4* mvp = cameraPtr->getMVPMatrix();
+	mat4* V = cameraPtr->getViewMatrix();
+	mat4* M = cameraPtr->getModelMatrix();
 
 	shaderPtr->use();
 
@@ -133,10 +132,10 @@ void SimpleMeshTerrainManager::render()
 	glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &(*M)[0][0]);
 
 	// Send M_inverted for optimization purposes (it is better to calculate it on cpu)
-	shaderPtr->set_mat3("M_inverted", mat3(transpose(inverse(*M))));
+	shaderPtr->setMat3("M_inverted", mat3(transpose(inverse(*M))));
 
 	// Send view position for specular component
-	shaderPtr->set_vec3("view_pos", cameraPtr->getPosition());
+	shaderPtr->setVec3("view_pos", cameraPtr->getPosition());
 
 	terrainPtr->sendAndRender();
 }

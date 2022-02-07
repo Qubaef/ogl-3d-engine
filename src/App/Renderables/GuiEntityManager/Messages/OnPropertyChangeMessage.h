@@ -1,9 +1,6 @@
 ﻿#pragma once
 
-#ifndef ON_PROPERTY_CHANGE_MESSAGE_H
-#define ON_PROPERTY_CHANGE_MESSAGE_H
-
-#include "Engine/MessageBus/Message.h"
+#include "Engine/Components/MessageBus/Message.h"
 
 class OnPropertyChangeMessage : public Message
 {
@@ -29,5 +26,3 @@ public:
 		return value;
 	}
 };
-
-#endif

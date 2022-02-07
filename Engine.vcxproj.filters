@@ -117,22 +117,22 @@
     <ClCompile Include="src\Engine\Exceptions\InitializationException.cpp">
       <Filter>Pliki źródłowe\Engine\Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Lights\Light.cpp">
+    <ClCompile Include="src\Engine\Components\Lights\Light.cpp">
       <Filter>Pliki źródłowe\Engine\Lights</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Lights\LightDirectional.cpp">
+    <ClCompile Include="src\Engine\Components\Lights\LightDirectional.cpp">
       <Filter>Pliki źródłowe\Engine\Lights</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Lights\LightPoint.cpp">
+    <ClCompile Include="src\Engine\Components\Lights\LightPoint.cpp">
       <Filter>Pliki źródłowe\Engine\Lights</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Logger\Logger.cpp">
+    <ClCompile Include="src\DebugLib\Log.cpp">
       <Filter>Pliki źródłowe\Engine\Logger</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Shaders\Shader.cpp">
+    <ClCompile Include="src\Engine\Components\Shaders\Shader.cpp">
       <Filter>Pliki źródłowe\Engine\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Shaders\ShaderManager.cpp">
+    <ClCompile Include="src\Engine\Components\Shaders\ShaderManager.cpp">
       <Filter>Pliki źródłowe\Engine\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Engine.cpp">
@@ -144,7 +144,7 @@
     <ClCompile Include="src\Engine\CpuPipeline\IProcessable.cpp">
       <Filter>Pliki źródłowe\Engine\Renderables</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Camera\Camera.cpp">
+    <ClCompile Include="src\Engine\Components\Camera\Camera.cpp">
       <Filter>Pliki źródłowe\Engine\Camera</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui.cpp">
@@ -195,10 +195,10 @@
     <ClCompile Include="src\App\CameraControllers\MenuUseCameraController.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\MessageBus\MessageBus.cpp">
+    <ClCompile Include="src\Engine\Components\MessageBus\MessageBus.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\MessageBus\IMessanger.cpp">
+    <ClCompile Include="src\Engine\Components\MessageBus\IMessanger.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityManager.cpp">
@@ -287,37 +287,34 @@
     <ClInclude Include="src\Engine\Common\Vbo.h">
       <Filter>Pliki źródłowe\Engine\Common</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\CpuPipeline\Task.h">
-      <Filter>Pliki źródłowe\Engine\CpuPipeline</Filter>
-    </ClInclude>
     <ClInclude Include="src\Engine\Exceptions\InitializationException.h">
       <Filter>Pliki źródłowe\Engine\Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Lights\Light.h">
+    <ClInclude Include="src\Engine\Components\Lights\Light.h">
       <Filter>Pliki źródłowe\Engine\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Lights\LightDirectional.h">
+    <ClInclude Include="src\Engine\Components\Lights\LightDirectional.h">
       <Filter>Pliki źródłowe\Engine\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Lights\LightPoint.h">
+    <ClInclude Include="src\Engine\Components\Lights\LightPoint.h">
       <Filter>Pliki źródłowe\Engine\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Logger\Logger.h">
+    <ClInclude Include="src\DebugLib\Log.h">
       <Filter>Pliki źródłowe\Engine\Logger</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Properties\ConstProperties.h">
+    <ClInclude Include="src\Engine\Properties\PropertiesConst.h">
       <Filter>Pliki źródłowe\Engine\Properties</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Properties\RenderProperties.h">
+    <ClInclude Include="src\Engine\Properties\PropertiesRender.h">
       <Filter>Pliki źródłowe\Engine\Properties</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Properties\TimeProperties.h">
+    <ClInclude Include="src\Engine\Properties\PropertiesTime.h">
       <Filter>Pliki źródłowe\Engine\Properties</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Shaders\Shader.h">
+    <ClInclude Include="src\Engine\Components\Shaders\Shader.h">
       <Filter>Pliki źródłowe\Engine\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Shaders\ShaderManager.h">
+    <ClInclude Include="src\Engine\Components\Shaders\ShaderManager.h">
       <Filter>Pliki źródłowe\Engine\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Engine.h">
@@ -329,7 +326,7 @@
     <ClInclude Include="src\Engine\CpuPipeline\IProcessable.h">
       <Filter>Pliki źródłowe\Engine\Renderables</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Camera\Camera.h">
+    <ClInclude Include="src\Engine\Components\Camera\Camera.h">
       <Filter>Pliki źródłowe\Engine\Camera</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Include\Common.h">
@@ -404,13 +401,13 @@
     <ClInclude Include="src\App\CameraControllers\MenuUseCameraController.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\MessageBus\MessageBus.h">
+    <ClInclude Include="src\Engine\Components\MessageBus\MessageBus.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\MessageBus\Message.h">
+    <ClInclude Include="src\Engine\Components\MessageBus\Message.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\MessageBus\IMessanger.h">
+    <ClInclude Include="src\Engine\Components\MessageBus\IMessanger.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityManager.h">
@@ -419,7 +416,7 @@
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyNotifyModifier.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\MessageBus\MessageRecipient.h">
+    <ClInclude Include="src\Engine\Components\MessageBus\MessageRecipient.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="src\App\Renderables\GuiEntityManager\Messages\RegisterPropertyMessage.h">
@@ -470,6 +467,24 @@
     <ClInclude Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousSliderModifier.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Properties\Properties.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Components\Components.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\OpenGl\Init.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\CpuPipeline\Task.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\OpenGl\Validate.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\OpenGl\Include.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="tracy\profiler\build\win32\x64\Debug\Tracy.exe">
@@ -504,5 +519,10 @@
     <None Include="src\Shaderfiles\DepthShader.frag" />
     <None Include="src\Shaderfiles\ShadowMappingShader.frag" />
     <None Include="src\Shaderfiles\ShadowMappingShader.vert" />
+    <None Include="src\Shaderfiles\LightingShadowsShader.frag" />
+    <None Include="src\Shaderfiles\LightingShadowsShader.vert" />
+    <None Include="src\Shaderfiles\MainShader.vert" />
+    <None Include="src\Shaderfiles\MainShader.frag" />
+    <None Include="src\Shaderfiles\ShadowMappingShader.geom" />
   </ItemGroup>
 </Project>

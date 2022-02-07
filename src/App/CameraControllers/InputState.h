@@ -2,26 +2,24 @@
 #include <map>
 
 #include "KeyState.h"
-#include "../../Engine/Include/Common.h"
-
-using namespace glm;
+#include "Engine/Include/Common.h"
 
 struct InputState
 {
 	// Inputs which are always checked
-	vec2 mouse_pos;
-	vec2 mouse_pos_prev;
+	glm::vec2 mouse_pos;
+	glm::vec2 mouse_pos_prev;
 
 	bool l_mouse_pressed;
-	vec2 l_mouse_click_pos;
-	vec2 l_mouse_release_pos;
+	glm::vec2 l_mouse_click_pos;
+	glm::vec2 l_mouse_release_pos;
 
 	bool r_mouse_pressed;
-	vec2 r_mouse_click_pos;
-	vec2 r_mouse_release_pos;
+	glm::vec2 r_mouse_click_pos;
+	glm::vec2 r_mouse_release_pos;
 
 	bool mouse_scroll_moved;
-	vec2 mouse_scroll_position;
+	glm::vec2 mouse_scroll_position;
 	double mouse_scroll_y_offset;
 
 	// Inputs which are specified by user to check them every frame
@@ -29,16 +27,16 @@ struct InputState
 	std::map<int, KeyState> keysStates;
 
 	InputState()
-		: mouse_pos(vec2(0, 0)),
-		mouse_pos_prev(vec2(0, 0)),
+		: mouse_pos(glm::vec2(0, 0)),
+		mouse_pos_prev(glm::vec2(0, 0)),
 		l_mouse_pressed(false),
-		l_mouse_click_pos(vec2(0, 0)),
-		l_mouse_release_pos(vec2(0, 0)),
+		l_mouse_click_pos(glm::vec2(0, 0)),
+		l_mouse_release_pos(glm::vec2(0, 0)),
 		r_mouse_pressed(false),
-		r_mouse_click_pos(vec2(0, 0)),
-		r_mouse_release_pos(vec2(0, 0)),
+		r_mouse_click_pos(glm::vec2(0, 0)),
+		r_mouse_release_pos(glm::vec2(0, 0)),
 		mouse_scroll_moved(false),
-		mouse_scroll_position(vec2(0, 0)),
+		mouse_scroll_position(glm::vec2(0, 0)),
 		mouse_scroll_y_offset(0)
 	{
 	}

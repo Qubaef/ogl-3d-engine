@@ -1,26 +1,32 @@
 ﻿#include "SimplexTerrainChunk.h"
+
+#include <Windows.h>
+
 #include "Engine/Include/Constants.h"
+
+using namespace glm;
 
 SimplexTerrainChunk::SimplexTerrainChunk(int sectorSizeX, int sectorSizeY, int sectorsNumberX, int sectorsNumberY, int pointsPerSectorLine, Shader* shaderPtr)
 	: shaderPtr(shaderPtr),
-	sectorSizeX(sectorSizeX),
-	sectorSizeY(sectorSizeY),
-	sectorsNumberX(sectorsNumberX),
-	sectorsNumberY(sectorsNumberY),
-	pointsPerSectorLine(pointsPerSectorLine)
+	  sectorSizeX(sectorSizeX),
+	  sectorSizeY(sectorSizeY),
+	  sectorsNumberX(sectorsNumberX),
+	  sectorsNumberY(sectorsNumberY),
+	  pointsPerSectorLine(pointsPerSectorLine),
+	  heightmap_file(nullptr)
 {
 	ZoneScoped;
 
 	this->shaderPtr->use();
 
 	// Generate buffer for vertex data
-	vertexData = new glm::vec3[pointsPerSectorLine * pointsPerSectorLine];
+	vertexData = new vec3[pointsPerSectorLine * pointsPerSectorLine];
 
 	// Generate buffer for indicesData
 	indicesData.reserve((pointsPerSectorLine - 1) * (pointsPerSectorLine - 1) * 6);
 
 	// Generate buffer for normalsData
-	normalsData = new glm::vec3[pointsPerSectorLine * pointsPerSectorLine];
+	normalsData = new vec3[pointsPerSectorLine * pointsPerSectorLine];
 }
 
 void SimplexTerrainChunk::updateHeightmap()
@@ -39,24 +45,24 @@ void SimplexTerrainChunk::updateHeightmap()
 	{
 		for (int j = 0; j < pointsPerSectorLine; j++)
 		{
-			glm::vec3 current = vertexData[(j + i * (pointsPerSectorLine))];
+			vec3 current = vertexData[(j + i * (pointsPerSectorLine))];
 
 			// Init normal vector
-			glm::vec3 normal = glm::vec3(0, 0, 0);
+			vec3 normal = vec3(0, 0, 0);
 
 			if (i > 0 && j < pointsPerSectorLine - 1)
 			{
-				normal += glm::cross((vertexData[((j + 1) + (i - 1) * (pointsPerSectorLine))] - current), (current - vertexData[(j + (i - 1) * (pointsPerSectorLine))]));
+				normal += cross((vertexData[((j + 1) + (i - 1) * (pointsPerSectorLine))] - current), (current - vertexData[(j + (i - 1) * (pointsPerSectorLine))]));
 			}
 
 			if (j > 0 && i < pointsPerSectorLine - 1)
 			{
-				normal += glm::cross((current - vertexData[((j - 1) + i * (pointsPerSectorLine))]), (vertexData[((j - 1) + (i + 1) * (pointsPerSectorLine))] - current));
+				normal += cross((current - vertexData[((j - 1) + i * (pointsPerSectorLine))]), (vertexData[((j - 1) + (i + 1) * (pointsPerSectorLine))] - current));
 			}
 
 			if (i < pointsPerSectorLine - 1 && j < pointsPerSectorLine - 1)
 			{
-				normal += glm::cross((current - vertexData[(j + (i + 1) * (pointsPerSectorLine))]), (vertexData[((j + 1) + i * (pointsPerSectorLine))] - current));
+				normal += cross((current - vertexData[(j + (i + 1) * (pointsPerSectorLine))]), (vertexData[((j + 1) + i * (pointsPerSectorLine))] - current));
 			}
 
 			// Normalize vector's length
@@ -252,7 +258,6 @@ void SimplexTerrainChunk::simulate_droplet(int& skipped, int& stillsame)
 }
 
 
-
 vec2 SimplexTerrainChunk::calculate_gradient(vec2 position)
 {
 	// ZoneScoped;
@@ -411,8 +416,8 @@ int SimplexTerrainChunk::calculate_index(vec2 position)
 	// ZoneScoped;
 
 	// calculate x and y, which are indexes of closest top-left point in the mesh
-	int x = (position.x - vertexData[0].x) / ((float)sectorSizeX / pointsPerSectorLine);
-	int z = (position.y - vertexData[0].z) / ((float)sectorSizeY / pointsPerSectorLine);
+	int x = (position.x - vertexData[0].x) / (sectorSizeX / pointsPerSectorLine);
+	int z = (position.y - vertexData[0].z) / (sectorSizeY / pointsPerSectorLine);
 
 	return z + x * (pointsPerSectorLine);
 }
@@ -467,10 +472,10 @@ void SimplexTerrainChunk::sendAndRender()
 {
 	ZoneScoped;
 
-	this->shaderPtr->set_vec3("material.ambient", vec3(0.298f, 0.282f, 0.27f));
-	this->shaderPtr->set_vec3("material.diffuse", vec3(0.458f, 0.411f, 0.341f));
-	this->shaderPtr->set_vec3("material.specular", vec3(1.0f, 1.0f, 1.0f));
-	this->shaderPtr->set_float("material.shininess", 512);
+	this->shaderPtr->setVec3("material.ambient", vec3(0.298f, 0.282f, 0.27f));
+	this->shaderPtr->setVec3("material.diffuse", vec3(0.458f, 0.411f, 0.341f));
+	this->shaderPtr->setVec3("material.specular", vec3(1.0f, 1.0f, 1.0f));
+	this->shaderPtr->setFloat("material.shininess", 512);
 
 	// Attributes setup and global VAO creation
 	// bind global VAO object
@@ -480,7 +485,7 @@ void SimplexTerrainChunk::sendAndRender()
 	// select vertex VBO
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer.id);
 	// copy data to gpu memory (to VBO)
-	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * pointsPerSectorLine * pointsPerSectorLine, vertexData, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec3) * pointsPerSectorLine * pointsPerSectorLine, vertexData, GL_DYNAMIC_DRAW);
 	// redirect buffer to input of the shader
 	glVertexAttribPointer(
 		0,						// location in shader
@@ -497,7 +502,7 @@ void SimplexTerrainChunk::sendAndRender()
 	// select normals VBO
 	glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer.id);
 	// copy data to gpu memory (to VBO)
-	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * pointsPerSectorLine * pointsPerSectorLine, normalsData, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec3) * pointsPerSectorLine * pointsPerSectorLine, normalsData, GL_DYNAMIC_DRAW);
 	// redirect buffer to input of the shader
 	glVertexAttribPointer(
 		1,                      // location in shader

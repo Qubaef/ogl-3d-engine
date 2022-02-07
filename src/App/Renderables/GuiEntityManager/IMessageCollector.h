@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/MessageBus/Message.h"
+#include "Engine/Components/MessageBus/Message.h"
 
 class IMessageCollector
 {

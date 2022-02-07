@@ -1,6 +1,8 @@
 ﻿#include "FlatTerrain.h"
 
-FlatTerrain::FlatTerrain::FlatTerrain(int sectorSizeX, int sectorSizeY, int sectorsNumberX, int sectorsNumberY, int pointsPerSectorLine, Shader* shaderPtr)
+using namespace glm;
+
+FlatTerrain::FlatTerrain(int sectorSizeX, int sectorSizeY, int sectorsNumberX, int sectorsNumberY, int pointsPerSectorLine, Shader* shaderPtr)
 	: shaderPtr(shaderPtr),
 	sectorSizeX(sectorSizeX),
 	sectorSizeY(sectorSizeY),
@@ -11,13 +13,13 @@ FlatTerrain::FlatTerrain::FlatTerrain(int sectorSizeX, int sectorSizeY, int sect
 	ZoneScoped;
 
 	// Generate buffer for vertex data
-	vertexData = new glm::vec3[pointsPerSectorLine * pointsPerSectorLine];
+	vertexData = new vec3[pointsPerSectorLine * pointsPerSectorLine];
 
 	// Generate buffer for indicesData
 	indicesData.reserve((pointsPerSectorLine - 1) * (pointsPerSectorLine - 1) * 6);
 
 	// Generate buffer for normalsData
-	normalsData = new glm::vec3[pointsPerSectorLine * pointsPerSectorLine];
+	normalsData = new vec3[pointsPerSectorLine * pointsPerSectorLine];
 }
 
 
@@ -30,8 +32,8 @@ void FlatTerrain::initialize()
 	{
 		for (int j = 0; j < pointsPerSectorLine; j++)
 		{
-			// vertexData[(j + i * (pointsPerSectorLine))] = glm::vec3(i * (float)sectorSizeX / (pointsPerSectorLine - 1), 0, j * (float)sectorSizeY / (pointsPerSectorLine - 1));
-			vertexData[(j + i * (pointsPerSectorLine))] = glm::vec3(i * (float)sectorSizeX / pointsPerSectorLine - sectorSizeX / 2, 0.0, j * (float)sectorSizeY / pointsPerSectorLine - sectorSizeY / 2);
+			// vertexData[(j + i * (pointsPerSectorLine))] = vec3(i * (float)sectorSizeX / (pointsPerSectorLine - 1), 0, j * (float)sectorSizeY / (pointsPerSectorLine - 1));
+			vertexData[(j + i * (pointsPerSectorLine))] = vec3(i * (float)sectorSizeX / pointsPerSectorLine - sectorSizeX / 2, 0.0, j * (float)sectorSizeY / pointsPerSectorLine - sectorSizeY / 2);
 		}
 	}
 
@@ -55,24 +57,24 @@ void FlatTerrain::initialize()
 	{
 		for (int j = 0; j < pointsPerSectorLine; j++)
 		{
-			glm::vec3 current = vertexData[(j + i * (pointsPerSectorLine))];
+			vec3 current = vertexData[(j + i * (pointsPerSectorLine))];
 
 			// Init normal vector
-			glm::vec3 normal = glm::vec3(0, 0, 0);
+			vec3 normal = vec3(0, 0, 0);
 
 			if (i > 0 && j < pointsPerSectorLine - 1)
 			{
-				normal += glm::cross((vertexData[((j + 1) + (i - 1) * (pointsPerSectorLine))] - current), (current - vertexData[(j + (i - 1) * (pointsPerSectorLine))]));
+				normal += cross((vertexData[((j + 1) + (i - 1) * (pointsPerSectorLine))] - current), (current - vertexData[(j + (i - 1) * (pointsPerSectorLine))]));
 			}
 
 			if (j > 0 && i < pointsPerSectorLine - 1)
 			{
-				normal += glm::cross((current - vertexData[((j - 1) + i * (pointsPerSectorLine))]), (vertexData[((j - 1) + (i + 1) * (pointsPerSectorLine))] - current));
+				normal += cross((current - vertexData[((j - 1) + i * (pointsPerSectorLine))]), (vertexData[((j - 1) + (i + 1) * (pointsPerSectorLine))] - current));
 			}
 
 			if (i < pointsPerSectorLine - 1 && j < pointsPerSectorLine - 1)
 			{
-				normal += glm::cross((current - vertexData[(j + (i + 1) * (pointsPerSectorLine))]), (vertexData[((j + 1) + i * (pointsPerSectorLine))] - current));
+				normal += cross((current - vertexData[(j + (i + 1) * (pointsPerSectorLine))]), (vertexData[((j + 1) + i * (pointsPerSectorLine))] - current));
 			}
 
 			// Normalize vector's length
@@ -99,7 +101,7 @@ void FlatTerrain::initialize()
 	// select vertex VBO
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer.id);
 	// copy data to gpu memory (to VBO)
-	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * pointsPerSectorLine * pointsPerSectorLine, vertexData, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec3) * pointsPerSectorLine * pointsPerSectorLine, vertexData, GL_DYNAMIC_DRAW);
 	// redirect buffer to input of the shader
 	glVertexAttribPointer(
 		0,						// location in shader
@@ -116,7 +118,7 @@ void FlatTerrain::initialize()
 	// select normals VBO
 	glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer.id);
 	// copy data to gpu memory (to VBO)
-	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * pointsPerSectorLine * pointsPerSectorLine, normalsData, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec3) * pointsPerSectorLine * pointsPerSectorLine, normalsData, GL_DYNAMIC_DRAW);
 	// redirect buffer to input of the shader
 	glVertexAttribPointer(
 		1,                      // location in shader
@@ -139,7 +141,7 @@ void FlatTerrain::update()
 	//{
 	//	for (int j = 0; j < pointsPerSectorLine; j++)
 	//	{
-	//		vertexData[(j + i * (pointsPerSectorLine))] = glm::vec3(i * (float)sectorSizeX / pointsPerSectorLine - sectorSizeX / 2, (float)std::rand() / RAND_MAX, j * (float)sectorSizeY / pointsPerSectorLine - sectorSizeY / 2);
+	//		vertexData[(j + i * (pointsPerSectorLine))] = vec3(i * (float)sectorSizeX / pointsPerSectorLine - sectorSizeX / 2, (float)std::rand() / RAND_MAX, j * (float)sectorSizeY / pointsPerSectorLine - sectorSizeY / 2);
 	//	}
 	//}
 
@@ -148,24 +150,24 @@ void FlatTerrain::update()
 	//{
 	//	for (int j = 0; j < pointsPerSectorLine; j++)
 	//	{
-	//		glm::vec3 current = vertexData[(j + i * (pointsPerSectorLine))];
+	//		vec3 current = vertexData[(j + i * (pointsPerSectorLine))];
 
 	//		// Init normal vector
-	//		glm::vec3 normal = glm::vec3(0, 0, 0);
+	//		vec3 normal = vec3(0, 0, 0);
 
 	//		if (i > 0 && j < pointsPerSectorLine - 1)
 	//		{
-	//			normal += glm::cross((vertexData[((j + 1) + (i - 1) * (pointsPerSectorLine))] - current), (current - vertexData[(j + (i - 1) * (pointsPerSectorLine))]));
+	//			normal += cross((vertexData[((j + 1) + (i - 1) * (pointsPerSectorLine))] - current), (current - vertexData[(j + (i - 1) * (pointsPerSectorLine))]));
 	//		}
 
 	//		if (j > 0 && i < pointsPerSectorLine - 1)
 	//		{
-	//			normal += glm::cross((current - vertexData[((j - 1) + i * (pointsPerSectorLine))]), (vertexData[((j - 1) + (i + 1) * (pointsPerSectorLine))] - current));
+	//			normal += cross((current - vertexData[((j - 1) + i * (pointsPerSectorLine))]), (vertexData[((j - 1) + (i + 1) * (pointsPerSectorLine))] - current));
 	//		}
 
 	//		if (i < pointsPerSectorLine - 1 && j < pointsPerSectorLine - 1)
 	//		{
-	//			normal += glm::cross((current - vertexData[(j + (i + 1) * (pointsPerSectorLine))]), (vertexData[((j + 1) + i * (pointsPerSectorLine))] - current));
+	//			normal += cross((current - vertexData[(j + (i + 1) * (pointsPerSectorLine))]), (vertexData[((j + 1) + i * (pointsPerSectorLine))] - current));
 	//		}
 
 	//		// Normalize vector's length
@@ -188,10 +190,10 @@ void FlatTerrain::sendAndRender()
 	glBindVertexArray(mainVao.id);
 
 	// Set material
-	this->shaderPtr->set_vec3("material.ambient", vec3(0.298f, 0.282f, 0.27f));
-	this->shaderPtr->set_vec3("material.diffuse", vec3(0.458f, 0.411f, 0.341f));
-	this->shaderPtr->set_vec3("material.specular", vec3(1.0f, 1.0f, 1.0f));
-	this->shaderPtr->set_float("material.shininess", 32);
+	this->shaderPtr->setVec3("material.ambient", vec3(0.298f, 0.282f, 0.27f));
+	this->shaderPtr->setVec3("material.diffuse", vec3(0.458f, 0.411f, 0.341f));
+	this->shaderPtr->setVec3("material.specular", vec3(1.0f, 1.0f, 1.0f));
+	this->shaderPtr->setFloat("material.shininess", 32);
 
 	// Draw
 	glDrawElements(

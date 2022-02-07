@@ -1,15 +1,16 @@
 #include "FirstPersonCameraController.h"
-#include "../../Engine/Include/Constants.h"
-#include "../../Engine/Engine.h"
+#include "Engine/Engine.h"
 
-FirstPersonCameraController::FirstPersonCameraController(Engine* enginePtr, InputManager* p_input_manager) :
-	CameraController(enginePtr, p_input_manager, 0.8)
+using namespace glm;
+
+FirstPersonCameraController::FirstPersonCameraController(Engine& engine, InputManager* p_input_manager) :
+	CameraController(engine, p_input_manager, 0.8f)
 {
 }
 
 
-FirstPersonCameraController::FirstPersonCameraController(Engine* enginePtr, InputManager* p_input_manager, vec3 position, float vertical_angle, float horizontal_angle) :
-	CameraController(enginePtr, p_input_manager, 0.8, position, vertical_angle, horizontal_angle)
+FirstPersonCameraController::FirstPersonCameraController(Engine& engine, InputManager* p_input_manager, vec3 position, float vertical_angle, float horizontal_angle) :
+	CameraController(engine, p_input_manager, 0.8f, position, vertical_angle, horizontal_angle)
 {
 }
 
@@ -42,8 +43,8 @@ void FirstPersonCameraController::updatePerFrame()
 	// Get mouse position
 	vec2 mouse_pos = inputManagerPtr->get_mouse_pos();
 
-	const int windowWidth = enginePtr->getConstProperties().windowWidth;
-	const int windowHeight = enginePtr->getConstProperties().windowHeight;
+	const int windowWidth = engine.props.consts.windowWidth;
+	const int windowHeight = engine.props.consts.windowHeight;
 
 	// Reset mouse position for next frame
 	inputManagerPtr->reset_mouse_pos(
@@ -134,8 +135,8 @@ void FirstPersonCameraController::enable()
 	// Hide the mouse and enable unlimited movement
 	glfwSetInputMode(windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	inputManagerPtr->reset_mouse_pos(
-		enginePtr->getConstProperties().windowWidth / 2,
-		enginePtr->getConstProperties().windowHeight / 2
+		engine.props.consts.windowWidth / 2,
+		engine.props.consts.windowHeight / 2
 	);
 
 	registerDefaultInput();

@@ -1,10 +1,14 @@
 ﻿#pragma once
+
 #include <vector>
 
-#include "../../Engine/CpuPipeline/IProcessable.h"
-#include "CameraController.h"
-#include "InputManager.h"
-#include "Engine/MessageBus/IMessanger.h"
+#include "Engine/Include/Common.h"
+
+#include "Engine/CpuPipeline/IProcessable.h"
+#include "Engine/Components/MessageBus/IMessanger.h"
+
+class CameraController;
+class InputManager;
 
 class CameraManager : public IProcessable, public IMessanger
 {
@@ -17,7 +21,7 @@ class CameraManager : public IProcessable, public IMessanger
 	void enableCamera(CameraController* cameraControllerPtr);
 
 public:
-	CameraManager(Engine* enginePtr, InputManager* inputManagerPtr);
+	CameraManager(Engine& engine, InputManager* inputManagerPtr);
 
 	void addCamera(CameraController* cameraControllerPtr);
 

@@ -2,6 +2,7 @@
 
 #include "Engine/Include/Common.h"
 
+
 struct QuadTerrainNode
 {
 private:
@@ -39,8 +40,8 @@ public:
 
 	bool intersects(glm::vec3 point)
 	{
-		float d = glm::abs(distance(point, vec3(startPos.x + size * 0.5, 0, startPos.y + size * 0.5)));
-		float cap = sqrt(pow(size * 0.5, 2.0) * 2.0) * 5.0;
+		float d = glm::abs(distance(point, glm::vec3(startPos.x + size * 0.5f, 0, startPos.y + size * 0.5f)));
+		float cap = sqrt(pow(size * 0.5f, 2.0f) * 2.0f) * 5.0f;
 
 		return d < cap;
 	}
@@ -49,25 +50,25 @@ public:
 	bool inFieldOfView(Camera* cameraPtr)
 	{
 		// Get camera direction
-		vec2 dir = normalize(cameraPtr->getDirection().xz());
+		glm::vec2 dir = normalize(cameraPtr->getDirection().xz());
 
 		// Calculate direction to the middle of the sector
 		//  The (dir * camPos.y) component is subtracted from camera position
 		//  to move position back according to camera height
-		vec2 midPoint = startPos + vec2(size / 2);
-		vec3 camPos = cameraPtr->getPosition();
-		vec2 pointDir = midPoint - (camPos.xz() - (dir * camPos.y));
+		glm::vec2 midPoint = startPos + glm::vec2(size / 2);
+		glm::vec3 camPos = cameraPtr->getPosition();
+		glm::vec2 pointDir = midPoint - (camPos.xz() - (dir * camPos.y));
 
 		// Angle of Fov (TODO: connect this value with camera FOV)
 		float maxAngle = 45;
 
 		// Calculate angle between vectors
-		float angle = degrees(orientedAngle(dir, normalize(pointDir)));
+		float angle = glm::degrees(orientedAngle(dir, normalize(pointDir)));
 
 		return angle < maxAngle && angle > -maxAngle;
 	}
 
-	void update(vec3& referencePoint, float minSize)
+	void update(glm::vec3& referencePoint, float minSize)
 	{
 		ZoneScoped;
 
@@ -112,14 +113,14 @@ public:
 		}
 	}
 
-	void render(Shader* shaderPtr, GLuint& nodePosId, GLuint& nodeSizeId, Engine* enginePtr)
+	void render(Shader* shaderPtr, GLuint& nodePosId, GLuint& nodeSizeId, Engine& engine)
 	{
 		ZoneScoped;
 
 		if (leaf)
 		{
 			// Check if patch is inf front of the camera
-			if (inFieldOfView(enginePtr->getCamera())) {
+			if (inFieldOfView(engine.getCamera())) {
 				// Set node's uniforms
 				glUniform3f(nodePosId, startPos.x, 0, startPos.y);
 				glUniform1f(nodeSizeId, size);
@@ -136,10 +137,10 @@ public:
 		else
 		{
 			// Draw all children
-			tl->render(shaderPtr, nodePosId, nodeSizeId, enginePtr);
-			tr->render(shaderPtr, nodePosId, nodeSizeId, enginePtr);
-			bl->render(shaderPtr, nodePosId, nodeSizeId, enginePtr);
-			br->render(shaderPtr, nodePosId, nodeSizeId, enginePtr);
+			tl->render(shaderPtr, nodePosId, nodeSizeId, engine);
+			tr->render(shaderPtr, nodePosId, nodeSizeId, engine);
+			bl->render(shaderPtr, nodePosId, nodeSizeId, engine);
+			br->render(shaderPtr, nodePosId, nodeSizeId, engine);
 		}
 	}
 

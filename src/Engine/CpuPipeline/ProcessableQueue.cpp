@@ -1,5 +1,8 @@
 #include "ProcessableQueue.h"
-#include "../Include/Common.h"
+
+#include "Engine/Include/Common.h"
+
+using namespace glm;
 
 Task ProcessableQueue::getNextTask()
 {
@@ -104,9 +107,8 @@ void ProcessableQueue::startWorkerCycle(int threadId)
 }
 
 ProcessableQueue::ProcessableQueue(int numberOfWorkers)
+	: phase(ProcessableType::NONE)
 {
-	ZoneScoped;
-
 	// Initialize worker threads	
 	int threadsToStart = glm::min(MaxWorkerThreads, numberOfWorkers) - activeWorkersVector.size();
 

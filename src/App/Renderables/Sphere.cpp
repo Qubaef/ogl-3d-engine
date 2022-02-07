@@ -1,16 +1,18 @@
 ﻿#include "Sphere.h"
 
-Sphere::Sphere(Engine* enginePtr, vec3 pos)
-	: IProcessable(enginePtr), pos(pos)
+using namespace glm;
+
+Sphere::Sphere(Engine& engine, vec3 pos)
+	: IProcessable(engine), pos(pos)
 {
-	shaderPtr = enginePtr->getShaderByName("LightingShader");
+	shaderPtr = engine.getShaderByName("LightingShader");
 
 	// Initialize view matrices
 	shaderPtr->use();
 
-	MvpMatrixID = glGetUniformLocation(shaderPtr->get_ID(), "MVP");
-	ViewMatrixID = glGetUniformLocation(shaderPtr->get_ID(), "V");
-	ModelMatrixID = glGetUniformLocation(shaderPtr->get_ID(), "M");
+	MvpMatrixID = glGetUniformLocation(shaderPtr->getId(), "MVP");
+	ViewMatrixID = glGetUniformLocation(shaderPtr->getId(), "V");
+	ModelMatrixID = glGetUniformLocation(shaderPtr->getId(), "M");
 
 	for (unsigned int y = 0; y <= ySegments; ++y)
 	{
@@ -18,12 +20,12 @@ Sphere::Sphere(Engine* enginePtr, vec3 pos)
 		{
 			float xSegment = (float)x / (float)xSegments;
 			float ySegment = (float)y / (float)ySegments;
-			float xPos = radius * std::cos(xSegment * 2 * glm::pi<float>()) * std::sin(ySegment * glm::pi<float>()) + pos.x;
-			float yPos = radius * std::cos(ySegment * glm::pi<float>()) + pos.y;
-			float zPos = radius * std::sin(xSegment * 2 * glm::pi<float>()) * std::sin(ySegment * glm::pi<float>()) + pos.z;
+			float xPos = radius * std::cos(xSegment * 2 * pi<float>()) * std::sin(ySegment * pi<float>()) + pos.x;
+			float yPos = radius * std::cos(ySegment * pi<float>()) + pos.y;
+			float zPos = radius * std::sin(xSegment * 2 * pi<float>()) * std::sin(ySegment * pi<float>()) + pos.z;
 
-			vertexData.push_back(glm::vec3(xPos, yPos, zPos));
-			normalsData.push_back(glm::vec3(xPos - pos.x, yPos - pos.y, zPos - pos.z));
+			vertexData.push_back(vec3(xPos, yPos, zPos));
+			normalsData.push_back(vec3(xPos - pos.x, yPos - pos.y, zPos - pos.z));
 		}
 	}
 
@@ -55,7 +57,7 @@ Sphere::Sphere(Engine* enginePtr, vec3 pos)
 	// select vertex VBO
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer.id);
 	// copy data to gpu memory (to VBO)
-	glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(glm::vec3), &vertexData[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(vec3), &vertexData[0], GL_STATIC_DRAW);
 	// redirect buffer to input of the shader
 	glVertexAttribPointer(
 		0,						// location in shader
@@ -72,7 +74,7 @@ Sphere::Sphere(Engine* enginePtr, vec3 pos)
 	// select normals VBO
 	glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer.id);
 	// copy data to gpu memory (to VBO)
-	glBufferData(GL_ARRAY_BUFFER, normalsData.size() * sizeof(glm::vec3), &normalsData[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, normalsData.size() * sizeof(vec3), &normalsData[0], GL_STATIC_DRAW);
 	// redirect buffer to input of the shader
 	glVertexAttribPointer(
 		1,                      // location in shader
@@ -98,19 +100,19 @@ void Sphere::render()
 {
 	ZoneScoped;
 
-	Camera* cameraPtr = enginePtr->getCamera();
+	Camera* cameraPtr = engine.getCamera();
 
 	// Get pointers to matrices
-	glm::mat4* mvp = cameraPtr->getMVPMatrix();
-	glm::mat4* V = cameraPtr->getViewMatrix();
-	glm::mat4* M = cameraPtr->getModelMatrix();
+	mat4* mvp = cameraPtr->getMVPMatrix();
+	mat4* V = cameraPtr->getViewMatrix();
+	mat4* M = cameraPtr->getModelMatrix();
 
 	shaderPtr->use();
 
-	this->shaderPtr->set_vec3("material.ambient", vec3(0.0215, 0.1745, 0.0215));
-	this->shaderPtr->set_vec3("material.diffuse", vec3(0.07568, 0.61424, 0.07568));
-	this->shaderPtr->set_vec3("material.specular", vec3(0.633, 0.727811, 0.633));
-	this->shaderPtr->set_float("material.shininess", 76.8);
+	this->shaderPtr->setVec3("material.ambient", vec3(0.0215, 0.1745, 0.0215));
+	this->shaderPtr->setVec3("material.diffuse", vec3(0.07568, 0.61424, 0.07568));
+	this->shaderPtr->setVec3("material.specular", vec3(0.633, 0.727811, 0.633));
+	this->shaderPtr->setFloat("material.shininess", 76.8f);
 
 	// Send transformation to the currently bound shader, in the "MVP" uniform
 	// This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
@@ -119,10 +121,10 @@ void Sphere::render()
 	glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &(*M)[0][0]);
 
 	// Send M_inverted for optimization purposes (it is better to calculate it on cpu)
-	shaderPtr->set_mat3("M_inverted", mat3(transpose(inverse(*M))));
+	shaderPtr->setMat3("M_inverted", mat3(transpose(inverse(*M))));
 
 	// Send view position for specular component
-	shaderPtr->set_vec3("view_pos", cameraPtr->getPosition());
+	shaderPtr->setVec3("view_pos", cameraPtr->getPosition());
 
 	// bind global VAO object
 	glBindVertexArray(mainVao.id);

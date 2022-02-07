@@ -6,7 +6,7 @@
 #include "Engine/Common/Vao.h"
 #include "Engine/Common/Vbo.h"
 #include "Engine/CpuPipeline/IProcessable.h"
-#include "Engine/Shaders/Shader.h"
+#include "Engine/Components/Shaders/Shader.h"
 
 using namespace glm;
 
@@ -29,7 +29,7 @@ class Skybox : public IProcessable
 	int nrChannels;
 
 public:
-	Skybox(Engine* enginePtr);
+	Skybox(Engine& engine);
 
 	void preprocess() override;
 	

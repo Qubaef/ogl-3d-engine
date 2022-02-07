@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../Include/Common.h"
+#include "Engine/Include/Common.h"
 
 struct Vao
 {

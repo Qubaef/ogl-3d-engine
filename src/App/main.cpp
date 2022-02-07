@@ -13,8 +13,8 @@
 #include "Renderables/LodTerrain/SingleMeshLodTerrain.h"
 #include "Renderables/GuiEntityManager/EntityManager.h"
 
-void loadTerrainScene(Engine* enginePtr, InputManager* inputManager);
-void loadInteriorScene(Engine* enginePtr, InputManager* inputManager);
+void loadTerrainScene(Engine& engine, InputManager* inputManager);
+void loadInteriorScene(Engine& engine, InputManager* inputManager);
 
 int main()
 {
@@ -29,30 +29,33 @@ int main()
 	system("start cmd /c tracy\\capture\\build\\win32\\x64\\Debug\\capture.exe -o output.tracy -f");
 #endif
 
+	// Initialize Debug Log
+	LOG.init(true, true, true, true, true);
+
 	// Initialize the Engine
-	Engine* enginePtr = new Engine();
-	InputManager* inputManager = new InputManager(enginePtr);
+	Engine engine = Engine();
+	InputManager* inputManager = new InputManager(engine);
 
 	/* Register shaders*/
 	Shader lightingShader = Shader("LightingShader",
 		"src/Shaderfiles/LightingVertexShader.vert",
 		"src/Shaderfiles/LightingFragmentShader.frag");
-	enginePtr->registerShader(lightingShader);
+	engine.registerShader(lightingShader);
 
 	Shader lightingShadowsShader = Shader("LightingShadowsShader",
 		"src/Shaderfiles/LightingShadowsShader.vert",
 		"src/Shaderfiles/LightingShadowsShader.frag");
-	enginePtr->registerShader(lightingShadowsShader);
+	engine.registerShader(lightingShadowsShader);
 
 	Shader mainShader = Shader("MainShader",
 		"src/Shaderfiles/MainShader.vert",
 		"src/Shaderfiles/MainShader.frag");
-	enginePtr->registerShader(mainShader);
+	engine.registerShader(mainShader);
 
 	Shader depthShader = Shader("DepthShader",
 		"src/Shaderfiles/DepthShader.vert",
 		"src/Shaderfiles/DepthShader.frag");
-	enginePtr->registerShader(depthShader);
+	engine.registerShader(depthShader);
 
 	Shader shadowMappingShader = Shader("ShadowMappingShader",
 		"src/Shaderfiles/ShadowMappingShader.vert",
@@ -60,85 +63,85 @@ int main()
 		nullptr,
 		nullptr,
 		"src/Shaderfiles/ShadowMappingShader.geom");
-	enginePtr->registerShader(shadowMappingShader);
+	engine.registerShader(shadowMappingShader);
 
 	Shader waterShader = Shader("WaterShader",
 		"src/Shaderfiles/WaterVertexShader.vert",
 		"src/Shaderfiles/LightingFragmentShader.frag");
-	enginePtr->registerShader(waterShader);
+	engine.registerShader(waterShader);
 
 	Shader skyboxShader = Shader("SkyboxShader",
 		"src/Shaderfiles/SkyboxVertexShader.vert",
 		"src/Shaderfiles/SkyboxFragmentShader.frag");
-	enginePtr->registerShader(skyboxShader);
+	engine.registerShader(skyboxShader);
 
 	Shader terrainLodShader = Shader("TerrainLod",
 		"src/Shaderfiles/TerrainLod.vert",
 		"src/Shaderfiles/TerrainLod.frag",
 		"src/Shaderfiles/TerrainLod.tesc",
 		"src/Shaderfiles/TerrainLod.tese");
-	enginePtr->registerShader(terrainLodShader);
+	engine.registerShader(terrainLodShader);
 
 	Shader heightmapShader = Shader("HeightmapShader",
 		"src/Shaderfiles/HeightmapGenerationShader.comp");
-	enginePtr->registerShader(heightmapShader);
+	engine.registerShader(heightmapShader);
 
 	Shader framebufferShader = Shader("FramebufferShader",
 		"src/Shaderfiles/FramebufferShader.vert",
 		"src/Shaderfiles/FramebufferShader.frag");
-	enginePtr->registerShader(framebufferShader);
+	engine.registerShader(framebufferShader);
 
 	switch (2)
 	{
 	case 1:
-		loadTerrainScene(enginePtr, inputManager);
+		loadTerrainScene(engine, inputManager);
 		break;
 	case 2:
-		loadInteriorScene(enginePtr, inputManager);
+		loadInteriorScene(engine, inputManager);
 		break;
 	default: ;
 	}
 
 	// Start the Engine
-	enginePtr->run();
+	engine.run();
 
 	return 0;
 }
 
-void loadInteriorScene(Engine* enginePtr, InputManager* inputManager)
+void loadInteriorScene(Engine& engine, InputManager* inputManager)
 {
 	/* Register camera manager */
-	CameraManager* cameraManager = new CameraManager(enginePtr, inputManager);
-	cameraManager->addCamera(new MenuUseCameraController(enginePtr, inputManager));
-	cameraManager->addCamera(new FirstPersonCameraController(enginePtr, inputManager));
-	cameraManager->addCamera(new OverviewCameraController(enginePtr, inputManager));
-	enginePtr->registerProcessable(cameraManager);
+	CameraManager* cameraManager = new CameraManager(engine, inputManager);
+	cameraManager->addCamera(new MenuUseCameraController(engine, inputManager));
+	cameraManager->addCamera(new FirstPersonCameraController(engine, inputManager));
+	cameraManager->addCamera(new OverviewCameraController(engine, inputManager));
+	engine.registerProcessable(cameraManager);
 
-	// enginePtr->registerProcessable(new SimpleMeshTerrainManager(enginePtr, SimpleMeshTerrainManager::TERRAIN_TYPE::FLAT));
-	// enginePtr->registerProcessable(new Sphere(enginePtr, vec3(5, 5, 5)));
-	enginePtr->registerProcessable(new Skybox(enginePtr));
-	enginePtr->registerProcessable(new EntityManager(enginePtr));
-	enginePtr->registerProcessable(new Interior(enginePtr));
+	// engine.registerProcessable(new SimpleMeshTerrainManager(engine, SimpleMeshTerrainManager::TERRAIN_TYPE::FLAT));
+	// engine.registerProcessable(new Sphere(engine, vec3(5, 5, 5)));
+	engine.registerProcessable(new Skybox(engine));
+	engine.registerProcessable(new EntityManager(engine));
+	engine.registerProcessable(new Interior(engine));
 
-	// enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new Framebuffer(enginePtr)));
-	enginePtr->registerProcessable(new BaseGui(enginePtr));
+	// engine.registerProcessable(reinterpret_cast<IProcessable*>(new Framebuffer(engine)));
+	engine.registerProcessable(new BaseGui(engine));
 }
 
-void loadTerrainScene(Engine* enginePtr, InputManager* inputManager)
+void loadTerrainScene(Engine& engine, InputManager* inputManager)
 {
 	/* Register camera manager */
-	CameraManager* cameraManager = new CameraManager(enginePtr, inputManager);
-	cameraManager->addCamera(new MenuUseCameraController(enginePtr, inputManager));
-	cameraManager->addCamera(new FirstPersonCameraController(enginePtr, inputManager));
-	cameraManager->addCamera(new OverviewCameraController(enginePtr, inputManager));
-	enginePtr->registerProcessable(cameraManager);
+	CameraManager* cameraManager = new CameraManager(engine, inputManager);
+	cameraManager->addCamera(new MenuUseCameraController(engine, inputManager));
+	cameraManager->addCamera(new FirstPersonCameraController(engine, inputManager));
+	cameraManager->addCamera(new OverviewCameraController(engine, inputManager));
+	engine.registerProcessable(cameraManager);
 
-	enginePtr->registerProcessable(new SingleMeshLodTerrain(enginePtr, 5000, 5000, 8));
-	// enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new SimpleMeshTerrainManager(enginePtr, SimpleMeshTerrainManager::SIMPLEX)));
-	enginePtr->registerProcessable(new Skybox(enginePtr));
-	enginePtr->registerProcessable(new EntityManager(enginePtr));
+	engine.registerProcessable(new SingleMeshLodTerrain(engine, 5000, 5000, 8));
+	// engine.registerProcessable(reinterpret_cast<IProcessable*>(new SimpleMeshTerrainManager(engine, SimpleMeshTerrainManager::SIMPLEX)));
+	engine.registerProcessable(new Skybox(engine));
+	engine.registerProcessable(new EntityManager(engine));
 
-	// enginePtr->registerProcessable(reinterpret_cast<IProcessable*>(new Framebuffer(enginePtr)));
-	enginePtr->registerProcessable(new BaseGui(enginePtr));
+	// engine.registerProcessable(reinterpret_cast<IProcessable*>(new Framebuffer(engine)));
+	engine.registerProcessable(new BaseGui(engine));
 }
 

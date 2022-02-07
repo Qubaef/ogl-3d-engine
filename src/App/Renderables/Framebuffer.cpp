@@ -13,8 +13,8 @@ float Framebuffer::framebufferVertices[24] = {
 };
 
 
-Framebuffer::Framebuffer(Engine* enginePtr)
-	: IProcessable(enginePtr)
+Framebuffer::Framebuffer(Engine& engine)
+	: IProcessable(engine)
 {
 	defineRender();
 
@@ -32,19 +32,17 @@ Framebuffer::Framebuffer(Engine* enginePtr)
 	glBindFramebuffer(GL_FRAMEBUFFER, Fbo);
 
 	// Get shader
-	shaderPtr = enginePtr->getShaderByName("FramebufferShader");
+	shaderPtr = engine.getShaderByName("FramebufferShader");
 	shaderPtr->use();
-	shaderPtr->set_int("screenTexture", 0);
-	shaderPtr->set_int("depthTexture", 1);
-	shaderPtr->set_vec2("viewport", enginePtr->getConstProperties().windowWidth, enginePtr->getConstProperties().windowHeight);
-	shaderPtr->set_float("farPlane", enginePtr->getConstProperties().cameraFarClipping);
+	shaderPtr->setInt("screenTexture", 0);
+	shaderPtr->setInt("depthTexture", 1);
+	shaderPtr->setVec2("viewport", engine.getConstProps().windowWidth, engine.getConstProps().windowHeight);
+	shaderPtr->setFloat("farPlane", engine.getConstProps().cameraFarClipping);
 
 	// Initialize Framebuffer texture
-	ConstProperties props = enginePtr->getConstProperties();
-
 	glGenTextures(1, &texColorFrameBuffer);
 	glBindTexture(GL_TEXTURE_2D, texColorFrameBuffer);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, props.windowWidth, props.windowHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, engine.props.consts.windowWidth, engine.props.consts.windowHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
@@ -53,7 +51,7 @@ Framebuffer::Framebuffer(Engine* enginePtr)
 
 	glGenTextures(1, &texDepthFrameBuffer);
 	glBindTexture(GL_TEXTURE_2D, texDepthFrameBuffer);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, props.windowWidth, props.windowHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, engine.props.consts.windowWidth, engine.props.consts.windowHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LESS);
@@ -102,8 +100,8 @@ void Framebuffer::render()
 
 	// Bind shader
 	shaderPtr->use();
-	shaderPtr->set_float("focusPoint", focusPoint);
-	shaderPtr->set_float("focusScale", focusScale);
+	shaderPtr->setFloat("focusPoint", focusPoint);
+	shaderPtr->setFloat("focusScale", focusScale);
 
 	// Bind global VAO object
 	glBindVertexArray(mainVao.id);

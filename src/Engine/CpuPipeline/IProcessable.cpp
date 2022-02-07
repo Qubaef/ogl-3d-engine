@@ -1,7 +1,7 @@
 ﻿#include "IProcessable.h"
 
-IProcessable::IProcessable(Engine* enginePtr) :
-	enginePtr(enginePtr)
+IProcessable::IProcessable(Engine& engine) :
+	engine(engine)
 {
 	// If following methods are not overriden in child class,
 	// proper bits will be set

@@ -1,7 +1,7 @@
 ﻿#include "EntityManager.h"
 
 #include "Engine/Engine.h"
-#include "Engine/MessageBus/MessageBus.h"
+#include "Engine/Components/MessageBus/MessageBus.h"
 
 #include "Messages/RegisterEntityMessage.h"
 #include "Messages/RegisterPropertyMessage.h"
@@ -47,9 +47,9 @@ void EntityManager::sendPendingMessages()
 	pendingMessagesMutex.unlock();
 }
 
-EntityManager::EntityManager(Engine* enginePtr)
-	: IProcessable(enginePtr),
-	IMessanger(&enginePtr->getMessageBus(), "EntityManager"),
+EntityManager::EntityManager(Engine& engine)
+	: IProcessable(engine),
+	IMessanger(&engine.getMessageBus(), "EntityManager"),
 	rootEntry(GuiEntry("Entities", ENTRY_TYPE::ROOT))
 {
 }
@@ -87,11 +87,11 @@ void EntityManager::render()
 	//
 	// Entity editor
 	//
-	const float entityEditorWidth = enginePtr->getConstProperties().windowWidth * 0.25;
-	const float entityEditorHeight = enginePtr->getConstProperties().windowHeight;
+	const float entityEditorWidth = engine.getConstProps().windowWidth * 0.25f;
+	const float entityEditorHeight = engine.getConstProps().windowHeight;
 
 	ImGui::SetNextWindowSize(ImVec2(entityEditorWidth, entityEditorHeight), ImGuiCond_Once);
-	ImGui::SetNextWindowPos(ImVec2(enginePtr->getConstProperties().windowWidth - entityEditorWidth, 0), ImGuiCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(engine.getConstProps().windowWidth - entityEditorWidth, 0), ImGuiCond_Once);
 	ImGui::Begin(DISPLAY_NAME, nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
 	rootEntry.display();

@@ -5,7 +5,7 @@
 class MenuUseCameraController : public CameraController
 {
 public:
-	MenuUseCameraController(Engine* enginePtr, InputManager* p_input_manager);
+	MenuUseCameraController(Engine& engine, InputManager* p_input_manager);
 	void registerDefaultInput() override;
 	void updatePerFrame() override;
 	void enable() override;

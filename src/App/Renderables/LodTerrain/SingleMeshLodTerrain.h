@@ -1,13 +1,13 @@
 ﻿#pragma once
 
-#include "Heightmap.h"
 #include "Engine/CpuPipeline/IProcessable.h"
 #include "Engine/Engine.h"
-#include "QuadTerrainNode.h"
 #include "Engine/Common/Vao.h"
 #include "Engine/Common/Vbo.h"
+#include "Engine/Components/MessageBus/IMessanger.h"
 
-#include "Engine/MessageBus/IMessanger.h"
+#include "Heightmap.h"
+#include "QuadTerrainNode.h"
 
 
 class SingleMeshLodTerrain : public IProcessable, public IMessanger
@@ -38,14 +38,14 @@ class SingleMeshLodTerrain : public IProcessable, public IMessanger
 	const int size;
 	const int density;
 	const int minLodPatchSize;
-	vec3 terrainOffset = vec3(0,0,0);
+	glm::vec3 terrainOffset = glm::vec3(0,0,0);
 
 	// Buffers common for all sectors
 	Vbo vbo_vertex;
-	vec3 vertexData[4];
+	glm::vec3 vertexData[4];
 
 	Vbo vbo_normals;
-	vec3 normalsData[4];
+	glm::vec3 normalsData[4];
 
 	Vbo vbo_indices;
 	int indicesData[4];
@@ -54,7 +54,7 @@ class SingleMeshLodTerrain : public IProcessable, public IMessanger
 	QuadTerrainNode* terrainQuadTree = nullptr;
 
 public:
-	SingleMeshLodTerrain(Engine* enginePtr, int size, int density, int minLodPatchSize);
+	SingleMeshLodTerrain(Engine& engine, int size, int density, int minLodPatchSize);
 
 	void preprocess() override;
 

@@ -1,7 +1,9 @@
 #include "TestEntity.h"
 
-TestEntity::TestEntity(Engine* enginePtr) :
-	IProcessable(enginePtr)
+#include <string>
+
+TestEntity::TestEntity(Engine& engine) :
+	IProcessable(engine)
 {
 }
 

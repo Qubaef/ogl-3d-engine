@@ -1,8 +1,6 @@
 ﻿#pragma once
-#include "../../../Engine/Include/Common.h"
-#include "../../../Engine/Common/Vao.h"
-#include "../../../Engine/Common/Vbo.h"
-#include "../../../Engine/Shaders/Shader.h"
+
+#include "Engine/Components/Shaders/Shader.h"
 
 class Terrain
 {

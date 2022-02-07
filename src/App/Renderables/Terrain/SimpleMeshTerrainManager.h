@@ -31,7 +31,7 @@ public:
 	int y = 500;
 	int pointsPerLine = 501;
 
-	SimpleMeshTerrainManager(Engine* enginePtr, TERRAIN_TYPE terrainType);
+	SimpleMeshTerrainManager(Engine& engine, TERRAIN_TYPE terrainType);
 
 	void preprocess() override;
 

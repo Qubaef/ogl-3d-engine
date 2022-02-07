@@ -1,10 +1,7 @@
 ﻿#pragma once
 
-#ifndef REGISTER_PROPERTY_MESSAGE_H
-#define REGISTER_PROPERTY_MESSAGE_H
-
+#include "Engine/Components/MessageBus/Message.h"
 #include "App/Renderables/GuiEntityManager/EntityProperties/GuiProperty.h"
-#include "Engine/MessageBus/Message.h"
 
 class RegisterPropertyMessage : public Message
 {
@@ -20,5 +17,3 @@ public:
 
 	GuiProperty* getProperty() const;
 };
-
-#endif

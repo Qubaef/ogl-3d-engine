@@ -116,7 +116,7 @@
     <IncludePath>$(ProjectDir)imgui\;$(ProjectDir)src\;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)src\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(ProjectDir)imgui\;$(ProjectDir)src\;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -171,6 +171,14 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\Qubaef\cpp-libs\GL\glm-9.8.8;C:\Users\Qubaef\cpp-libs\GL\glfw-3.3.2\include;C:\Users\Qubaef\cpp-libs\GL\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <PreprocessorDefinitions>GLEW_STATIC;_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <PrecompiledHeaderFile>Includes.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -182,6 +190,8 @@
       <HeapCommitSize>
       </HeapCommitSize>
       <LargeAddressAware>true</LargeAddressAware>
+      <AdditionalLibraryDirectories>C:\Users\Qubaef\cpp-libs\GL\glew-2.1.0\lib\Release\Win32\;C:\Users\Qubaef\cpp-libs\GL\glfw-3.3.2\lib-vc2017\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -296,19 +306,19 @@
     <ClCompile Include="src\App\Renderables\Terrain\SimpleMeshTerrainManager.cpp" />
     <ClCompile Include="src\App\Renderables\Terrain\WaterTerrain.cpp" />
     <ClCompile Include="src\App\Renderables\TestEntity.cpp" />
-    <ClCompile Include="src\Engine\Camera\Camera.cpp" />
+    <ClCompile Include="src\Engine\Components\Camera\Camera.cpp" />
     <ClCompile Include="src\Engine\Common\Mesh.cpp" />
     <ClCompile Include="src\Engine\Engine.cpp" />
     <ClCompile Include="src\Engine\Exceptions\InitializationException.cpp" />
-    <ClCompile Include="src\Engine\Lights\Light.cpp" />
-    <ClCompile Include="src\Engine\Lights\LightDirectional.cpp" />
-    <ClCompile Include="src\Engine\Lights\LightPoint.cpp" />
-    <ClCompile Include="src\Engine\Logger\Logger.cpp" />
+    <ClCompile Include="src\Engine\Components\Lights\Light.cpp" />
+    <ClCompile Include="src\Engine\Components\Lights\LightDirectional.cpp" />
+    <ClCompile Include="src\Engine\Components\Lights\LightPoint.cpp" />
+    <ClCompile Include="src\DebugLib\Log.cpp" />
     <ClCompile Include="src\Engine\CpuPipeline\IProcessable.cpp" />
-    <ClCompile Include="src\Engine\MessageBus\IMessanger.cpp" />
-    <ClCompile Include="src\Engine\MessageBus\MessageBus.cpp" />
-    <ClCompile Include="src\Engine\Shaders\Shader.cpp" />
-    <ClCompile Include="src\Engine\Shaders\ShaderManager.cpp" />
+    <ClCompile Include="src\Engine\Components\MessageBus\IMessanger.cpp" />
+    <ClCompile Include="src\Engine\Components\MessageBus\MessageBus.cpp" />
+    <ClCompile Include="src\Engine\Components\Shaders\Shader.cpp" />
+    <ClCompile Include="src\Engine\Components\Shaders\ShaderManager.cpp" />
     <ClCompile Include="tracy\TracyClient.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -364,7 +374,7 @@
     <ClInclude Include="src\App\Renderables\Terrain\SimpleMeshTerrainManager.h" />
     <ClInclude Include="src\App\Renderables\Terrain\WaterTerrain.h" />
     <ClInclude Include="src\App\Renderables\TestEntity.h" />
-    <ClInclude Include="src\Engine\Camera\Camera.h" />
+    <ClInclude Include="src\Engine\Components\Camera\Camera.h" />
     <ClInclude Include="src\Engine\Common\Mesh.h" />
     <ClInclude Include="src\Engine\Common\Vao.h" />
     <ClInclude Include="src\Engine\Common\Vbo.h" />
@@ -374,20 +384,25 @@
     <ClInclude Include="src\Engine\Include\Common.h" />
     <ClInclude Include="src\Engine\Include\Constants.h" />
     <ClInclude Include="src\Engine\Include\Includes.h" />
-    <ClInclude Include="src\Engine\Lights\Light.h" />
-    <ClInclude Include="src\Engine\Lights\LightDirectional.h" />
-    <ClInclude Include="src\Engine\Lights\LightPoint.h" />
-    <ClInclude Include="src\Engine\Logger\Logger.h" />
-    <ClInclude Include="src\Engine\MessageBus\IMessanger.h" />
-    <ClInclude Include="src\Engine\MessageBus\Message.h" />
-    <ClInclude Include="src\Engine\MessageBus\MessageBus.h" />
-    <ClInclude Include="src\Engine\MessageBus\MessageRecipient.h" />
-    <ClInclude Include="src\Engine\Properties\ConstProperties.h" />
-    <ClInclude Include="src\Engine\Properties\RenderProperties.h" />
-    <ClInclude Include="src\Engine\Properties\TimeProperties.h" />
+    <ClInclude Include="src\Engine\Components\Lights\Light.h" />
+    <ClInclude Include="src\Engine\Components\Lights\LightDirectional.h" />
+    <ClInclude Include="src\Engine\Components\Lights\LightPoint.h" />
+    <ClInclude Include="src\DebugLib\Log.h" />
+    <ClInclude Include="src\Engine\Components\MessageBus\IMessanger.h" />
+    <ClInclude Include="src\Engine\Components\MessageBus\Message.h" />
+    <ClInclude Include="src\Engine\Components\MessageBus\MessageBus.h" />
+    <ClInclude Include="src\Engine\Components\MessageBus\MessageRecipient.h" />
+    <ClInclude Include="src\Engine\Components\Components.h" />
+    <ClInclude Include="src\Engine\Properties\PropertiesConst.h" />
+    <ClInclude Include="src\Engine\Properties\Properties.h" />
+    <ClInclude Include="src\Engine\Properties\PropertiesRender.h" />
+    <ClInclude Include="src\Engine\Properties\PropertiesTime.h" />
     <ClInclude Include="src\Engine\CpuPipeline\IProcessable.h" />
-    <ClInclude Include="src\Engine\Shaders\Shader.h" />
-    <ClInclude Include="src\Engine\Shaders\ShaderManager.h" />
+    <ClInclude Include="src\Engine\Components\Shaders\Shader.h" />
+    <ClInclude Include="src\Engine\Components\Shaders\ShaderManager.h" />
+    <ClInclude Include="src\Renderer\OpenGl\Include.h" />
+    <ClInclude Include="src\Renderer\OpenGl\Init.h" />
+    <ClInclude Include="src\Renderer\OpenGl\Validate.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Shaderfiles\DepthShader.vert" />
@@ -397,8 +412,13 @@
     <None Include="src\Shaderfiles\FramebufferShader.vert" />
     <None Include="src\Shaderfiles\HeightmapGenerationShader.comp" />
     <None Include="src\Shaderfiles\LightingFragmentShader.frag" />
+    <None Include="src\Shaderfiles\LightingShadowsShader.frag" />
+    <None Include="src\Shaderfiles\LightingShadowsShader.vert" />
     <None Include="src\Shaderfiles\LightingVertexShader.vert" />
+    <None Include="src\Shaderfiles\MainShader.frag" />
+    <None Include="src\Shaderfiles\MainShader.vert" />
     <None Include="src\Shaderfiles\ShadowMappingShader.frag" />
+    <None Include="src\Shaderfiles\ShadowMappingShader.geom" />
     <None Include="src\Shaderfiles\ShadowMappingShader.vert" />
     <None Include="src\Shaderfiles\SkyboxFragmentShader.frag" />
     <None Include="src\Shaderfiles\SkyboxVertexShader.vert" />

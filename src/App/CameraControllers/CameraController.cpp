@@ -1,23 +1,25 @@
 ﻿#include "CameraController.h"
-#include "../../Engine/Include/Constants.h"
-#include "../../Engine/Engine.h"
 
-CameraController::CameraController(Engine* enginePtr, InputManager* p_input_manager, float mouse_sens) :
-	Camera(enginePtr), mouse_sensitivity(mouse_sens)
+#include "Engine/Engine.h"
+
+using namespace glm;
+
+CameraController::CameraController(Engine& engine, InputManager* p_input_manager, float mouse_sens) :
+	Camera(engine), mouse_sensitivity(mouse_sens)
 {
 	ZoneScoped;
 
 	// set pointer to window
-	this->windowPtr = enginePtr->getGlWindow();
+	this->windowPtr = engine.getGlWindow();
 	this->inputManagerPtr = p_input_manager;
 
 	// set initial values of camera
-	this->cameraPosition = vec3(0, 0, 0);
-	this->cameraDirection = normalize(vec3(
+	this->cameraPosition = glm::vec3(0, 0, 0);
+	this->cameraDirection = glm::normalize(glm::vec3(
 		cos(initial_vertical_angle) * sin(initial_horizontal_angle),
 		sin(initial_vertical_angle),
 		cos(initial_vertical_angle) * cos(initial_horizontal_angle)));
-	this->cameraUp = vec3(0, 1, 0);
+	this->cameraUp = glm::vec3(0, 1, 0);
 
 	generate_matrices();
 	CameraController::registerDefaultInput();
@@ -29,13 +31,13 @@ CameraController::CameraController(Engine* enginePtr, InputManager* p_input_mana
 	this->last_time = glfwGetTime();
 }
 
-CameraController::CameraController(Engine* enginePtr, InputManager* p_input_manager, float mouse_sens, vec3 position, float vertical_angle, float horizontal_angle) :
-	Camera(enginePtr), mouse_sensitivity(mouse_sens)
+CameraController::CameraController(Engine& engine, InputManager* p_input_manager, float mouse_sens, glm::vec3 position, float vertical_angle, float horizontal_angle) :
+	Camera(engine), mouse_sensitivity(mouse_sens)
 {
 	ZoneScoped;
 
 	// set pointer to window
-	this->windowPtr = enginePtr->getGlWindow();
+	this->windowPtr = engine.getGlWindow();
 	this->inputManagerPtr = p_input_manager;
 
 	this->initial_horizontal_angle = horizontal_angle;
@@ -43,11 +45,11 @@ CameraController::CameraController(Engine* enginePtr, InputManager* p_input_mana
 
 	// set initial values of camera
 	this->cameraPosition = position;
-	this->cameraDirection = vec3(
+	this->cameraDirection = glm::vec3(
 		cos(vertical_angle) * sin(horizontal_angle),
 		sin(vertical_angle),
 		cos(vertical_angle) * cos(horizontal_angle));
-	this->cameraUp = vec3(0, 1, 0);
+	this->cameraUp = glm::vec3(0, 1, 0);
 
 	generate_matrices();
 	CameraController::registerDefaultInput();
@@ -77,7 +79,7 @@ float CameraController::calculate_time()
 
 	// calculate time since last frame
 	current_time = glfwGetTime();
-	const float delta_time = current_time - last_time;
+	const float delta_time = (float) (current_time - last_time);
 	last_time = current_time;
 
 	return delta_time;
@@ -105,12 +107,12 @@ void CameraController::updateProjection()
 	ZoneScoped;
 
 	// update Projection matrix
-	Projection = perspective(
-		radians(static_cast<float>(enginePtr->getConstProperties().cameraFov)),	// FOV
-		static_cast<float>(enginePtr->getConstProperties().windowWidth) /
-		static_cast<float>(enginePtr->getConstProperties().windowHeight),		// aspect ratio
-		enginePtr->getConstProperties().cameraNearClipping,						// near clipping plane
-		enginePtr->getConstProperties().cameraFarClipping						// far clipping pane
+	Projection = glm::perspective(
+		glm::radians(static_cast<float>(engine.props.consts.cameraFov)),	// FOV
+		static_cast<float>(engine.props.consts.windowWidth) /
+		static_cast<float>(engine.props.consts.windowHeight),		// aspect ratio
+		engine.props.consts.cameraNearClipping,						// near clipping plane
+		engine.props.consts.cameraFarClipping						// far clipping pane
 	);
 }
 

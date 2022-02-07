@@ -15,13 +15,13 @@ class Framebuffer : public IProcessable
 	unsigned texColorFrameBuffer;	// Texture of framebuffer content object
 	unsigned texDepthFrameBuffer;	// Texture of framebuffer content object
 
-	float focusPoint = 15;
-	float focusScale = 1.58;
+	float focusPoint = 15.f;
+	float focusScale = 1.58f;
 
 	static float framebufferVertices[24];
 
 public:
-	Framebuffer(Engine* enginePtr);
+	Framebuffer(Engine& engine);
 
 	void preprocess() override;
 

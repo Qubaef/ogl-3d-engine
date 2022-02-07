@@ -1,11 +1,9 @@
 ﻿#pragma once
 
-#include "../../Engine/Include/Common.h"
+#include "Engine/Include/Common.h"
 #include "InputState.h"
 
 class Engine;
-
-using namespace glm;
 
 class InputManager
 {
@@ -21,7 +19,7 @@ class InputManager
 	void bind_mouse_click_event();
 
 public:
-	InputManager(Engine* enginePtr);
+	InputManager(Engine& engine);
 
 	// Process user's input which happens every frame (mouse_pos)
 	// and ESC key, which closes app and should be checked processed no matter the case
@@ -41,5 +39,5 @@ public:
 	// Getters
 	InputState& get_input_state();
 	KeyState getKeyState(int glfwKeyNumber);
-	vec2 get_mouse_pos();
+	glm::vec2 get_mouse_pos();
 };

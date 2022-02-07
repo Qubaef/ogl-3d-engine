@@ -47,19 +47,19 @@ float Skybox::skyboxVertices[108] = {
 	1.0f, -1.0f, 1.0f
 };
 
-Skybox::Skybox(Engine* enginePtr)
-	: IProcessable(enginePtr)
+Skybox::Skybox(Engine& engine)
+	: IProcessable(engine)
 {
 	ZoneScoped;
 
 	// Get skybox shader
-	shaderPtr = enginePtr->getShaderByName("SkyboxShader");
+	shaderPtr = engine.getShaderByName("SkyboxShader");
 
 	// Initialize view matrices
 	shaderPtr->use();
 
-	ProjectionMatrixID = glGetUniformLocation(shaderPtr->get_ID(), "P");
-	ViewMatrixID = glGetUniformLocation(shaderPtr->get_ID(), "V");
+	ProjectionMatrixID = glGetUniformLocation(shaderPtr->getId(), "P");
+	ViewMatrixID = glGetUniformLocation(shaderPtr->getId(), "V");
 
 	// Initialize Texture
 	skyboxFilenames =
@@ -123,7 +123,7 @@ Skybox::Skybox(Engine* enginePtr)
 	// enable attribute '0'
 	glEnableVertexAttribArray(0);
 
-	shaderPtr->set_int("skybox", 0);
+	shaderPtr->setInt("skybox", 0);
 }
 
 void Skybox::preprocess()
@@ -142,7 +142,7 @@ void Skybox::render()
 	glDepthFunc(GL_LEQUAL);
 	glCullFace(GL_BACK);
 
-	Camera* cameraPtr = enginePtr->getCamera();
+	Camera* cameraPtr = engine.getCamera();
 
 	// Get pointers to matrices
 	glm::mat4* P = cameraPtr->getProjectionMatrix();

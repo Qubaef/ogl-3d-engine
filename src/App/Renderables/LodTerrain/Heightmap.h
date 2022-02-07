@@ -24,7 +24,7 @@ public:
 	void update(SimplexNoiseWrapper noise);
 
 	// Generate texture with compute shader
-	void updateGpu(Engine* enginePtr);
+	void updateGpu(Engine& engine);
 
 	void saveToFile(float* data);
 

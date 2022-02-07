@@ -9,11 +9,13 @@
 #include "App/Renderables/GuiEntityManager/EntityProperties/Vec3PropertyContinuousModifier.h"
 #include "App/Renderables/GuiEntityManager/EntityProperties/IntPropertyNotifyModifier.h"
 
-SingleMeshLodTerrain::SingleMeshLodTerrain(Engine* enginePtr, int size, int density, int minLodPatchSize)
-	: IProcessable(enginePtr), IMessanger(&enginePtr->getMessageBus(), "SingleMeshLodTerrain"),
+using namespace glm;
+
+SingleMeshLodTerrain::SingleMeshLodTerrain(Engine& engine, int size, int density, int minLodPatchSize)
+	: IProcessable(engine), IMessanger(&engine.getMessageBus(), "SingleMeshLodTerrain"),
 	size(size), density(density), minLodPatchSize(minLodPatchSize)
 {
-	shaderPtr = enginePtr->getShaderByName("TerrainLod");
+	shaderPtr = engine.getShaderByName("TerrainLod");
 
 	sendMessage(new RegisterEntityMessage(""), "EntityManager");
 
@@ -26,28 +28,28 @@ SingleMeshLodTerrain::SingleMeshLodTerrain(Engine* enginePtr, int size, int dens
 		"EntityManager");
 
 	// Initialize terrainQuadTree
-	terrainQuadTree = new QuadTerrainNode(-size / 2, -size / 2, size);
+	terrainQuadTree = new QuadTerrainNode(-size * 0.5f, -size * 0.5f, size);
 
 	// Initialize view matrices
 	shaderPtr->use();
 
 	// Get uniforms handles
-	uniformId_matMvp = glGetUniformLocation(shaderPtr->get_ID(), "matMvp");
-	uniformId_matMv = glGetUniformLocation(shaderPtr->get_ID(), "matMv");
-	uniformId_matM = glGetUniformLocation(shaderPtr->get_ID(), "matM");
-	uniformId_matP = glGetUniformLocation(shaderPtr->get_ID(), "matP");
+	uniformId_matMvp = glGetUniformLocation(shaderPtr->getId(), "matMvp");
+	uniformId_matMv = glGetUniformLocation(shaderPtr->getId(), "matMv");
+	uniformId_matM = glGetUniformLocation(shaderPtr->getId(), "matM");
+	uniformId_matP = glGetUniformLocation(shaderPtr->getId(), "matP");
 
-	uniformId_nodePos = glGetUniformLocation(shaderPtr->get_ID(), "nodePos");
-	uniformId_nodeSize = glGetUniformLocation(shaderPtr->get_ID(), "nodeSize");
+	uniformId_nodePos = glGetUniformLocation(shaderPtr->getId(), "nodePos");
+	uniformId_nodeSize = glGetUniformLocation(shaderPtr->getId(), "nodeSize");
 
-	uniformId_viewport = glGetUniformLocation(shaderPtr->get_ID(), "viewport");
-	uniformId_terrainHeight = glGetUniformLocation(shaderPtr->get_ID(), "terrainHeight");
+	uniformId_viewport = glGetUniformLocation(shaderPtr->getId(), "viewport");
+	uniformId_terrainHeight = glGetUniformLocation(shaderPtr->getId(), "terrainHeight");
 
-	uniformId_terrainDensity = glGetUniformLocation(shaderPtr->get_ID(), "terrainDensity");
-	uniformId_terrainSize = glGetUniformLocation(shaderPtr->get_ID(), "terrainSize");
-	uniformId_terrainOffset = glGetUniformLocation(shaderPtr->get_ID(), "terrainOffset");
+	uniformId_terrainDensity = glGetUniformLocation(shaderPtr->getId(), "terrainDensity");
+	uniformId_terrainSize = glGetUniformLocation(shaderPtr->getId(), "terrainSize");
+	uniformId_terrainOffset = glGetUniformLocation(shaderPtr->getId(), "terrainOffset");
 
-	uniformId_viewPos = glGetUniformLocation(shaderPtr->get_ID(), "viewPos");
+	uniformId_viewPos = glGetUniformLocation(shaderPtr->getId(), "viewPos");
 
 	// Init vertex data
 	vertexData[0] = glm::vec3(0, 0, 0);
@@ -71,7 +73,7 @@ SingleMeshLodTerrain::SingleMeshLodTerrain(Engine* enginePtr, int size, int dens
 	if (true)
 	{
 		heightmap = new Heightmap(size, density);
-		heightmap->updateGpu(enginePtr);
+		heightmap->updateGpu(engine);
 		// heightmap->update();
 		// heightmap->saveToFile();
 		// heightmap->update(noise);
@@ -149,7 +151,7 @@ void SingleMeshLodTerrain::process()
 	}
 
 	// Update Nodes
-	glm::vec3 pos = enginePtr->getCamera()->getPosition();
+	glm::vec3 pos = engine.getCamera()->getPosition();
 	pos.y = 0;
 
 	terrainQuadTree->update(pos, minLodPatchSize);
@@ -159,7 +161,7 @@ void SingleMeshLodTerrain::render()
 {
 	ZoneScoped;
 
-	Camera* cameraPtr = enginePtr->getCamera();
+	Camera* cameraPtr = engine.getCamera();
 
 	// Get uniforms data
 	glm::mat4* Mvp = cameraPtr->getMVPMatrix();
@@ -167,8 +169,8 @@ void SingleMeshLodTerrain::render()
 	glm::mat4* P = cameraPtr->getProjectionMatrix();
 	glm::mat4 Mv = *(cameraPtr->getViewMatrix()) * (*M);
 
-	int viewportW = enginePtr->getConstProperties().windowWidth;
-	int viewportH = enginePtr->getConstProperties().windowHeight;
+	int viewportW = engine.getConstProps().windowWidth;
+	int viewportH = engine.getConstProps().windowHeight;
 
 	vec3 viewPos = cameraPtr->getPosition();
 
@@ -195,15 +197,15 @@ void SingleMeshLodTerrain::render()
 	glUniform3f(uniformId_viewPos, viewPos.x, viewPos.y, viewPos.z);
 
 	// Set materials
-	shaderPtr->set_vec3("materialSteep.ambient", vec3(0.298f, 0.282f, 0.27f));
-	shaderPtr->set_vec3("materialSteep.diffuse", vec3(0.458f, 0.411f, 0.341f));
-	shaderPtr->set_vec3("materialSteep.specular", vec3(0.0f, 0.0f, 0.0f));
-	shaderPtr->set_float("materialSteep.shininess", 1024);
+	shaderPtr->setVec3("materialSteep.ambient", vec3(0.298f, 0.282f, 0.27f));
+	shaderPtr->setVec3("materialSteep.diffuse", vec3(0.458f, 0.411f, 0.341f));
+	shaderPtr->setVec3("materialSteep.specular", vec3(0.0f, 0.0f, 0.0f));
+	shaderPtr->setFloat("materialSteep.shininess", 1024);
 
-	shaderPtr->set_vec3("materialFlat.ambient", vec3(0.339f, 0.559f, 0.339f));
-	shaderPtr->set_vec3("materialFlat.diffuse", vec3(0.565f, 0.933f, 0.565f));
-	shaderPtr->set_vec3("materialFlat.specular", vec3(0.0f, 0.0f, 0.0f));
-	shaderPtr->set_float("materialFlat.shininess", 1024);
+	shaderPtr->setVec3("materialFlat.ambient", vec3(0.339f, 0.559f, 0.339f));
+	shaderPtr->setVec3("materialFlat.diffuse", vec3(0.565f, 0.933f, 0.565f));
+	shaderPtr->setVec3("materialFlat.specular", vec3(0.0f, 0.0f, 0.0f));
+	shaderPtr->setFloat("materialFlat.shininess", 1024);
 
 	// Attributes setup and global VAO creation
 	// bind global VAO object
@@ -213,5 +215,5 @@ void SingleMeshLodTerrain::render()
 	glPatchParameteri(GL_PATCH_VERTICES, 4);
 
 	// Render whole Terrain Tree
-	terrainQuadTree->render(shaderPtr, uniformId_nodePos, uniformId_nodeSize, enginePtr);
+	terrainQuadTree->render(shaderPtr, uniformId_nodePos, uniformId_nodeSize, engine);
 }

@@ -1,11 +1,9 @@
 ﻿#pragma once
-#ifndef ENTITY_MANAGER_H
-#define ENTITY_MANAGER_H
 
 #include <mutex>
 
-#include "../../../Engine/CpuPipeline/IProcessable.h"
-#include "Engine/MessageBus/IMessanger.h"
+#include "Engine/CpuPipeline/IProcessable.h"
+#include "Engine/Components/MessageBus/IMessanger.h"
 
 #include "GuiEntry/GuiEntry.h"
 #include "EntityProperties/GuiProperty.h"
@@ -34,7 +32,7 @@ class EntityManager : public IProcessable, public IMessanger, public IMessageCol
 	// Send all pending messages
 	void sendPendingMessages();
 public:
-	EntityManager(Engine* enginePtr);
+	EntityManager(Engine& engine);
 
 	void preprocess() override;
 	void process() override;
@@ -42,5 +40,3 @@ public:
 
 	void addMessage(Message* message, const char* recipient) override;
 };
-
-#endif

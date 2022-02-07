@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "../../Engine/Include/Common.h"
+#include "Engine/Include/Common.h"
 #include "CameraController.h"
 
 using namespace glm;
@@ -16,8 +16,8 @@ class OverviewCameraController : public CameraController
 
 public:
 	// functions
-	OverviewCameraController(Engine* enginePtr, InputManager* p_input_manager);
-	OverviewCameraController(Engine* enginePtr, InputManager* p_input_manager, vec3 position, float vertical_angle, float horizontal_angle);
+	OverviewCameraController(Engine& engine, InputManager* p_input_manager);
+	OverviewCameraController(Engine& engine, InputManager* p_input_manager, vec3 position, float vertical_angle, float horizontal_angle);
 	void registerDefaultInput() override;
 	void updatePerFrame() override;
 	void enable() override;

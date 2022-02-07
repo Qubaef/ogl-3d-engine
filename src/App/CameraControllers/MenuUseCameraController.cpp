@@ -1,8 +1,7 @@
 ﻿#include "MenuUseCameraController.h"
-#include "../../Engine/Include/Constants.h"
 
-MenuUseCameraController::MenuUseCameraController(Engine* enginePtr, InputManager* p_input_manager) :
-	CameraController(enginePtr, p_input_manager, 0.8)
+MenuUseCameraController::MenuUseCameraController(Engine& engine, InputManager* p_input_manager) :
+	CameraController(engine, p_input_manager, 0.8)
 {
 }
 

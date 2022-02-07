@@ -1,5 +1,4 @@
 ﻿#include "WaterTerrain.h"
-#include "../../../Engine/Include/Constants.h"
 
 using namespace glm;
 
@@ -14,10 +13,10 @@ WaterTerrain::WaterTerrain(int sectorSizeX, int sectorSizeY, int sectorsNumberX,
 	ZoneScoped;
 
 	this->shaderPtr->use();
-	this->shaderPtr->set_vec3("material.ambient", vec3(0.f, 0.41f, 0.58f));
-	this->shaderPtr->set_vec3("material.diffuse", vec3(0.f, 0.61f, 0.78f));
-	this->shaderPtr->set_vec3("material.specular", vec3(0.6f, 0.6f, 0.6f));
-	this->shaderPtr->set_float("material.shininess", 128);
+	this->shaderPtr->setVec3("material.ambient", vec3(0.f, 0.41f, 0.58f));
+	this->shaderPtr->setVec3("material.diffuse", vec3(0.f, 0.61f, 0.78f));
+	this->shaderPtr->setVec3("material.specular", vec3(0.6f, 0.6f, 0.6f));
+	this->shaderPtr->setFloat("material.shininess", 128);
 
 	// wave parameters (direction), steepness, wavelength
 	wave1 = vec4(normalize(vec2(1, 1)), 0.25, 60);
@@ -91,9 +90,9 @@ void WaterTerrain::initialize()
 	glEnableVertexAttribArray(0);
 
 	// Set uniforms
-	shaderPtr->set_vec4("wave[0]", wave1);
-	shaderPtr->set_vec4("wave[1]", wave2);
-	shaderPtr->set_vec4("wave[2]", wave3);
+	shaderPtr->setVec4("wave[0]", wave1);
+	shaderPtr->setVec4("wave[1]", wave2);
+	shaderPtr->setVec4("wave[2]", wave3);
 }
 
 
@@ -109,7 +108,7 @@ void WaterTerrain::sendAndRender()
 	// bind global VAO object
 	glBindVertexArray(mainVao.id);
 
-	shaderPtr->set_float("time", glfwGetTime());
+	shaderPtr->setFloat("time", glfwGetTime());
 
 	glDrawElements(
 		GL_TRIANGLES,			// mode

@@ -3,8 +3,10 @@
 #include "Windows.h"
 #include "Psapi.h"
 
-BaseGui::BaseGui(Engine* enginePtr) :
-	IProcessable(enginePtr)
+using namespace glm;
+
+BaseGui::BaseGui(Engine& engine) :
+	IProcessable(engine)
 {
 
 }
@@ -48,7 +50,7 @@ void BaseGui::preprocess()
 	PROCESS_MEMORY_COUNTERS_EX pmc;
 	GetProcessMemoryInfo(GetCurrentProcess(), reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&pmc), sizeof(pmc));
 	DWORDLONG physMemUsedByMe = pmc.WorkingSetSize;
-	float physMemUsedByMeMegabytes = physMemUsedByMe / 1000000;
+	float physMemUsedByMeMegabytes = (float) (physMemUsedByMe / 1000000);
 
 	memoryAllocatedPlotUpdateFreq--;
 
@@ -65,7 +67,7 @@ void BaseGui::preprocess()
 
 	ImGui::Separator();
 
-	vec3 cameraPos = enginePtr->getCamera()->getPosition();
+	vec3 cameraPos = engine.getCamera()->getPosition();
 	ImGui::Text("Camera pos x: %.2f, y: %.2f, z: %.2f", cameraPos[0], cameraPos[1], cameraPos[2]);
 	
 	ImGui::End();

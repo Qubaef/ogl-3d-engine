@@ -1,7 +1,11 @@
 ﻿#pragma once
 #include <vector>
 
+#include "Engine/Common/Vao.h"
+#include "Engine/Common/Vbo.h"
+
 #include "Terrain.h"
+
 
 class RandomTerrain : public Terrain
 {
