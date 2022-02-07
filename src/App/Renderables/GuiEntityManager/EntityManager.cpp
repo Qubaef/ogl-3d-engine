@@ -87,11 +87,11 @@ void EntityManager::render()
 	//
 	// Entity editor
 	//
-	const float entityEditorWidth = engine.getConstProps().windowWidth * 0.25f;
-	const float entityEditorHeight = engine.getConstProps().windowHeight;
+	const float entityEditorWidth = engine.props.consts.windowWidth * 0.25f;
+	const float entityEditorHeight = engine.props.consts.windowHeight;
 
 	ImGui::SetNextWindowSize(ImVec2(entityEditorWidth, entityEditorHeight), ImGuiCond_Once);
-	ImGui::SetNextWindowPos(ImVec2(engine.getConstProps().windowWidth - entityEditorWidth, 0), ImGuiCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(engine.props.consts.windowWidth - entityEditorWidth, 0), ImGuiCond_Once);
 	ImGui::Begin(DISPLAY_NAME, nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
 	rootEntry.display();

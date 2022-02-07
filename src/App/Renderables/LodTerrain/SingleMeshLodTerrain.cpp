@@ -169,8 +169,8 @@ void SingleMeshLodTerrain::render()
 	glm::mat4* P = cameraPtr->getProjectionMatrix();
 	glm::mat4 Mv = *(cameraPtr->getViewMatrix()) * (*M);
 
-	int viewportW = engine.getConstProps().windowWidth;
-	int viewportH = engine.getConstProps().windowHeight;
+	int viewportW = engine.props.consts.windowWidth;
+	int viewportH = engine.props.consts.windowHeight;
 
 	vec3 viewPos = cameraPtr->getPosition();
 

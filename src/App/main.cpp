@@ -99,11 +99,12 @@ int main()
 	case 2:
 		loadInteriorScene(engine, inputManager);
 		break;
-	default: ;
+	default: 
+		return -1;
 	}
 
 	// Start the Engine
-	engine.run();
+	engine.runPhaseRuntime();
 
 	return 0;
 }

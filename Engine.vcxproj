@@ -400,6 +400,7 @@
     <ClInclude Include="src\Engine\CpuPipeline\IProcessable.h" />
     <ClInclude Include="src\Engine\Components\Shaders\Shader.h" />
     <ClInclude Include="src\Engine\Components\Shaders\ShaderManager.h" />
+    <ClInclude Include="src\Renderer\OpenGl\ImGui.h" />
     <ClInclude Include="src\Renderer\OpenGl\Include.h" />
     <ClInclude Include="src\Renderer\OpenGl\Init.h" />
     <ClInclude Include="src\Renderer\OpenGl\Validate.h" />

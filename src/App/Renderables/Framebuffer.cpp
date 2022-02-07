@@ -36,8 +36,8 @@ Framebuffer::Framebuffer(Engine& engine)
 	shaderPtr->use();
 	shaderPtr->setInt("screenTexture", 0);
 	shaderPtr->setInt("depthTexture", 1);
-	shaderPtr->setVec2("viewport", engine.getConstProps().windowWidth, engine.getConstProps().windowHeight);
-	shaderPtr->setFloat("farPlane", engine.getConstProps().cameraFarClipping);
+	shaderPtr->setVec2("viewport", engine.props.consts.windowWidth, engine.props.consts.windowHeight);
+	shaderPtr->setFloat("farPlane", engine.props.consts.cameraFarClipping);
 
 	// Initialize Framebuffer texture
 	glGenTextures(1, &texColorFrameBuffer);

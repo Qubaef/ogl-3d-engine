@@ -106,22 +106,27 @@ void ProcessableQueue::startWorkerCycle(int threadId)
 	}
 }
 
-ProcessableQueue::ProcessableQueue(int numberOfWorkers)
+ProcessableQueue::ProcessableQueue()
 	: phase(ProcessableType::NONE)
 {
-	// Initialize worker threads	
-	int threadsToStart = glm::min(MaxWorkerThreads, numberOfWorkers) - activeWorkersVector.size();
+}
 
-	for (int i = 0; i < threadsToStart; i++)
+int ProcessableQueue::initWorkers(int numberOfWorkers)
+{
+	// Calculate number of threads to initialize
+	const int threadsToStart = min(MAX_WORKER_THREADS, numberOfWorkers) - activeWorkersVector.size();
+
+	// Initialize worker threads
+	for (unsigned char i = 0; i < threadsToStart; i++)
 	{
 		activeWorkersVector.emplace_back(&ProcessableQueue::startWorkerCycle, this, activeWorkersVector.size());
 	}
+
+	return activeWorkersVector.size();
 }
 
 void ProcessableQueue::pushProcessable(IProcessable* processable)
 {
-	ZoneScoped;
-
 	// Lock access to the taskQueue
 	queueModificationMutex.lock();
 
@@ -133,8 +138,6 @@ void ProcessableQueue::pushProcessable(IProcessable* processable)
 
 void ProcessableQueue::preprocess()
 {
-	ZoneScoped;
-
 	// Wait for all threads to finish
 	while (!ifFinished());
 

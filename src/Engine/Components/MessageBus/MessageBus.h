@@ -29,9 +29,7 @@ class MessageBus
 	std::map<const char*, int, StringComparator> nameToIndexDict;
 	std::map<IMessanger*, int> messangerToIndexDict;
 
-	// std::vector<Message*> pendingMessages;
 	std::vector<std::pair<MessageRecipient, Message*>> pendingMessages;
-
 
 	IMessanger* getMessanger(int index);
 	IMessanger* getRecipient(const MessageRecipient& messageRecipient);

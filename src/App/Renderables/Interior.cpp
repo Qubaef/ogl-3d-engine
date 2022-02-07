@@ -25,8 +25,8 @@ void copyTextureArrayLayerToGL_TEXTURE_2D(unsigned targetTexture, unsigned textu
 
 std::vector<mat4> Interior::getLightSpaceMatrices()
 {
-	float cameraNearPlane = engine.getConstProps().cameraNearClipping;
-	float cameraFarPlane = engine.getConstProps().cameraFarClipping;
+	float cameraNearPlane = engine.props.consts.cameraNearClipping;
+	float cameraFarPlane = engine.props.consts.cameraFarClipping;
 	std::vector<mat4> ret;
 
 	for (size_t i = 0; i < shadowCascadeLevels.size() + 1; ++i)
@@ -289,8 +289,8 @@ mat4 Interior::calculateLightSpaceMatrix(const float nearPlane, const float farP
 	Camera* cameraPtr = engine.getCamera();
 
 	mat4 proj = perspective(
-		(float)engine.getConstProps().cameraFov,
-		(float)engine.getConstProps().windowWidth / (float)engine.getConstProps().windowHeight,
+		(float)engine.props.consts.cameraFov,
+		(float)engine.props.consts.windowWidth / (float)engine.props.consts.windowHeight,
 		nearPlane, farPlane
 	);
 
@@ -392,8 +392,8 @@ void Interior::setupShaderAndMatrices()
 	shaderPtr->setVec3("view_pos", cameraPtr->getPosition());
 
 	// Send camera Far Plane
-	shaderPtr->setFloat("nearPlane", engine.getConstProps().cameraNearClipping);
-	shaderPtr->setFloat("farPlane", engine.getConstProps().cameraFarClipping);
+	shaderPtr->setFloat("nearPlane", engine.props.consts.cameraNearClipping);
+	shaderPtr->setFloat("farPlane", engine.props.consts.cameraFarClipping);
 
 	// Send camera maxShadowBias
 	for (int i = 0; i < maxShadowCascadeBiasList.size(); ++i)
@@ -607,7 +607,7 @@ Interior::Interior(Engine& engine)
 	// Shadows
 
 	// Initliaze shadow cascades
-	const float farPlane = engine.getConstProps().cameraFarClipping;
+	const float farPlane = engine.props.consts.cameraFarClipping;
 	shadowCascadeLevels.push_back(40);
 	shadowCascadeLevels.push_back(120);
 	shadowCascadeLevels.push_back(280);
@@ -726,7 +726,7 @@ Interior::Interior(Engine& engine)
 	sendMessage(
 		new RegisterPropertyMessage("Interior",
 			new TexturePropertyWatcher("shadowMapLayerTexture", shadowMapLayerTexture, DEPTH_MAP_RES, DEPTH_MAP_RES,
-				engine.getConstProps().windowWidth * 0.20f, engine.getConstProps().windowWidth * 0.20f)
+				engine.props.consts.windowWidth * 0.20f, engine.props.consts.windowWidth * 0.20f)
 		),
 		"EntityManager"
 	);
@@ -794,8 +794,8 @@ void Interior::render()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		framebufferShaderPtr->use();
-		framebufferShaderPtr->setFloat("near_plane", engine.getConstProps().cameraNearClipping);
-		framebufferShaderPtr->setFloat("far_plane", engine.getConstProps().cameraFarClipping);
+		framebufferShaderPtr->setFloat("near_plane", engine.props.consts.cameraNearClipping);
+		framebufferShaderPtr->setFloat("far_plane", engine.props.consts.cameraFarClipping);
 		framebufferShaderPtr->setInt("layer", layer);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D_ARRAY, lightDepthMaps);
@@ -813,8 +813,8 @@ void Interior::render()
 	{
 		// 2. then render scene as normal with shadow mapping (using depth map)
 		glViewport(0, 0,
-			engine.getConstProps().windowWidth,
-			engine.getConstProps().windowHeight
+			engine.props.consts.windowWidth,
+			engine.props.consts.windowHeight
 		);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

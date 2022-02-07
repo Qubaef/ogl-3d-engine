@@ -11,6 +11,8 @@
 
 class ProcessableQueue
 {
+	const int MAX_WORKER_THREADS = 4;
+
 	// Main vector
 	std::vector<IProcessable*> processablesList;
 
@@ -47,14 +49,15 @@ class ProcessableQueue
 
 	// Start worker cycle on current process
 	void startWorkerCycle(int threadId);
-public:
-	const int MaxWorkerThreads = 2;
 
-	ProcessableQueue(int numberOfWorkers);
+public:
+	ProcessableQueue();
+
+	// Initialize queue workers, return current number of active workers
+	int initWorkers(int numberOfWorkers);
 
 	// Add new processable to the queue
 	void pushProcessable(IProcessable* processable);
-
 	
 	// Execute and finish Preprocess phase
 	void preprocess();
@@ -65,11 +68,9 @@ public:
 	// Execute and finish Render phase 
 	void render();
 
-	
 	// Process next task
 	void processNext();
-	
-	
+
 	// Check if all taskQueue tasks were finished and if threads are waiting
 	bool ifFinished();
 };

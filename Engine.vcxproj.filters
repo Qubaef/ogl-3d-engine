@@ -485,6 +485,9 @@
     <ClInclude Include="src\Renderer\OpenGl\Include.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="src\Renderer\OpenGl\ImGui.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="tracy\profiler\build\win32\x64\Debug\Tracy.exe">
