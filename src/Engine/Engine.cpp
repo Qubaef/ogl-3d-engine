@@ -88,53 +88,73 @@ void Engine::runPhaseRuntime()
 	//
 	while (!glfwWindowShouldClose(comps.engineWindowPtr))
 	{
-		// Dear ImGui: Start the frame
-		ImGuiNewFrame();
-
-		// Publish message bus
-		comps.messageBus.publish();
-
-		// Perform preprocess phase
-		comps.processableQueue.preprocess();
-
-		// Start process phase
-		comps.processableQueue.process();
-
-		//// Perform necessary side tasks, while waiting for processableQueue tasks to be completed
-
-		// Clear buffers
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// Update shaders uniforms with lights
-		comps.shaderManagerPtr->updatePerFrame();
-
-		// Wait for preRenderQueue to be finished
-		// while waiting, start performing processable tasks, if there are some already waiting for execution
-		while (!comps.processableQueue.ifFinished())
+		//
+		// Preprocess:
+		//
 		{
-			comps.processableQueue.processNext();
+			// Dear ImGui: Start the frame
+			ImGuiNewFrame();
+
+			// Publish message bus
+			comps.messageBus.publish();
+
+			// Perform preprocess phase
+			comps.processableQueue.preprocess();
 		}
 
-		// Render all rendering tasks from processableQueue
-		comps.processableQueue.render();
+		//
+		// Process:
+		//
+		{
+			// Start process phase
+			comps.processableQueue.process();
 
-		// Dear ImGui: Render
-		ImGuiRender();
+			//// Perform necessary side tasks, while waiting for processableQueue tasks to be completed
 
-		// Swap buffers after the rendering is finished
-		glfwSwapBuffers(comps.engineWindowPtr);
+			// Clear buffers
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Tracy Profiler: Collect Gpu data
-		TracyGpuCollect;
+			// Update shaders uniforms with lights
+			comps.shaderManagerPtr->updatePerFrame();
 
-		// Process pending events
-		glfwPollEvents();
+			// Wait for preRenderQueue to be finished
+			// while waiting, start performing processable tasks, if there are some already waiting for execution
+			while (!comps.processableQueue.ifFinished())
+			{
+				comps.processableQueue.processNext();
+			}
+		}
 
-		// Check for OpenGl rendering errors
-		checkOglErrors(__FUNCTION__);
+		//
+		// Render:
+		//
+		{
+			// Render all rendering tasks from processableQueue
+			comps.processableQueue.render();
 
-		// Tracy Profiler: End frame mark
-		FrameMark;
+			// Dear ImGui: Render
+			ImGuiRender();
+		}
+
+		//
+		// Frame finalize:
+		//
+		{
+			// Swap buffers after the rendering is finished
+			glfwSwapBuffers(comps.engineWindowPtr);
+
+			// Tracy Profiler: Collect Gpu data
+			TracyGpuCollect;
+
+			// Process pending events
+			glfwPollEvents();
+
+			// Check for OpenGl rendering errors
+			checkOglErrors(__FUNCTION__);
+
+			// Tracy Profiler: End frame mark
+			FrameMark;
+		}
 	}
 
 	// Dear ImGui: Cleanup

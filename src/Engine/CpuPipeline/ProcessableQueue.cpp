@@ -32,8 +32,6 @@ Task ProcessableQueue::getNextTask()
 
 void ProcessableQueue::refreshQueue()
 {
-	ZoneScoped;
-
 	// Lock access to the taskQueue
 	queueModificationMutex.lock();
 
