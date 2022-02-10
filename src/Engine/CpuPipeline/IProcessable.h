@@ -26,6 +26,7 @@ public:
 	void definePreprocess();
 	bool ifDefinedPreprocess();
 
+
 	// Operation characteristics:
 	// * performed in one of the worker threads
 	// * executed in processing phase, so should be independent of other IProcessable components
@@ -34,10 +35,11 @@ public:
 	void defineProcess();
 	bool ifDefinedProcess();
 
+
 	// Operation characteristics:
 	// * performed in main thread
 	// * performed after processing phase, when all updates are finished
-	// * PARALLEL, so it should contain heaviest of the calculations (e.g. physics calculation)
+	// * NOT PARALLEL, so it should be well optimized and contain only the key operations
 	virtual void render() = 0;
 	void defineRender();
 	bool ifDefinedRender();

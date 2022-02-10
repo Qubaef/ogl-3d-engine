@@ -51,6 +51,7 @@ private:
 
 public:
 	ShaderManager(Engine& engine);
+	~ShaderManager() = default;
 
 	// Set directional light
 	void setDirectionalLight(LightDirectional* directionalLight);

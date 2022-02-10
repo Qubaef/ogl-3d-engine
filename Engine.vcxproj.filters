@@ -240,6 +240,18 @@
     <ClCompile Include="src\App\Renderables\GuiEntityManager\EntityProperties\IntPropertyContinuousSliderModifier.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\Components\RenderPass\RenderPass.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Components\RenderPass\DefaultRenderPass.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\RenderPasses\ShadowsRenderPass.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\RenderPasses\DepthRenderPass.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App\CameraControllers\CameraController.h">
@@ -479,13 +491,37 @@
     <ClInclude Include="src\Engine\CpuPipeline\Task.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderer\OpenGl\Validate.h">
+    <ClInclude Include="src\Renderer\OpenGl\Validation.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="src\Renderer\OpenGl\Include.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderer\OpenGl\ImGui.h">
+    <ClInclude Include="src\Renderer\OpenGl\ImGuiWrapper.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Components\RenderPass\RenderPass.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Components\RenderPass\DefaultRenderPass.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Components\Shaders\ShaderGlobalData.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\OpenGl\Objects\Ubo.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Components\Shaders\GlobalDataLayout.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\RenderPasses\ShadowsRenderPass.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\RenderPasses\DepthRenderPass.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\OpenGl\Objects\GlTexture2dArray.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>

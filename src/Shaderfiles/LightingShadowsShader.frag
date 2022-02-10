@@ -26,10 +26,35 @@ in VS_OUT {
 } fs_in;
 
 //// Uniforms
-layout (std140, binding = 0) uniform LightSpaceMatrices
+layout (std140, binding = 0) uniform GlobalData
+{
+	// Display mode
+	int displayMode;
+
+	// Camera and viewport
+	vec3 viewPos;
+	vec3 viewDir;
+	float nearPlane;
+	float farPlane;
+
+	mat4 MVP;
+	mat4 M;
+	mat4 M_inv;
+	mat4 V;
+	mat4 P;
+
+	// Lights
+	vec3 dirLightAmbient;
+	vec3 dirLightDiffuse;
+	vec3 dirLightSpecular;
+	vec3 dirLightDirection;
+} gd;
+
+layout (std140, binding = 1) uniform LightSpaceMatrices
 {
     mat4 lightSpaceMatrices[16];
 };
+
 uniform float cascadePlaneDistances[16];
 uniform float maxShadowCascadeBias[16];
 uniform int cascadeCount;   // number of frusta - 1

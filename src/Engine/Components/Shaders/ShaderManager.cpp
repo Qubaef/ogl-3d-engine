@@ -20,7 +20,7 @@ ShaderManager::ShaderManager(Engine& engine) :
 		"EntityManager");
 
 	// Init unchangeable uniforms
-	for (const auto shaderPair : shaderCollection)
+	for (const auto& shaderPair : shaderCollection)
 	{
 		shaderPair.second->use();
 		shaderPair.second->setInt(pointLightsCountName, actualPointLightsNumber);

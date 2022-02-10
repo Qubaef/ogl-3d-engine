@@ -185,8 +185,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <HeapReserveSize>2000000000</HeapReserveSize>
-      <StackReserveSize>
-      </StackReserveSize>
+      <StackReserveSize>10000000</StackReserveSize>
       <HeapCommitSize>
       </HeapCommitSize>
       <LargeAddressAware>true</LargeAddressAware>
@@ -283,7 +282,11 @@
     <ClCompile Include="src\App\Renderables\LodTerrain\Heightmap.cpp" />
     <ClCompile Include="src\App\Renderables\Sphere.cpp" />
     <ClCompile Include="src\App\Renderables\LodTerrain\SingleMeshLodTerrain.cpp" />
+    <ClCompile Include="src\App\RenderPasses\DepthRenderPass.cpp" />
+    <ClCompile Include="src\App\RenderPasses\ShadowsRenderPass.cpp" />
     <ClCompile Include="src\Engine\Common\ImageLibWrapper.cpp" />
+    <ClCompile Include="src\Engine\Components\RenderPass\DefaultRenderPass.cpp" />
+    <ClCompile Include="src\Engine\Components\RenderPass\RenderPass.cpp" />
     <ClCompile Include="src\Engine\CpuPipeline\ProcessableQueue.cpp" />
     <ClCompile Include="src\App\Renderables\BaseGui.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -349,7 +352,13 @@
     <ClInclude Include="src\App\Renderables\Sphere.h" />
     <ClInclude Include="src\App\Renderables\LodTerrain\SingleMeshLodTerrain.h" />
     <ClInclude Include="src\App\Renderables\Terrain\SimplexNoiseWrapper.h" />
+    <ClInclude Include="src\App\RenderPasses\DepthRenderPass.h" />
+    <ClInclude Include="src\App\RenderPasses\ShadowsRenderPass.h" />
     <ClInclude Include="src\Engine\Common\ImageLibWrapper.h" />
+    <ClInclude Include="src\Engine\Components\RenderPass\DefaultRenderPass.h" />
+    <ClInclude Include="src\Engine\Components\RenderPass\RenderPass.h" />
+    <ClInclude Include="src\Engine\Components\Shaders\GlobalDataLayout.h" />
+    <ClInclude Include="src\Engine\Components\Shaders\ShaderGlobalData.h" />
     <ClInclude Include="src\Engine\CpuPipeline\ProcessableQueue.h" />
     <ClInclude Include="src\App\Renderables\BaseGui.h" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -400,10 +409,12 @@
     <ClInclude Include="src\Engine\CpuPipeline\IProcessable.h" />
     <ClInclude Include="src\Engine\Components\Shaders\Shader.h" />
     <ClInclude Include="src\Engine\Components\Shaders\ShaderManager.h" />
-    <ClInclude Include="src\Renderer\OpenGl\ImGui.h" />
+    <ClInclude Include="src\Renderer\OpenGl\ImGuiWrapper.h" />
     <ClInclude Include="src\Renderer\OpenGl\Include.h" />
     <ClInclude Include="src\Renderer\OpenGl\Init.h" />
-    <ClInclude Include="src\Renderer\OpenGl\Validate.h" />
+    <ClInclude Include="src\Renderer\OpenGl\Objects\GlTexture2dArray.h" />
+    <ClInclude Include="src\Renderer\OpenGl\Objects\Ubo.h" />
+    <ClInclude Include="src\Renderer\OpenGl\Validation.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Shaderfiles\DepthShader.vert" />

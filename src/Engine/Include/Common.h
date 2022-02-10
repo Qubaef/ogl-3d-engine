@@ -8,7 +8,7 @@
 #include "../../../tracy/TracyOpenGL.hpp"
 
 // Dear ImGui
-#include "Renderer/OpenGl/ImGui.h"
+#include "Renderer/OpenGl/ImGuiWrapper.h"
 
 // Publicly available logger
 #include "DebugLib/Log.h"

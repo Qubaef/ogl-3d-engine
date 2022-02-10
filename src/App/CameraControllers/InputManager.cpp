@@ -41,7 +41,7 @@ InputManager::InputManager(Engine& engine)
 {
 	ZoneScoped;
 
-	p_window = engine.getGlWindow();
+	p_window = engine.getGlfwWindow();
 
 	// Set custom user pointer, to make binding possible
 	set_window_user_pointer();

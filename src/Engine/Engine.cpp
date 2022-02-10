@@ -1,19 +1,24 @@
 ﻿#include <iostream>
+#include <utility>
 
 #include "Engine.h"
 
 #include "Exceptions/InitializationException.h"
 #include "App/Renderables/TestEntity.h"
+#include "Components/Shaders/ShaderGlobalData.h"
 #include "DebugLib/Log.h"
 
 #include "Renderer/OpenGl/Init.h"
-#include "Renderer/OpenGl/Validate.h"
+#include "Renderer/OpenGl/Validation.h"
 
 Engine::Engine()
 	:
 	props(*(new Properties())),
-	comps(*(new Components()))
+	comps(*this)
 {
+	// Initialize Debug Log
+	LOG.init(true, true, true, true, true);
+
 	try
 	{
 		// Start OpenGL Initialization Phase
@@ -28,32 +33,18 @@ Engine::Engine()
 	runPhaseEnginePrep();
 }
 
-GLFWwindow* Engine::getGlWindow()
-{
-	ZoneScoped;
-
-	return comps.engineWindowPtr;
-}
-
-MessageBus& Engine::getMessageBus()
-{
-	return comps.messageBus;
-}
-
 void Engine::registerShader(Shader& shader)
 {
-	comps.shaderManagerPtr->registerShader(shader);
+	comps.shaderManager.registerShader(shader);
 }
 
 Shader* Engine::getShaderByName(std::string name)
 {
-	return comps.shaderManagerPtr->getShaderByName(name);
+	return comps.shaderManager.getShaderByName(std::move(name));
 }
 
 bool Engine::registerProcessable(IProcessable* processablePtr)
 {
-	ZoneScoped;
-
 	comps.processableList.push_back(processablePtr);
 	comps.processableQueue.pushProcessable(processablePtr);
 
@@ -65,14 +56,9 @@ void Engine::registerCamera(Camera* cameraPtr)
 	comps.cameraPtr = cameraPtr;
 }
 
-Camera* Engine::getCamera()
+void Engine::registerRenderPass(RenderPass* renderPassPtr)
 {
-	return comps.cameraPtr;
-}
-
-ShaderManager* Engine::getShaderManager()
-{
-	return comps.shaderManagerPtr;
+	comps.renderPassList.push_back(renderPassPtr);
 }
 
 void Engine::runPhaseRuntime()
@@ -111,11 +97,8 @@ void Engine::runPhaseRuntime()
 
 			//// Perform necessary side tasks, while waiting for processableQueue tasks to be completed
 
-			// Clear buffers
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 			// Update shaders uniforms with lights
-			comps.shaderManagerPtr->updatePerFrame();
+			comps.shaderManager.updatePerFrame();
 
 			// Wait for preRenderQueue to be finished
 			// while waiting, start performing processable tasks, if there are some already waiting for execution
@@ -130,7 +113,9 @@ void Engine::runPhaseRuntime()
 		//
 		{
 			// Render all rendering tasks from processableQueue
-			comps.processableQueue.render();
+			// comps.processableQueue.render();
+			// comps.defaultRenderPass.render();
+			render();
 
 			// Dear ImGui: Render
 			ImGuiRender();
@@ -157,6 +142,9 @@ void Engine::runPhaseRuntime()
 		}
 	}
 
+	// Cleanup processable queue
+	comps.processableQueue.cleanup();
+
 	// Dear ImGui: Cleanup
 	ImGuiCleanup();
 
@@ -179,6 +167,17 @@ bool Engine::verifySetupStatus()
 	return readyForExecution;
 }
 
+void Engine::render()
+{
+	// Render all render passes
+	for (const auto& renderPass : comps.renderPassList)
+	{
+		renderPass->preRender();
+		renderPass->render();
+		renderPass->postRender();
+	}
+}
+
 void Engine::runPhaseRendererInit()
 {
 	//
@@ -191,9 +190,7 @@ void Engine::runPhaseRendererInit()
 		true
 	);
 
-	//
 	// Verify Glfw window
-	//
 	if (comps.engineWindowPtr == nullptr) {
 		glfwTerminate();
 		throw InitializationException("Failed to open Glfw window", __FUNCTION__);
@@ -208,10 +205,80 @@ void Engine::runPhaseRendererInit()
 		throw InitializationException("Failed to initialize Glew", __FUNCTION__);
 	}
 
+	//
+	// Initialize tracy context
+	//
 	TracyGpuContext;
 
+	//
+	// Set OpenGL Engine's parameters
+	//
 	setDefaultOglParameters();
 
+	//
+	// Set default properties of the Engine
+	//
+	setDefaultProperties();
+}
+
+void Engine::setDefaultOglParameters()
+{
+	// Ensure we can capture the escape key being pressed below
+	glfwSetInputMode(comps.engineWindowPtr, GLFW_STICKY_KEYS, GL_TRUE);
+
+	// Enable depth test
+	glEnable(GL_DEPTH_TEST);
+
+	// Accept fragment if it is closer to the camera than the former one
+	glDepthFunc(GL_LESS);
+
+	// Disable Vsync (enabling requires time synchronization)
+	glfwSwapInterval(1);
+
+	// Cull triangles which normal is not towards the camera (should be turned on for optimization)
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+
+	// Set default background color
+	glClearColor(0.2f, 0.8f, 1.0f, 0.0f);
+}
+
+void Engine::setDefaultProperties()
+{
+	//
+	// Set default time properties
+	//
+	props.time.lastPrintTimestamp = glfwGetTime();
+	props.time.lastFrameTimestamp = props.time.lastPrintTimestamp;
+	props.time.printInterval = 1.0;
+	props.time.processedFramesNumber = 0;
+	props.time.lastFrameDelta = 0;
+}
+
+
+void Engine::runPhaseEnginePrep()
+{
+	// Initialize Engine's components
+	initComponents();
+
+	// Dump environment properties after preparation
+	dumpEnvironmentSetup();
+}
+
+void Engine::initComponents()
+{
+	// Dear ImGui: Setup context
+	ImGuiInit(comps.engineWindowPtr);
+
+	// Set worker threads in preRenderQueue
+	comps.processableQueue.initWorkers(2);
+
+	// Init shaderGlobalData
+	comps.shaderGlobalData.init();
+}
+
+void Engine::dumpEnvironmentSetup()
+{
 	LOG.INFO("OGL version: %s\n", glGetString(GL_VERSION));
 
 	int work_grp_cnt[3];
@@ -236,60 +303,4 @@ void Engine::runPhaseRendererInit()
 
 	LOG.INFO("max global (total) compute work group counts x:%i y:%i z:%i\n",
 		work_grp_cnt[0], work_grp_cnt[1], work_grp_cnt[2]);
-}
-
-void Engine::setDefaultOglParameters()
-{
-	ZoneScoped;
-
-	// Ensure we can capture the escape key being pressed below
-	glfwSetInputMode(comps.engineWindowPtr, GLFW_STICKY_KEYS, GL_TRUE);
-
-	// Enable depth test
-	glEnable(GL_DEPTH_TEST);
-
-	// Accept fragment if it is closer to the camera than the former one
-	glDepthFunc(GL_LESS);
-
-	// Disable Vsync (enabling requires time synchronization)
-	glfwSwapInterval(1);
-
-	// Cull triangles which normal is not towards the camera (should be turned on for optimization)
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
-
-	// Set default background color (will be replaced by skybox probably)
-	glClearColor(0.2f, 0.8f, 1.0f, 0.0f);
-
-	// Dear ImGui: Setup context
-	ImGuiInit(comps.engineWindowPtr);
-}
-
-void Engine::runPhaseEnginePrep()
-{
-	ZoneScoped;
-
-	// Set default Engine properties
-	setDefaultsPropertiesRender();
-	setDefaultsTimeProperties();
-
-	// Initialize ShaderManager
-	comps.shaderManagerPtr = new ShaderManager(*this);
-
-	// Initialize worker threads in preRenderQueue
-	comps.processableQueue.initWorkers(2);
-}
-
-void Engine::setDefaultsPropertiesRender()
-{
-	ZoneScoped;
-}
-
-void Engine::setDefaultsTimeProperties()
-{
-	props.time.lastPrintTimestamp = glfwGetTime();
-	props.time.lastFrameTimestamp = props.time.lastPrintTimestamp;
-	props.time.printInterval = 1.0;
-	props.time.processedFramesNumber = 0;
-	props.time.lastFrameDelta = 0;
 }

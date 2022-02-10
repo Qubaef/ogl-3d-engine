@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <intrin.h>
+
 #include "IProcessable.h"
 
 struct Task
@@ -18,6 +20,11 @@ struct Task
 	Task(IProcessable* ownerPtr, ProcessableFunction function) :
 		function(function), ownerPtr(ownerPtr)
 	{
+	}
+
+	~Task()
+	{
+		__nop();
 	}
 
 	// Check if task is performable

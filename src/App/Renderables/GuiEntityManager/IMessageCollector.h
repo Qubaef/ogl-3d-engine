@@ -4,5 +4,7 @@
 class IMessageCollector
 {
 public:
-	 virtual void addMessage(Message* message, const char* recipient) = 0;
+	virtual void addMessage(Message* message, const char* recipient) = 0;
+
+	virtual ~IMessageCollector() = default;
 };

@@ -13,6 +13,8 @@ class ProcessableQueue
 {
 	const int MAX_WORKER_THREADS = 4;
 
+	bool shouldClose = false;
+
 	// Main vector
 	std::vector<IProcessable*> processablesList;
 
@@ -53,6 +55,8 @@ class ProcessableQueue
 public:
 	ProcessableQueue();
 
+	~ProcessableQueue();
+
 	// Initialize queue workers, return current number of active workers
 	int initWorkers(int numberOfWorkers);
 
@@ -73,4 +77,7 @@ public:
 
 	// Check if all taskQueue tasks were finished and if threads are waiting
 	bool ifFinished();
+
+	// Cleanup queue to close its threads
+	void cleanup();
 };

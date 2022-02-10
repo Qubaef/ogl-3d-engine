@@ -64,6 +64,7 @@ class MessageBus
 public:
 
 	MessageBus();
+	~MessageBus() = default;
 
 	// Register messanger
 	// returns id of registered messanger

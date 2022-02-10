@@ -12,6 +12,8 @@
 #include "Renderables/Interior.h"
 #include "Renderables/LodTerrain/SingleMeshLodTerrain.h"
 #include "Renderables/GuiEntityManager/EntityManager.h"
+#include "RenderPasses/DepthRenderPass.h"
+#include "RenderPasses/ShadowsRenderPass.h"
 
 void loadTerrainScene(Engine& engine, InputManager* inputManager);
 void loadInteriorScene(Engine& engine, InputManager* inputManager);
@@ -28,9 +30,6 @@ int main()
 	// TODO: Add log message
 	system("start cmd /c tracy\\capture\\build\\win32\\x64\\Debug\\capture.exe -o output.tracy -f");
 #endif
-
-	// Initialize Debug Log
-	LOG.init(true, true, true, true, true);
 
 	// Initialize the Engine
 	Engine engine = Engine();
@@ -102,6 +101,11 @@ int main()
 	default: 
 		return -1;
 	}
+
+	// Register render pipeline
+	// engine.registerRenderPass(new DefaultRenderPass(engine));
+	// engine.registerRenderPass(new DepthRenderPass(engine));
+	engine.registerRenderPass(new ShadowsRenderPass(engine));
 
 	// Start the Engine
 	engine.runPhaseRuntime();

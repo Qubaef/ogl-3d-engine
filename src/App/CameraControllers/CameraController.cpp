@@ -10,7 +10,7 @@ CameraController::CameraController(Engine& engine, InputManager* p_input_manager
 	ZoneScoped;
 
 	// set pointer to window
-	this->windowPtr = engine.getGlWindow();
+	this->windowPtr = engine.getGlfwWindow();
 	this->inputManagerPtr = p_input_manager;
 
 	// set initial values of camera
@@ -37,7 +37,7 @@ CameraController::CameraController(Engine& engine, InputManager* p_input_manager
 	ZoneScoped;
 
 	// set pointer to window
-	this->windowPtr = engine.getGlWindow();
+	this->windowPtr = engine.getGlfwWindow();
 	this->inputManagerPtr = p_input_manager;
 
 	this->initial_horizontal_angle = horizontal_angle;

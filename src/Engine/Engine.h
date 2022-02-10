@@ -18,12 +18,7 @@ class Engine
 public:
 
 	Engine();
-
-	// Return engine's window
-	GLFWwindow* getGlWindow();
-
-	// Return engine's message bus
-	MessageBus& getMessageBus();
+	~Engine() = default;
 
 	// Register new Shader in the Engine
 	void registerShader(Shader& shaderPtr);
@@ -34,15 +29,11 @@ public:
 	// Register new IProcessable static task in the Engine
 	bool registerProcessable(IProcessable* processablePtr);
 
-	// Register camera/input manager for the engine
+	// Register camera for the engine
 	void registerCamera(Camera* cameraPtr);
 
-	// Return engine's camera
-	Camera* getCamera();
-
-	// Return engine's shaderManager
-	ShaderManager* getShaderManager();
-
+	// Register render pass manager for the engine
+	void registerRenderPass(RenderPass* renderPassPtr);
 
 	// =====================================================
 	// =========== Runtime phase methods
@@ -55,6 +46,9 @@ private:
 	// Verify Engine setup status to confirm it is ready for execution
 	bool verifySetupStatus();
 
+	// Render all render passes
+	void render();
+
 
 	// =====================================================
 	// =============== Engine's properties
@@ -63,7 +57,7 @@ public:
 	//
 	// Engine's properties containing static hierarchical configuration and runtime data
 	// Accessible for external use, so should be properly encapsulated to avoid unexpected modifications
-	// 
+	//
 	Properties& props;
 
 
@@ -74,8 +68,47 @@ private:
 	//
 	// Engine's built-in components configurable via Api or properties
 	//
-	Components& comps;
+	Components comps;
 
+	//
+	// Getters for specific components
+	//
+public:
+	// Return engine's window
+	GLFWwindow* getGlfwWindow()
+	{
+		return comps.engineWindowPtr;
+	}
+
+	// Return engine's shaderGlobalData
+	ShaderGlobalData& getShaderGlobalData()
+	{
+		return comps.shaderGlobalData;
+	}
+
+	// Return engine's shaderManager
+	ShaderManager& getShaderManager()
+	{
+		return comps.shaderManager;
+	}
+
+	// Return engine's camera
+	Camera* getCamera() const
+	{
+		return comps.cameraPtr;
+	}
+
+	// Return engine's message bus
+	MessageBus& getMessageBus()
+	{
+		return comps.messageBus;
+	}
+
+	// Return engine's processable list
+	const std::vector<IProcessable*>& getProcessableList() const
+	{
+		return comps.processableList;
+	}
 
 	// =====================================================
 	// =========== Initialization phase methods
@@ -84,9 +117,11 @@ private:
 	// Start Renderer Initialization Phase
 	void runPhaseRendererInit();
 
-	// Set OpenGL Engine parameters
+	// Set OpenGL Engine's parameters
 	void setDefaultOglParameters();
 
+	// Set default properties of the Engine
+	void setDefaultProperties();
 
 	// =====================================================
 	// =========== Preparation phase methods
@@ -95,9 +130,9 @@ private:
 	// Start Engine Preparation Phase
 	void runPhaseEnginePrep();
 
-	// Set default values of PropertiesRender
-	void setDefaultsPropertiesRender();
+	// Initialize Engine's components
+	void initComponents();
 
-	// Set default values of PropertiesTime
-	void setDefaultsTimeProperties();
+	// Dump environment properties after preparation
+	void dumpEnvironmentSetup();
 };

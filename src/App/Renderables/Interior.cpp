@@ -11,7 +11,7 @@
 #include "GuiEntityManager/EntityProperties/Vec3PropertyContinuousModifier.h"
 #include "GuiEntityManager/Messages/RegisterEntityMessage.h"
 #include "GuiEntityManager/Messages/RegisterPropertyMessage.h"
-#include "Renderer/OpenGl/Validate.h"
+#include "Renderer/OpenGl/Validation.h"
 
 using namespace glm;
 
@@ -285,7 +285,7 @@ void Interior::generateWall(vec2 wall, vec3 direction)
 
 mat4 Interior::calculateLightSpaceMatrix(const float nearPlane, const float farPlane)
 {
-	vec3 lightDir = engine.getShaderManager()->getDirectionalLight().getDirectionVal();
+	vec3 lightDir = engine.getShaderManager().getDirectionalLight().getDirectionVal();
 	Camera* cameraPtr = engine.getCamera();
 
 	mat4 proj = perspective(
@@ -734,7 +734,7 @@ Interior::Interior(Engine& engine)
 	glGenBuffers(1, &matricesUBO);
 	glBindBuffer(GL_UNIFORM_BUFFER, matricesUBO);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(mat4x4) * 16, nullptr, GL_STATIC_DRAW);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, matricesUBO);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, matricesUBO);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	checkOglErrors(__FUNCTION__);
@@ -799,7 +799,6 @@ void Interior::render()
 		framebufferShaderPtr->setInt("layer", layer);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D_ARRAY, lightDepthMaps);
-		// glBindTexture(GL_TEXTURE_2D, shadowMapTextures[layer]);
 		renderQuad();
 
 		checkOglErrors(__FUNCTION__);

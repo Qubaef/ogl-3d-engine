@@ -14,7 +14,7 @@ protected:
 
 	glm::mat4 Projection;				// Projection Matrix
 	glm::mat4 View;						// View Matrix
-	glm::mat4 Model;						// Model Matrix
+	glm::mat4 Model;					// Model Matrix
 	glm::mat4 MVP;						// MVP matrix
 public:
 	Camera(Engine& engine);

@@ -23,7 +23,6 @@ class Interior : public IProcessable, public IMessanger
 	unsigned int depthFramebuffer;
 	const unsigned int DEPTH_MAP_RES = 4096;
 
-	std::vector<unsigned> shadowMapTextures;
 	unsigned int lightDepthMaps;
 
     // Shader used for Interior

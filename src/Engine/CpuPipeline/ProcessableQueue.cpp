@@ -69,11 +69,10 @@ void ProcessableQueue::refreshQueue()
 
 void ProcessableQueue::startWorkerCycle(int threadId)
 {
-	ZoneScoped;
 	tracy::SetThreadName("WorkerThread");
 
 	// printf("Thread %d: Initialized\n", threadId);
-	while (true)
+	while (!shouldClose)
 	{
 		// printf("Thread %d: Prelock. ThreadsWaiting %d\n", threadId, unsigned(threadsWaiting));
 		std::unique_lock<std::mutex> mutexLockGuard(conditionalVariableMutex);
@@ -107,6 +106,15 @@ void ProcessableQueue::startWorkerCycle(int threadId)
 ProcessableQueue::ProcessableQueue()
 	: phase(ProcessableType::NONE)
 {
+}
+
+ProcessableQueue::~ProcessableQueue()
+{
+	// Detach all threads
+	for (std::thread& thread : activeWorkersVector)
+	{
+		thread.join();
+	}
 }
 
 int ProcessableQueue::initWorkers(int numberOfWorkers)
@@ -161,8 +169,6 @@ void ProcessableQueue::preprocess()
 
 void ProcessableQueue::process()
 {
-	ZoneScoped;
-
 	// Wait for all threads to finish
 	while (!ifFinished());
 
@@ -181,8 +187,6 @@ void ProcessableQueue::process()
 
 void ProcessableQueue::render()
 {
-	ZoneScoped;
-
 	// Wait for all threads to finish
 	while (!ifFinished());
 
@@ -208,8 +212,6 @@ void ProcessableQueue::render()
 
 void ProcessableQueue::processNext()
 {
-	ZoneScoped;
-
 	Task task = getNextTask();
 
 	if (task.performable())
@@ -221,4 +223,11 @@ void ProcessableQueue::processNext()
 bool ProcessableQueue::ifFinished()
 {
 	return tasksQueue.empty() && threadsWaiting == activeWorkersVector.size();
+}
+
+void ProcessableQueue::cleanup()
+{
+	shouldClose = true;
+
+	nextFrameConditionalVariable.notify_all();
 }
