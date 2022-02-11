@@ -8,8 +8,8 @@
 #include "Components/Shaders/ShaderGlobalData.h"
 #include "DebugLib/Log.h"
 
-#include "Renderer/OpenGl/Init.h"
-#include "Renderer/OpenGl/Validation.h"
+#include "Renderer/OpenGL/Init.h"
+#include "Renderer/OpenGL/Validation.h"
 
 Engine::Engine()
 	:
@@ -114,7 +114,6 @@ void Engine::runPhaseRuntime()
 		{
 			// Render all rendering tasks from processableQueue
 			// comps.processableQueue.render();
-			// comps.defaultRenderPass.render();
 			render();
 
 			// Dear ImGui: Render
@@ -134,7 +133,7 @@ void Engine::runPhaseRuntime()
 			// Process pending events
 			glfwPollEvents();
 
-			// Check for OpenGl rendering errors
+			// Check for OpenGL rendering errors
 			checkOglErrors(__FUNCTION__);
 
 			// Tracy Profiler: End frame mark

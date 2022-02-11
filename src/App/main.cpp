@@ -10,8 +10,10 @@
 #include "Renderables/Sphere.h"
 #include "Renderables/Framebuffer.h"
 #include "Renderables/Interior.h"
+#include "Renderables/InteriorNoShading.h"
 #include "Renderables/LodTerrain/SingleMeshLodTerrain.h"
 #include "Renderables/GuiEntityManager/EntityManager.h"
+#include "RenderPasses/DefaultRenderPass.h"
 #include "RenderPasses/DepthRenderPass.h"
 #include "RenderPasses/ShadowsRenderPass.h"
 
@@ -46,23 +48,18 @@ int main()
 		"src/Shaderfiles/LightingShadowsShader.frag");
 	engine.registerShader(lightingShadowsShader);
 
-	Shader mainShader = Shader("MainShader",
-		"src/Shaderfiles/MainShader.vert",
-		"src/Shaderfiles/MainShader.frag");
-	engine.registerShader(mainShader);
+	Shader oldLightingShadowsShader = Shader("OldLightingShadowsShader",
+		"src/Shaderfiles/OldLightingShadowsShader.vert",
+		"src/Shaderfiles/OldLightingShadowsShader.frag");
+	engine.registerShader(oldLightingShadowsShader);
 
 	Shader depthShader = Shader("DepthShader",
 		"src/Shaderfiles/DepthShader.vert",
-		"src/Shaderfiles/DepthShader.frag");
+		"src/Shaderfiles/DepthShader.frag",
+		nullptr,
+		nullptr,
+		"src/Shaderfiles/DepthShader.geom");
 	engine.registerShader(depthShader);
-
-	Shader shadowMappingShader = Shader("ShadowMappingShader",
-		"src/Shaderfiles/ShadowMappingShader.vert",
-		"src/Shaderfiles/ShadowMappingShader.frag",
-		nullptr,
-		nullptr,
-		"src/Shaderfiles/ShadowMappingShader.geom");
-	engine.registerShader(shadowMappingShader);
 
 	Shader waterShader = Shader("WaterShader",
 		"src/Shaderfiles/WaterVertexShader.vert",
@@ -103,9 +100,12 @@ int main()
 	}
 
 	// Register render pipeline
-	// engine.registerRenderPass(new DefaultRenderPass(engine));
-	// engine.registerRenderPass(new DepthRenderPass(engine));
-	engine.registerRenderPass(new ShadowsRenderPass(engine));
+	//engine.registerRenderPass(new DefaultRenderPass(engine));
+
+	DepthRenderPass* depthRenderPass = new DepthRenderPass(engine);
+	ShadowsRenderPass* shadowsRenderPass = new ShadowsRenderPass(engine, *(depthRenderPass));
+	engine.registerRenderPass(depthRenderPass);
+	engine.registerRenderPass(shadowsRenderPass);
 
 	// Start the Engine
 	engine.runPhaseRuntime();
@@ -126,7 +126,8 @@ void loadInteriorScene(Engine& engine, InputManager* inputManager)
 	// engine.registerProcessable(new Sphere(engine, vec3(5, 5, 5)));
 	engine.registerProcessable(new Skybox(engine));
 	engine.registerProcessable(new EntityManager(engine));
-	engine.registerProcessable(new Interior(engine));
+	// engine.registerProcessable(new Interior(engine));
+	engine.registerProcessable(new InteriorNoShading(engine));
 
 	// engine.registerProcessable(reinterpret_cast<IProcessable*>(new Framebuffer(engine)));
 	engine.registerProcessable(new BaseGui(engine));

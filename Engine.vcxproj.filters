@@ -243,13 +243,16 @@
     <ClCompile Include="src\Engine\Components\RenderPass\RenderPass.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Components\RenderPass\DefaultRenderPass.cpp">
+    <ClCompile Include="src\App\RenderPasses\DefaultRenderPass.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="src\App\RenderPasses\ShadowsRenderPass.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="src\App\RenderPasses\DepthRenderPass.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\Renderables\InteriorNoShading.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
@@ -485,31 +488,31 @@
     <ClInclude Include="src\Engine\Components\Components.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderer\OpenGl\Init.h">
+    <ClInclude Include="src\Renderer\OpenGL\Init.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\CpuPipeline\Task.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderer\OpenGl\Validation.h">
+    <ClInclude Include="src\Renderer\OpenGL\Validation.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderer\OpenGl\Include.h">
+    <ClInclude Include="src\Renderer\OpenGL\Include.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderer\OpenGl\ImGuiWrapper.h">
+    <ClInclude Include="src\Renderer\OpenGL\ImGuiWrapper.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Components\RenderPass\RenderPass.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Components\RenderPass\DefaultRenderPass.h">
+    <ClInclude Include="src\App\RenderPasses\DefaultRenderPass.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Components\Shaders\ShaderGlobalData.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderer\OpenGl\Objects\Ubo.h">
+    <ClInclude Include="src\Renderer\OpenGL\Objects\GLUbo.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Components\Shaders\GlobalDataLayout.h">
@@ -521,7 +524,19 @@
     <ClInclude Include="src\App\RenderPasses\DepthRenderPass.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderer\OpenGl\Objects\GlTexture2dArray.h">
+    <ClInclude Include="src\Renderer\OpenGL\Objects\GLTexture2dArray.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\OpenGL\Utils.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\OpenGL\Objects\GLTexture2d.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\OpenGL\Objects\GLFramebuffer.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Renderables\InteriorNoShading.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>
@@ -563,5 +578,8 @@
     <None Include="src\Shaderfiles\MainShader.vert" />
     <None Include="src\Shaderfiles\MainShader.frag" />
     <None Include="src\Shaderfiles\ShadowMappingShader.geom" />
+    <None Include="src\Shaderfiles\OldLightingShadowsShader.frag" />
+    <None Include="src\Shaderfiles\OldLightingShadowsShader.vert" />
+    <None Include="src\Shaderfiles\DepthShader.geom" />
   </ItemGroup>
 </Project>

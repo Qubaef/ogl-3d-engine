@@ -18,15 +18,18 @@
 
 //
 // Struct representing memory layout of engine's global data
-// It never gets initialized nor used
-// It's just representation of memory layout from which offsets can be calculated
+// It preserves the exact layout of gpu uniform object memory, so it can be copied 1:1 without conversion
+// It's representation of memory layout from which offsets can be calculated
 // Actual setters of the global data are in ShaderGlobalData
 //
 
 struct GlobalDataLayout
 {
+	// Disable assignment operator
+	GlobalDataLayout& operator=(const GlobalDataLayout&) = delete;
+
 	// Display mode
-	STD140_INT	displayMode;
+	STD140_INT displayMode;
 
 	// Camera and viewport
 	STD140_VEC4	viewPos;
@@ -36,7 +39,6 @@ struct GlobalDataLayout
 
 	STD140_MAT4	MVP;
 	STD140_MAT4	M;
-	STD140_MAT4	M_inv;
 	STD140_MAT4	V;
 	STD140_MAT4	P;
 

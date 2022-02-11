@@ -24,4 +24,7 @@ struct PropertiesConst
 
 	// Lights properties
 	const int maxPointLightsNumber = 16;
+
+	// Global data properties
+	const int GLOBAL_DATA_BIND_ID = 0;
 };

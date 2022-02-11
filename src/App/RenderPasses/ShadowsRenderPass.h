@@ -1,7 +1,10 @@
 ﻿#pragma once
 
+#include "Engine/Components/MessageBus/IMessanger.h"
 #include "Engine/Components/RenderPass/RenderPass.h"
-#include "Renderer/OpenGl/Objects/Ubo.h"
+#include "Renderer/OpenGL/Objects/GLUbo.h"
+
+class DepthRenderPass;
 
 //
 // Shadows RenderPass uses DEFAULT DisplayMode to render all the components in regular manner
@@ -9,18 +12,17 @@
 // Shader requires GL_TEXTURE_2D_ARRAY from depth pass as an input
 //
 
-class ShadowsRenderPass : public RenderPass
+class ShadowsRenderPass : public RenderPass, public IMessanger
 {
 public:
-	ShadowsRenderPass(Engine& engine);
-
-	// void setDepthTextures();
+	ShadowsRenderPass(Engine& engine, DepthRenderPass& depthRenderPass);
 
 	void preRender() override;
-
 	void postRender() override;
 
 private:
-	// GlTexture2dArray lightDepthMapsArray;
-	Ubo lightMatricesUbo;
+	DepthRenderPass& depthRenderPass;
+
+	float shadowStrength = 0.65f;
+	GLUbo shadowsInfo;
 };

@@ -11,17 +11,10 @@
 #include "GuiEntityManager/EntityProperties/Vec3PropertyContinuousModifier.h"
 #include "GuiEntityManager/Messages/RegisterEntityMessage.h"
 #include "GuiEntityManager/Messages/RegisterPropertyMessage.h"
-#include "Renderer/OpenGl/Validation.h"
+#include "Renderer/OpenGl/Utils.h"
+#include "Renderer/OpenGL/Validation.h"
 
 using namespace glm;
-
-void copyTextureArrayLayerToGL_TEXTURE_2D(unsigned targetTexture, unsigned textureArray, int layer, int width, int height) {
-	glCopyImageSubData(
-		textureArray, GL_TEXTURE_2D_ARRAY, 0, 0, 0, layer,
-		targetTexture, GL_TEXTURE_2D, 0, 0, 0, 0,
-		width, height, 1
-	);
-}
 
 std::vector<mat4> Interior::getLightSpaceMatrices()
 {
@@ -492,10 +485,9 @@ Interior::Interior(Engine& engine)
 		new FloatPropertyContinuousModifier("tmp", 0, 10, tmp, tmp)),
 		"EntityManager");
 
-	// shaderPtr = engine.getShaderByName("MainShader");
-	shaderPtr = engine.getShaderByName("LightingShadowsShader");
+	shaderPtr = engine.getShaderByName("OldLightingShadowsShader");
 	framebufferShaderPtr = engine.getShaderByName("DepthShader");
-	shadowMappingShaderPtr = engine.getShaderByName("ShadowMappingShader");
+	shadowMappingShaderPtr = engine.getShaderByName("DepthShader");
 
 	// Initialize view matrices
 	shaderPtr->use();
@@ -664,7 +656,6 @@ Interior::Interior(Engine& engine)
 
 	// Init framebuffer
 	glGenFramebuffers(1, &depthFramebuffer);
-	// attach depth texture as FBO's depth buffer
 	glBindFramebuffer(GL_FRAMEBUFFER, depthFramebuffer);
 
 	// Generate textures
@@ -691,12 +682,12 @@ Interior::Interior(Engine& engine)
 	constexpr float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glTexParameterfv(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_BORDER_COLOR, borderColor);
 
+	// attach depth texture as FBO's depth buffer
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, lightDepthMaps, 0);
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
 
 	// Verify if Framebuffer is complete
-	int status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		LOG.ERROR("Framebuffer is not complete!\n");

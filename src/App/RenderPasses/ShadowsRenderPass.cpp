@@ -1,43 +1,82 @@
 ﻿#include "ShadowsRenderPass.h"
 
+#include "DepthRenderPass.h"
+#include "App/Renderables/GuiEntityManager/Messages/RegisterEntityMessage.h"
 #include "Engine/Engine.h"
 #include "Engine/Components/Shaders/ShaderGlobalData.h"
 
-ShadowsRenderPass::ShadowsRenderPass(Engine& engine) :
-	RenderPass(engine)
+
+ShadowsRenderPass::ShadowsRenderPass(Engine& engine, DepthRenderPass& depthRenderPass) :
+	RenderPass(engine),
+	IMessanger(&engine.getMessageBus(), "ShadowsRenderPass"),
+	depthRenderPass(depthRenderPass)
 {
+	//
+	// Setup shadows info
+	//
+	shadowsInfo.init(sizeof(glm::vec4));
+
+	//
+	// Send messages to entity manager
+	//
+	sendMessage(new RegisterEntityMessage(""), "EntityManager");
 }
 
 void ShadowsRenderPass::preRender()
 {
-	// Clear buffers
+	//
+	// Setup render
+	//
+	glViewport(0, 0,
+		engine.props.consts.windowWidth,
+		engine.props.consts.windowHeight
+	);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
 
+	// Enable default engine's face culling
+	// TODO: extern it to the engine so that it is available globally
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+
+	//
+	//  Setup shaderGlobalData and send it to GPU
+	//
+	
 	// Get shaderGlobalData and set display type to default
 	ShaderGlobalData& shaderGlobalData = engine.getShaderGlobalData();
+	shaderGlobalData.data.displayMode = static_cast<int>(ShaderGlobalData::DisplayMode::DEFAULT);
+	// shaderGlobalData.data.displayMode = static_cast<int>(ShaderGlobalData::DisplayMode::CASCADES_DEBUG);
 
-	shaderGlobalData.set_displayMode(static_cast<int>(ShaderGlobalData::DisplayMode::DEFAULT));
+	shaderGlobalData.data.viewPos = glm::vec4(engine.getCamera()->getPosition(), 1.0);
+	shaderGlobalData.data.viewDir = glm::vec4(engine.getCamera()->getDirection(), 1.0);
+	shaderGlobalData.data.nearPlane = engine.props.consts.cameraNearClipping;
+	shaderGlobalData.data.farPlane = engine.props.consts.cameraFarClipping;
 
-	shaderGlobalData.set_viewPos(glm::vec4(1));
-	shaderGlobalData.set_viewDir(glm::vec4(2));
-	shaderGlobalData.set_nearPlane(3);
-	shaderGlobalData.set_farPlane(4);
+	shaderGlobalData.data.MVP = *(engine.getCamera()->getMVPMatrix());
+	shaderGlobalData.data.M = *(engine.getCamera()->getModelMatrix());
+	shaderGlobalData.data.V = *(engine.getCamera()->getViewMatrix());
+	shaderGlobalData.data.P = *(engine.getCamera()->getProjectionMatrix());
 
-	shaderGlobalData.set_MVP(glm::mat4(5));
-	shaderGlobalData.set_M(glm::mat4(6));
-	shaderGlobalData.set_M_inv(glm::mat4(7));
-	shaderGlobalData.set_V(glm::mat4(8));
-	shaderGlobalData.set_P(glm::mat4(9));
+	shaderGlobalData.data.dirLightAmbient = glm::vec4(engine.getShaderManager().getDirectionalLight().getColorAmbient(), 1.0);
+	shaderGlobalData.data.dirLightDiffuse = glm::vec4(engine.getShaderManager().getDirectionalLight().getColorDiffuse(), 1.0);
+	shaderGlobalData.data.dirLightSpecular = glm::vec4(engine.getShaderManager().getDirectionalLight().getColorSpecular(), 1.0);
+	shaderGlobalData.data.dirLightDirection = glm::vec4(normalize(engine.getShaderManager().getDirectionalLight().getDirectionVal()), 1.0);
 
-	shaderGlobalData.set_dirLightAmbient(glm::vec4(10));
-	shaderGlobalData.set_dirLightDiffuse(glm::vec4(11));
-	shaderGlobalData.set_dirLightSpecular(glm::vec4(12));
-	shaderGlobalData.set_dirLightDirection(glm::vec4(13));
+	shaderGlobalData.updateToGpu();
+	shaderGlobalData.bind(engine.props.consts.GLOBAL_DATA_BIND_ID);
 
-	shaderGlobalData.bind(0);
+	//
+	// Setup textures and Ubos
+	//
+	depthRenderPass.getLightDepthTexturesArray().bind(GL_TEXTURE0);
+	depthRenderPass.getLightMatricesUbo().bind(engine.props.consts.GLOBAL_DATA_BIND_ID + 1);
+	depthRenderPass.getCascadesUbo().bind(engine.props.consts.GLOBAL_DATA_BIND_ID + 2);
+
+	shadowsInfo.setData(0, sizeof(float), &shadowStrength);
+	shadowsInfo.bind(engine.props.consts.GLOBAL_DATA_BIND_ID + 3);
 }
 
 void ShadowsRenderPass::postRender()
 {
-	// engine.postRenderPassData(this, TargetRenderPass::NEXT, data);
 }

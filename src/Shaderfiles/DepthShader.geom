@@ -16,5 +16,6 @@ void main()
 		gl_Layer = gl_InvocationID;
 		EmitVertex();
 	}
+
 	EndPrimitive();
 }

@@ -1,10 +1,10 @@
 ﻿#pragma once
 #include "Engine/Include/Common.h"
 
-class Ubo
+class GLUbo
 {
 public:
-	Ubo() = default;
+	GLUbo() = default;
 
 	unsigned getId() const
 	{
@@ -21,12 +21,14 @@ public:
 
 	void setData(int offset, int dataSize, void* data) const
 	{
-		glBindBuffer(GL_UNIFORM_BUFFER, id);
-		glBufferSubData(GL_UNIFORM_BUFFER, offset, dataSize, data);
-		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+		//glBindBuffer(GL_UNIFORM_BUFFER, id);
+		//glBufferSubData(GL_UNIFORM_BUFFER, offset, dataSize, data);
+		//glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+		glNamedBufferSubData(id, offset, dataSize, data);
 	}
 
-	void bind(int bindingIndex) const
+	void bind(int bindingIndex) const 
 	{
 		glBindBuffer(GL_UNIFORM_BUFFER, id);
 		glBindBufferBase(GL_UNIFORM_BUFFER, bindingIndex, id);

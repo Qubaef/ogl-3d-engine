@@ -84,6 +84,11 @@ void EntityManager::process()
 
 void EntityManager::render()
 {
+	if (engine.getShaderGlobalData().data.displayMode == static_cast<int>(ShaderGlobalData::DisplayMode::DEPTH))
+	{
+		return;
+	}
+
 	//
 	// Entity editor
 	//

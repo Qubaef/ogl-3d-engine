@@ -20,7 +20,7 @@ void BaseGui::preprocess()
 	const int plotUpdateFreq = 10;
 
 	//
-	// Performance monitor 
+	// Performance monitor
 	//
 	ImGui::SetNextWindowSize(ImVec2(400, 150), ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);

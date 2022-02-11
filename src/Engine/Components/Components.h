@@ -6,7 +6,7 @@
 #include "Shaders/ShaderManager.h"
 #include "Engine/CpuPipeline/ProcessableQueue.h"
 #include "MessageBus/MessageBus.h"
-#include "RenderPass/DefaultRenderPass.h"
+#include "RenderPass/RenderPass.h"
 #include "Shaders/ShaderGlobalData.h"
 
 struct Components
@@ -17,6 +17,9 @@ struct Components
 	}
 
 	~Components() = default;
+
+	// Disable assignment operator
+	Components& operator=(const Components&) = delete;
 
 	// =====================================================
 	// =========== Built-in components

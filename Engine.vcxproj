@@ -279,13 +279,14 @@
     <ClCompile Include="src\App\Renderables\GuiEntityManager\Messages\RegisterEntityMessage.cpp" />
     <ClCompile Include="src\App\Renderables\GuiEntityManager\Messages\RegisterPropertyMessage.cpp" />
     <ClCompile Include="src\App\Renderables\Interior.cpp" />
+    <ClCompile Include="src\App\Renderables\InteriorNoShading.cpp" />
     <ClCompile Include="src\App\Renderables\LodTerrain\Heightmap.cpp" />
     <ClCompile Include="src\App\Renderables\Sphere.cpp" />
     <ClCompile Include="src\App\Renderables\LodTerrain\SingleMeshLodTerrain.cpp" />
     <ClCompile Include="src\App\RenderPasses\DepthRenderPass.cpp" />
     <ClCompile Include="src\App\RenderPasses\ShadowsRenderPass.cpp" />
     <ClCompile Include="src\Engine\Common\ImageLibWrapper.cpp" />
-    <ClCompile Include="src\Engine\Components\RenderPass\DefaultRenderPass.cpp" />
+    <ClCompile Include="src\App\RenderPasses\DefaultRenderPass.cpp" />
     <ClCompile Include="src\Engine\Components\RenderPass\RenderPass.cpp" />
     <ClCompile Include="src\Engine\CpuPipeline\ProcessableQueue.cpp" />
     <ClCompile Include="src\App\Renderables\BaseGui.cpp" />
@@ -347,6 +348,7 @@
     <ClInclude Include="src\App\Renderables\GuiEntityManager\Messages\RegisterEntityMessage.h" />
     <ClInclude Include="src\App\Renderables\GuiEntityManager\Messages\RegisterPropertyMessage.h" />
     <ClInclude Include="src\App\Renderables\Interior.h" />
+    <ClInclude Include="src\App\Renderables\InteriorNoShading.h" />
     <ClInclude Include="src\App\Renderables\LodTerrain\Heightmap.h" />
     <ClInclude Include="src\App\Renderables\LodTerrain\QuadTerrainNode.h" />
     <ClInclude Include="src\App\Renderables\Sphere.h" />
@@ -355,7 +357,7 @@
     <ClInclude Include="src\App\RenderPasses\DepthRenderPass.h" />
     <ClInclude Include="src\App\RenderPasses\ShadowsRenderPass.h" />
     <ClInclude Include="src\Engine\Common\ImageLibWrapper.h" />
-    <ClInclude Include="src\Engine\Components\RenderPass\DefaultRenderPass.h" />
+    <ClInclude Include="src\App\RenderPasses\DefaultRenderPass.h" />
     <ClInclude Include="src\Engine\Components\RenderPass\RenderPass.h" />
     <ClInclude Include="src\Engine\Components\Shaders\GlobalDataLayout.h" />
     <ClInclude Include="src\Engine\Components\Shaders\ShaderGlobalData.h" />
@@ -409,14 +411,18 @@
     <ClInclude Include="src\Engine\CpuPipeline\IProcessable.h" />
     <ClInclude Include="src\Engine\Components\Shaders\Shader.h" />
     <ClInclude Include="src\Engine\Components\Shaders\ShaderManager.h" />
-    <ClInclude Include="src\Renderer\OpenGl\ImGuiWrapper.h" />
-    <ClInclude Include="src\Renderer\OpenGl\Include.h" />
-    <ClInclude Include="src\Renderer\OpenGl\Init.h" />
-    <ClInclude Include="src\Renderer\OpenGl\Objects\GlTexture2dArray.h" />
-    <ClInclude Include="src\Renderer\OpenGl\Objects\Ubo.h" />
-    <ClInclude Include="src\Renderer\OpenGl\Validation.h" />
+    <ClInclude Include="src\Renderer\OpenGL\ImGuiWrapper.h" />
+    <ClInclude Include="src\Renderer\OpenGL\Include.h" />
+    <ClInclude Include="src\Renderer\OpenGL\Init.h" />
+    <ClInclude Include="src\Renderer\OpenGL\Objects\GLFramebuffer.h" />
+    <ClInclude Include="src\Renderer\OpenGL\Objects\GLTexture2d.h" />
+    <ClInclude Include="src\Renderer\OpenGL\Objects\GLTexture2dArray.h" />
+    <ClInclude Include="src\Renderer\OpenGL\Objects\GLUbo.h" />
+    <ClInclude Include="src\Renderer\OpenGL\Utils.h" />
+    <ClInclude Include="src\Renderer\OpenGL\Validation.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Shaderfiles\DepthShader.geom" />
     <None Include="src\Shaderfiles\DepthShader.vert" />
     <None Include="src\Shaderfiles\DepthShader.frag" />
     <None Include="src\Shaderfiles\FragmentShader.frag" />
@@ -429,6 +435,8 @@
     <None Include="src\Shaderfiles\LightingVertexShader.vert" />
     <None Include="src\Shaderfiles\MainShader.frag" />
     <None Include="src\Shaderfiles\MainShader.vert" />
+    <None Include="src\Shaderfiles\OldLightingShadowsShader.frag" />
+    <None Include="src\Shaderfiles\OldLightingShadowsShader.vert" />
     <None Include="src\Shaderfiles\ShadowMappingShader.frag" />
     <None Include="src\Shaderfiles\ShadowMappingShader.geom" />
     <None Include="src\Shaderfiles\ShadowMappingShader.vert" />
