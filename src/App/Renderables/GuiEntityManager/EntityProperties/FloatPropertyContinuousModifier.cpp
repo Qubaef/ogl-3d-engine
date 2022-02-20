@@ -3,8 +3,8 @@
 #include "imgui.h"
 
 FloatPropertyContinuousModifier::
-FloatPropertyContinuousModifier(std::string name, float minValue, float maxValue, float defaultValue, float& value)
-	: GuiProperty(std::move(name)), minValue(minValue), maxValue(maxValue), defaultValue(defaultValue), value(value)
+FloatPropertyContinuousModifier(std::string name, float minValue, float maxValue, float& value)
+	: GuiProperty(std::move(name)), minValue(minValue), maxValue(maxValue), value(value)
 {
 }
 

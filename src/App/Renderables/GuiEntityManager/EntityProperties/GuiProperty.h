@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include <utility>
 #include "App/Renderables/GuiEntityManager/GuiEntry/GuiEntry.h"
 #include "App/Renderables/GuiEntityManager/IMessageCollector.h"
 

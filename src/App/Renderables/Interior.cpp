@@ -470,19 +470,19 @@ Interior::Interior(Engine& engine)
 	sendMessage(new RegisterEntityMessage(""), "EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("Interior",
-		new FloatPropertyContinuousModifier("zMult", 0, 15, zMult, zMult)),
+		new FloatPropertyContinuousModifier("zMult", 0, 15, zMult)),
 		"EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("Interior",
-		new BoolPropertyTrueFalseSwitch("debug", false, debug)),
+		new BoolPropertyTrueFalseSwitch("debug", debug)),
 		"EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("Interior",
-		new FloatPropertyContinuousModifier("shadowStrength", 0, 1, shadowStrength, shadowStrength)),
+		new FloatPropertyContinuousModifier("shadowStrength", 0, 1, shadowStrength)),
 		"EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("Interior",
-		new FloatPropertyContinuousModifier("tmp", 0, 10, tmp, tmp)),
+		new FloatPropertyContinuousModifier("tmp", 0, 10, tmp)),
 		"EntityManager");
 
 	shaderPtr = engine.getShaderByName("OldLightingShadowsShader");
@@ -607,23 +607,23 @@ Interior::Interior(Engine& engine)
 	shadowCascadeLevels.push_back(1240);
 
 	sendMessage(new RegisterPropertyMessage("Interior",
-		new FloatPropertyContinuousModifier("shadowCascadeLevel0", 0, farPlane, shadowCascadeLevels[0], shadowCascadeLevels[0])),
+		new FloatPropertyContinuousModifier("shadowCascadeLevel0", 0, farPlane, shadowCascadeLevels[0])),
 		"EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("Interior",
-		new FloatPropertyContinuousModifier("shadowCascadeLevel1", 0, farPlane, shadowCascadeLevels[1], shadowCascadeLevels[1])),
+		new FloatPropertyContinuousModifier("shadowCascadeLevel1", 0, farPlane, shadowCascadeLevels[1])),
 		"EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("Interior",
-		new FloatPropertyContinuousModifier("shadowCascadeLevel2", 0, farPlane, shadowCascadeLevels[2], shadowCascadeLevels[2])),
+		new FloatPropertyContinuousModifier("shadowCascadeLevel2", 0, farPlane, shadowCascadeLevels[2])),
 		"EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("Interior",
-		new FloatPropertyContinuousModifier("shadowCascadeLevel3", 0, farPlane, shadowCascadeLevels[3], shadowCascadeLevels[3])),
+		new FloatPropertyContinuousModifier("shadowCascadeLevel3", 0, farPlane, shadowCascadeLevels[3])),
 		"EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("Interior",
-		new FloatPropertyContinuousModifier("shadowCascadeLevel4", 0, farPlane, shadowCascadeLevels[4], shadowCascadeLevels[4])),
+		new FloatPropertyContinuousModifier("shadowCascadeLevel4", 0, farPlane, shadowCascadeLevels[4])),
 		"EntityManager");
 
 	// Initialize shadow cascades biases
@@ -634,23 +634,23 @@ Interior::Interior(Engine& engine)
 	maxShadowCascadeBiasList.push_back(0.3280f);
 
 	sendMessage(new RegisterPropertyMessage("Interior",
-		new FloatPropertyContinuousModifier("maxShadowCascadeBias0", 0, 1, maxShadowCascadeBiasList[0], maxShadowCascadeBiasList[0])),
+		new FloatPropertyContinuousModifier("maxShadowCascadeBias0", 0, 1, maxShadowCascadeBiasList[0])),
 		"EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("Interior",
-		new FloatPropertyContinuousModifier("maxShadowCascadeBias1", 0, 1, maxShadowCascadeBiasList[1], maxShadowCascadeBiasList[1])),
+		new FloatPropertyContinuousModifier("maxShadowCascadeBias1", 0, 1, maxShadowCascadeBiasList[1])),
 		"EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("Interior",
-		new FloatPropertyContinuousModifier("maxShadowCascadeBias2", 0, 1, maxShadowCascadeBiasList[2], maxShadowCascadeBiasList[2])),
+		new FloatPropertyContinuousModifier("maxShadowCascadeBias2", 0, 1, maxShadowCascadeBiasList[2])),
 		"EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("Interior",
-		new FloatPropertyContinuousModifier("maxShadowCascadeBias3", 0, 1, maxShadowCascadeBiasList[3], maxShadowCascadeBiasList[3])),
+		new FloatPropertyContinuousModifier("maxShadowCascadeBias3", 0, 1, maxShadowCascadeBiasList[3])),
 		"EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("Interior",
-		new FloatPropertyContinuousModifier("maxShadowCascadeBias4", 0, 1, maxShadowCascadeBiasList[4], maxShadowCascadeBiasList[4])),
+		new FloatPropertyContinuousModifier("maxShadowCascadeBias4", 0, 1, maxShadowCascadeBiasList[4])),
 		"EntityManager");
 
 
@@ -711,7 +711,7 @@ Interior::Interior(Engine& engine)
 	glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, swizzleMask);
 
 	sendMessage(new RegisterPropertyMessage("Interior",
-		new IntPropertyContinuousSliderModifier("layer", 0, shadowCascadeLevels.size() - 1, layer, layer)),
+		new IntPropertyContinuousSliderModifier("layer", 0, shadowCascadeLevels.size() - 1, layer)),
 		"EntityManager");
 
 	sendMessage(

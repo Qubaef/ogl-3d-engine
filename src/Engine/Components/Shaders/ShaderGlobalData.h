@@ -12,13 +12,13 @@ class ShaderGlobalData
 {
 public:
 
-	enum class DisplayMode
+	enum DisplayMode
 	{
-		DEFAULT = 0,
-		WIREFRAME = 1,
-		NORMALS = 2,
-		DEPTH = 3,
-		CASCADES_DEBUG = 4
+		DEFAULT 		= 1 << 0,
+		WIREFRAME 		= 1 << 1,
+		NORMALS 		= 1 << 2,
+		DEPTH 			= 1 << 3,
+		CASCADES_DEBUG 	= 1 << 4,
 	};
 
 	// Cpu global data, which can be updated

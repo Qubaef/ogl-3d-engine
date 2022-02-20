@@ -17,16 +17,9 @@ public:
 	~InteriorNoShading() override = default;
 
 private:
-	std::vector<float> maxShadowCascadeBiasList;
-
     // Shader used for Interior
 	Shader* depthShader;
 	Shader* lightingShadowsShader;
-
-	// Handles to view matrices ids
-	GLuint MvpMatrixID;
-	GLuint ViewMatrixID;
-	GLuint ModelMatrixID;
 
 	glm::vec3 pos;
 

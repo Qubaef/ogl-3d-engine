@@ -3,8 +3,8 @@
 #include "imgui.h"
 
 IntPropertyContinuousDragModifier::
-IntPropertyContinuousDragModifier(std::string name, int minValue, int maxValue, int defaultValue, int& value)
-	: GuiProperty(std::move(name)), minValue(minValue), maxValue(maxValue), defaultValue(defaultValue), value(value)
+IntPropertyContinuousDragModifier(std::string name, int minValue, int maxValue, int& value)
+	: GuiProperty(std::move(name)), minValue(minValue), maxValue(maxValue), value(value)
 {
 }
 

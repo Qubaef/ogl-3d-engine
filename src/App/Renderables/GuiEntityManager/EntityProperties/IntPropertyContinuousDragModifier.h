@@ -6,10 +6,9 @@ struct IntPropertyContinuousDragModifier : GuiProperty
 {
 	int minValue;
 	int maxValue;
-	int defaultValue;
 	int& value;
 
-	IntPropertyContinuousDragModifier(std::string name, int minValue, int maxValue, int defaultValue, int& value);
+	IntPropertyContinuousDragModifier(std::string name, int minValue, int maxValue, int& value);
 
 	void display() override;
 

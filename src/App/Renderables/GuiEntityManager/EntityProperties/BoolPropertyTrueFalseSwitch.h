@@ -4,10 +4,9 @@
 
 struct BoolPropertyTrueFalseSwitch : GuiProperty
 {
-	bool defaultValue;
 	bool& value;
 
-	BoolPropertyTrueFalseSwitch(std::string name, bool defaultValue, bool& value);
+	BoolPropertyTrueFalseSwitch(std::string name, bool& value);
 
 	void display() override;
 

@@ -18,6 +18,9 @@ class CameraManager : public IProcessable, public IMessanger
 	std::vector<CameraController*> cameraControllersList;
 	int currentCameraIndex = -1;
 
+	glm::vec3 cameraPosition;
+	glm::vec3 cameraDirection;
+
 	void enableCamera(CameraController* cameraControllerPtr);
 
 public:

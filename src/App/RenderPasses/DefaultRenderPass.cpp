@@ -15,7 +15,7 @@ void DefaultRenderPass::preRender()
 
 	// Get shaderGlobalData and set display type to default
 	ShaderGlobalData& shaderGlobalData = engine.getShaderGlobalData();
-	shaderGlobalData.data.displayMode = static_cast<int>(ShaderGlobalData::DisplayMode::DEFAULT);
+	shaderGlobalData.data.displayMode = ShaderGlobalData::DisplayMode::DEFAULT;
 
 	shaderGlobalData.updateToGpu();
 	shaderGlobalData.bind(engine.props.consts.GLOBAL_DATA_BIND_ID);

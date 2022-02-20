@@ -119,33 +119,6 @@ InteriorNoShading::InteriorNoShading(Engine& engine) :
 	);
 	// enable attribute '1'
 	glEnableVertexAttribArray(1);
-
-	// Initialize shadow cascades biases
-	maxShadowCascadeBiasList.push_back(0.0050f);
-	maxShadowCascadeBiasList.push_back(0.0352f);
-	maxShadowCascadeBiasList.push_back(0.0767f);
-	maxShadowCascadeBiasList.push_back(0.1650f);
-	maxShadowCascadeBiasList.push_back(0.3280f);
-
-	sendMessage(new RegisterPropertyMessage("InteriorNoShading",
-		new FloatPropertyContinuousModifier("maxShadowCascadeBias0", 0, 1, maxShadowCascadeBiasList[0], maxShadowCascadeBiasList[0])),
-		"EntityManager");
-
-	sendMessage(new RegisterPropertyMessage("InteriorNoShading",
-		new FloatPropertyContinuousModifier("maxShadowCascadeBias1", 0, 1, maxShadowCascadeBiasList[1], maxShadowCascadeBiasList[1])),
-		"EntityManager");
-
-	sendMessage(new RegisterPropertyMessage("InteriorNoShading",
-		new FloatPropertyContinuousModifier("maxShadowCascadeBias2", 0, 1, maxShadowCascadeBiasList[2], maxShadowCascadeBiasList[2])),
-		"EntityManager");
-
-	sendMessage(new RegisterPropertyMessage("InteriorNoShading",
-		new FloatPropertyContinuousModifier("maxShadowCascadeBias3", 0, 1, maxShadowCascadeBiasList[3], maxShadowCascadeBiasList[3])),
-		"EntityManager");
-
-	sendMessage(new RegisterPropertyMessage("InteriorNoShading",
-		new FloatPropertyContinuousModifier("maxShadowCascadeBias4", 0, 1, maxShadowCascadeBiasList[4], maxShadowCascadeBiasList[4])),
-		"EntityManager");
 }
 
 void InteriorNoShading::preprocess()
@@ -158,11 +131,11 @@ void InteriorNoShading::process()
 
 void InteriorNoShading::render()
 {
-	if(engine.getShaderGlobalData().data.displayMode == static_cast<int>(ShaderGlobalData::DisplayMode::DEPTH))
+	if((engine.getShaderGlobalData().data.displayMode & ShaderGlobalData::DisplayMode::DEPTH) > 0)
 	{
 		setupDepthRender();
 	}
-	else if(engine.getShaderGlobalData().data.displayMode == static_cast<int>(ShaderGlobalData::DisplayMode::DEFAULT))
+	else if((engine.getShaderGlobalData().data.displayMode & ShaderGlobalData::DisplayMode::DEFAULT) > 0)
 	{
 		setupDefaultRender();
 	}

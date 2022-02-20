@@ -20,11 +20,11 @@ SingleMeshLodTerrain::SingleMeshLodTerrain(Engine& engine, int size, int density
 	sendMessage(new RegisterEntityMessage(""), "EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("SingleMeshLodTerrain",
-		new Vec3PropertyContinuousModifier("terrainOffset", -1000, 1000, 0, terrainOffset)),
+		new Vec3PropertyContinuousModifier("terrainOffset", -1000, 1000, terrainOffset)),
 		"EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("SingleMeshLodTerrain",
-		new IntPropertyNotifyModifier("SingleMeshLodTerrain", "notify variable", -1000, 1000, 0, 0)),
+		new IntPropertyNotifyModifier("SingleMeshLodTerrain", "notify variable", -1000, 1000, 0)),
 		"EntityManager");
 
 	// Initialize terrainQuadTree

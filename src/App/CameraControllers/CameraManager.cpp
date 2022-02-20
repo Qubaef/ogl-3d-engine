@@ -4,12 +4,14 @@
 #include "App/Renderables/GuiEntityManager/Messages/RegisterEntityMessage.h"
 #include "App/Renderables/GuiEntityManager/Messages/RegisterPropertyMessage.h"
 #include "App/Renderables/GuiEntityManager/EntityProperties/IntPropertyWatcher.h"
+#include "App/Renderables/GuiEntityManager/EntityProperties/Vec3PropertyWatcher.h"
 
 #include "CameraController.h"
 #include "InputManager.h"
 
-CameraManager::CameraManager(Engine& engine, InputManager* inputManagerPtr)
-	: IProcessable(engine), IMessanger(&engine.getMessageBus(), "CameraManager"),
+
+CameraManager::CameraManager(Engine& engine, InputManager* inputManagerPtr) :
+	IProcessable(engine), IMessanger(&engine.getMessageBus(), "CameraManager"),
 	inputManagerPtr(inputManagerPtr)
 {
 	sendMessage(new RegisterEntityMessage(""), "EntityManager");
@@ -17,7 +19,15 @@ CameraManager::CameraManager(Engine& engine, InputManager* inputManagerPtr)
 	inputManagerPtr->register_key_event(CAMERA_TOGGLE_KEY);
 
 	sendMessage(new RegisterPropertyMessage("CameraManager",
-		new IntPropertyWatcher("cameraIndex", currentCameraIndex)),
+		new IntPropertyWatcher("Camera index", currentCameraIndex)),
+		"EntityManager");
+
+	sendMessage(new RegisterPropertyMessage("CameraManager",
+		new Vec3PropertyWatcher("Camera position", cameraPosition)),
+		"EntityManager");
+
+	sendMessage(new RegisterPropertyMessage("CameraManager",
+		new Vec3PropertyWatcher("Camera direction", cameraDirection)),
 		"EntityManager");
 }
 
@@ -65,6 +75,9 @@ void CameraManager::preprocess()
 	// Update current camera state
 	const auto currCamera = cameraControllersList[currentCameraIndex];
 	currCamera->updatePerFrame();
+
+	cameraPosition = cameraControllersList[currentCameraIndex]->getPosition();
+	cameraDirection = cameraControllersList[currentCameraIndex]->getDirection();
 }
 
 void CameraManager::process()

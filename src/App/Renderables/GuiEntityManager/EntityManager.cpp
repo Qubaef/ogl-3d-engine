@@ -84,7 +84,7 @@ void EntityManager::process()
 
 void EntityManager::render()
 {
-	if (engine.getShaderGlobalData().data.displayMode == static_cast<int>(ShaderGlobalData::DisplayMode::DEPTH))
+	if ((engine.getShaderGlobalData().data.displayMode & ShaderGlobalData::DisplayMode::DEPTH) > 0)
 	{
 		return;
 	}

@@ -3,8 +3,8 @@
 #include "imgui.h"
 
 IntPropertyContinuousSliderModifier::
-IntPropertyContinuousSliderModifier(std::string name, int minValue, int maxValue, int defaultValue, int& value)
-	: GuiProperty(std::move(name)), minValue(minValue), maxValue(maxValue), defaultValue(defaultValue), value(value)
+IntPropertyContinuousSliderModifier(std::string name, int minValue, int maxValue, int& value)
+	: GuiProperty(std::move(name)), minValue(minValue), maxValue(maxValue), value(value)
 {
 }
 

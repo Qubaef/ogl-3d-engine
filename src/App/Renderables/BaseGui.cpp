@@ -67,9 +67,6 @@ void BaseGui::preprocess()
 
 	ImGui::Separator();
 
-	vec3 cameraPos = engine.getCamera()->getPosition();
-	ImGui::Text("Camera pos x: %.2f, y: %.2f, z: %.2f", cameraPos[0], cameraPos[1], cameraPos[2]);
-	
 	ImGui::End();
 }
 

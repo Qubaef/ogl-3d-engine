@@ -2,6 +2,7 @@
 
 #include "App/Renderables/GuiEntityManager/EntityProperties/FloatPropertyContinuousModifier.h"
 #include "App/Renderables/GuiEntityManager/EntityProperties/IntPropertyContinuousSliderModifier.h"
+#include "App/Renderables/GuiEntityManager/EntityProperties/LambdaProperty.h"
 #include "App/Renderables/GuiEntityManager/EntityProperties/TexturePropertyWatcher.h"
 #include "App/Renderables/GuiEntityManager/Messages/RegisterEntityMessage.h"
 #include "App/Renderables/GuiEntityManager/Messages/RegisterPropertyMessage.h"
@@ -77,17 +78,87 @@ DepthRenderPass::DepthRenderPass(Engine& engine) :
 	sendMessage(new RegisterEntityMessage(""), "EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("DepthRenderPass",
-		new FloatPropertyContinuousModifier("zMultiplier", 0, 15, zMultiplier, zMultiplier)),
+		new FloatPropertyContinuousModifier("zMultiplier", 0, 15, zMultiplier)),
 		"EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("DepthRenderPass",
-		new IntPropertyContinuousSliderModifier("debugLayerId", 0, shadowCascadeLevelsList.size() - 1, debugLayerId, debugLayerId)),
+		new IntPropertyContinuousSliderModifier(
+			"Cascade layer id",
+			0,
+			shadowCascadeLevelsList.size() - 1,
+			debugLayerId)
+	),
 		"EntityManager");
 
 	sendMessage(
 		new RegisterPropertyMessage("DepthRenderPass",
-			new TexturePropertyWatcher("shadowMapLayerTexture", cascadeDebugLayerTexture.getId(), DEPTH_MAP_RES, DEPTH_MAP_RES,
-				engine.props.consts.windowWidth * 0.20f, engine.props.consts.windowWidth * 0.20f)
+			new TexturePropertyWatcher(
+				"shadowMapLayerTexture",
+				cascadeDebugLayerTexture.getId(),
+				DEPTH_MAP_RES,
+				DEPTH_MAP_RES,
+				engine.props.consts.windowWidth * 0.20f,
+				engine.props.consts.windowWidth * 0.20f
+			)
+		),
+		"EntityManager"
+	);
+
+	sendMessage(
+		new RegisterPropertyMessage("DepthRenderPass",
+			new LambdaProperty(
+				"",
+				[&]() {
+					if (ImGui::TreeNode("Advanced properties:"))
+					{
+						if (debugLayerId == 0)
+						{
+							float zeroBound = 0;
+							ImGui::DragFloat("Lower bound: base", &zeroBound,
+								0.f, 0, 0, "%f",
+								ImGuiSliderFlags_AlwaysClamp
+							);
+
+							ImGui::DragFloat(
+								"Upper bound: 0",
+								&shadowCascadeLevelsList[0],
+								engine.props.consts.cameraFarClipping / 1000,
+								0, engine.props.consts.cameraFarClipping,
+								"%f",
+								ImGuiSliderFlags_AlwaysClamp
+							);
+						}
+						else
+						{
+							ImGui::DragFloat(
+								("Lower bound: " + std::to_string(debugLayerId - 1)).c_str(),
+								&shadowCascadeLevelsList[debugLayerId - 1],
+								engine.props.consts.cameraFarClipping / 1000,
+								0, engine.props.consts.cameraFarClipping,
+								"%f",
+								ImGuiSliderFlags_AlwaysClamp
+							);
+
+							ImGui::DragFloat(
+								("Upper bound: " + std::to_string(debugLayerId)).c_str(),
+								&shadowCascadeLevelsList[debugLayerId],
+								engine.props.consts.cameraFarClipping / 1000,
+								0, engine.props.consts.cameraFarClipping,
+								"%f",
+								ImGuiSliderFlags_AlwaysClamp
+							);
+						}
+
+						ImGui::DragFloat(
+							("shadowCascadeBias: " + std::to_string(debugLayerId)).c_str(),
+							&shadowCascadeBiasesList[debugLayerId],
+							0.001f, 0, 1, "%f"
+						);
+
+						ImGui::TreePop();
+					}
+				}
+			)
 		),
 		"EntityManager"
 	);
@@ -114,23 +185,7 @@ void DepthRenderPass::preRender()
 
 	// Get shaderGlobalData and set display type to depth
 	ShaderGlobalData& shaderGlobalData = engine.getShaderGlobalData();
-	shaderGlobalData.data.displayMode = static_cast<int>(ShaderGlobalData::DisplayMode::DEPTH);
-					 
-	// shaderGlobalData.data.viewPos = vec4(1);
-	// shaderGlobalData.data.viewDir = vec4(2);
-	// shaderGlobalData.data.nearPlane = 3;
-	// shaderGlobalData.data.farPlane = 4;
-
-	// shaderGlobalData.data.MVP = mat4(5);
-	// shaderGlobalData.data.M = mat4(6);
-	// shaderGlobalData.data.M_inv = mat4(7);
-	// shaderGlobalData.data.V = mat4(8);
-	// shaderGlobalData.data.P = mat4(9);
-		 
-	// shaderGlobalData.data.dirLightAmbient = vec4(10);
-	// shaderGlobalData.data.dirLightDiffuse = vec4(11);
-	// shaderGlobalData.data.dirLightSpecular = vec4(12);
-	// shaderGlobalData.data.dirLightDirection = vec4(13);
+	shaderGlobalData.data.displayMode = ShaderGlobalData::DisplayMode::DEPTH;
 
 	shaderGlobalData.updateToGpu();
 	shaderGlobalData.bind(engine.props.consts.GLOBAL_DATA_BIND_ID);
@@ -140,13 +195,10 @@ void DepthRenderPass::preRender()
 	//
 	setupLightMatrices();
 	lightMatricesUbo.bind(engine.props.consts.GLOBAL_DATA_BIND_ID + 1);
-	// cascadesUbo.bind(engine.props.consts.GLOBAL_DATA_BIND_ID + 2);
 }
 
 void DepthRenderPass::postRender()
 {
-	// engine.postRenderPassData(this, TargetRenderPass::NEXT, data);
-
 	// Disable rendering to framebuffer
 	GLFramebuffer::unbind();
 
@@ -207,7 +259,7 @@ void DepthRenderPass::calculateCascades()
 
 	// Cascade boundaries
 	int baseOffset = 0;
-	for(int i = 0; i < shadowCascadeLevelsList.size(); i++)
+	for (int i = 0; i < shadowCascadeLevelsList.size(); i++)
 	{
 		cascadesUbo.setData(
 			baseOffset + i * sizeof(vec4),
@@ -268,8 +320,8 @@ mat4 DepthRenderPass::calculateLightSpaceMatrix(const float nearPlane, const flo
 	Camera* cameraPtr = engine.getCamera();
 
 	mat4 proj = perspective(
-		(float) engine.props.consts.cameraFov,
-		(float) engine.props.consts.windowWidth / (float) engine.props.consts.windowHeight,
+		(float)engine.props.consts.cameraFov,
+		(float)engine.props.consts.windowWidth / (float)engine.props.consts.windowHeight,
 		nearPlane, farPlane
 	);
 
@@ -361,8 +413,4 @@ void DepthRenderPass::setupLightMatrices()
 	{
 		lightMatricesUbo.setData(i * sizeof(glm::mat4x4), sizeof(glm::mat4x4), (void*)value_ptr(lightMatrices[i]));
 	}
-
-	//ShaderGlobalData& shaderGlobalData = engine.getShaderGlobalData();
-	//shaderGlobalData[1].setData
-	// shaderGlobalData.data.displayMode = static_cast<int>(ShaderGlobalData::DisplayMode::DEPTH);
 }

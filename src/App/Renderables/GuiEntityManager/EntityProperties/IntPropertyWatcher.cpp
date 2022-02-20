@@ -12,5 +12,8 @@ IntPropertyWatcher(std::string name, const int& value)
 
 void IntPropertyWatcher::display()
 {
-	ImGui::LabelText(name.c_str(), "%d", value);
+	int valueCopy = value;
+	ImGui::DragInt(name.c_str(), &valueCopy,
+		0, 0, 0,
+		nullptr, ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_NoInput);
 }

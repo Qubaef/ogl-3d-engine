@@ -2,9 +2,8 @@
 
 #include "imgui.h"
 
-BoolPropertyTrueFalseSwitch::
-BoolPropertyTrueFalseSwitch(std::string name, bool defaultValue, bool& value)
-	: GuiProperty(std::move(name)), defaultValue(defaultValue), value(value)
+BoolPropertyTrueFalseSwitch::BoolPropertyTrueFalseSwitch(std::string name, bool& value) :
+	GuiProperty(std::move(name)), value(value)
 {
 }
 

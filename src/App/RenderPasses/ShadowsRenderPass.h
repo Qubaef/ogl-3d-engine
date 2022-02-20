@@ -24,5 +24,6 @@ private:
 	DepthRenderPass& depthRenderPass;
 
 	float shadowStrength = 0.65f;
+	bool shadowsCascadesDebug = false;
 	GLUbo shadowsInfo;
 };

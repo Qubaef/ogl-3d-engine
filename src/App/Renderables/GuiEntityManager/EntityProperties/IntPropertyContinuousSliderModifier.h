@@ -6,10 +6,9 @@ struct IntPropertyContinuousSliderModifier : GuiProperty
 {
 	int minValue;
 	int maxValue;
-	int defaultValue;
 	int& value;
 
-	IntPropertyContinuousSliderModifier(std::string name, int minValue, int maxValue, int defaultValue, int& value);
+	IntPropertyContinuousSliderModifier(std::string name, int minValue, int maxValue, int& value);
 
 	void display() override;
 

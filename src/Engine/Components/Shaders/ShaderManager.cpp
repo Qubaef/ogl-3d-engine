@@ -16,7 +16,7 @@ ShaderManager::ShaderManager(Engine& engine) :
 	sendMessage(new RegisterEntityMessage(""), "EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("ShaderManager",
-		new Vec3PropertyContinuousModifier("directionalLight", -1, 1, 0, directionalLight->getDirectionRef())),
+		new Vec3PropertyContinuousModifier("directionalLight", -1, 1, directionalLight->getDirectionRef())),
 		"EntityManager");
 
 	// Init unchangeable uniforms

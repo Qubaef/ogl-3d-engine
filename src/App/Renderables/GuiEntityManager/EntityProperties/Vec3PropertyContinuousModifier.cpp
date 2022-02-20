@@ -3,8 +3,8 @@
 #include "imgui.h"
 
 Vec3PropertyContinuousModifier::
-Vec3PropertyContinuousModifier(std::string name, float minValue, float maxValue, float defaultValue, glm::vec3& value)
-	: GuiProperty(std::move(name)), minValue(minValue), maxValue(maxValue), defaultValue(defaultValue), value(value)
+Vec3PropertyContinuousModifier(std::string name, float minValue, float maxValue, glm::vec3& value)
+	: GuiProperty(std::move(name)), minValue(minValue), maxValue(maxValue), value(value)
 {
 }
 

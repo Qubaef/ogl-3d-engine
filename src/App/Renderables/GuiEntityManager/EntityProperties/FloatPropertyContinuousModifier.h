@@ -5,10 +5,9 @@ struct FloatPropertyContinuousModifier : GuiProperty
 {
 	float minValue;
 	float maxValue;
-	float defaultValue;
 	float& value;
 
-	FloatPropertyContinuousModifier(std::string name, float minValue, float maxValue, float defaultValue, float& value);
+	FloatPropertyContinuousModifier(std::string name, float minValue, float maxValue, float& value);
 
 	void display() override;
 

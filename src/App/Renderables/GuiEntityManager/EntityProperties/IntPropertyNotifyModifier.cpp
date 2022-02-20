@@ -4,8 +4,8 @@
 #include "App/Renderables/GuiEntityManager/Messages/OnPropertyChangeMessage.h"
 
 IntPropertyNotifyModifier::
-IntPropertyNotifyModifier(const char* recipientName, std::string name, int minValue, int maxValue, int defaultValue, int value)
-	: GuiProperty(std::move(name)), recipientName(recipientName), minValue(minValue), maxValue(maxValue), defaultValue(defaultValue), value(value)
+IntPropertyNotifyModifier(const char* recipientName, std::string name, int minValue, int maxValue, int value)
+	: GuiProperty(std::move(name)), recipientName(recipientName), minValue(minValue), maxValue(maxValue), value(value)
 {
 }
 

@@ -1,6 +1,7 @@
 ﻿#include "ShadowsRenderPass.h"
 
 #include "DepthRenderPass.h"
+#include "App/Renderables/GuiEntityManager/EntityProperties/BoolPropertyTrueFalseSwitch.h"
 #include "App/Renderables/GuiEntityManager/EntityProperties/FloatPropertyContinuousModifier.h"
 #include "App/Renderables/GuiEntityManager/Messages/RegisterEntityMessage.h"
 #include "App/Renderables/GuiEntityManager/Messages/RegisterPropertyMessage.h"
@@ -10,7 +11,7 @@
 
 ShadowsRenderPass::ShadowsRenderPass(Engine& engine, DepthRenderPass& depthRenderPass) :
 	RenderPass(engine),
-	IMessanger(&engine.getMessageBus(), typeid(*this).name()),
+	IMessanger(&engine.getMessageBus(), "ShadowsRenderPass"),
 	depthRenderPass(depthRenderPass)
 {
 	//
@@ -24,7 +25,11 @@ ShadowsRenderPass::ShadowsRenderPass(Engine& engine, DepthRenderPass& depthRende
 	sendMessage(new RegisterEntityMessage(""), "EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("ShadowsRenderPass",
-		new FloatPropertyContinuousModifier("shadowStrength", 0, 1, shadowStrength, shadowStrength)),
+		new FloatPropertyContinuousModifier("shadowStrength", 0, 1, shadowStrength)),
+		"EntityManager");
+
+	sendMessage(new RegisterPropertyMessage("ShadowsRenderPass",
+		new BoolPropertyTrueFalseSwitch("Cascades debug view", shadowsCascadesDebug)),
 		"EntityManager");
 }
 
@@ -51,8 +56,9 @@ void ShadowsRenderPass::preRender()
 	
 	// Get shaderGlobalData and set display type to default
 	ShaderGlobalData& shaderGlobalData = engine.getShaderGlobalData();
-	shaderGlobalData.data.displayMode = static_cast<int>(ShaderGlobalData::DisplayMode::DEFAULT);
-	// shaderGlobalData.data.displayMode = static_cast<int>(ShaderGlobalData::DisplayMode::CASCADES_DEBUG);
+	shaderGlobalData.data.displayMode = ShaderGlobalData::DisplayMode::DEFAULT;
+	if (shadowsCascadesDebug)
+		shaderGlobalData.data.displayMode |= ShaderGlobalData::DisplayMode::CASCADES_DEBUG;
 
 	shaderGlobalData.data.viewPos = glm::vec4(engine.getCamera()->getPosition(), 1.0);
 	shaderGlobalData.data.viewDir = glm::vec4(engine.getCamera()->getDirection(), 1.0);
@@ -67,7 +73,7 @@ void ShadowsRenderPass::preRender()
 	shaderGlobalData.data.dirLightAmbient = glm::vec4(engine.getShaderManager().getDirectionalLight().getColorAmbient(), 1.0);
 	shaderGlobalData.data.dirLightDiffuse = glm::vec4(engine.getShaderManager().getDirectionalLight().getColorDiffuse(), 1.0);
 	shaderGlobalData.data.dirLightSpecular = glm::vec4(engine.getShaderManager().getDirectionalLight().getColorSpecular(), 1.0);
-	shaderGlobalData.data.dirLightDirection = glm::vec4(normalize(engine.getShaderManager().getDirectionalLight().getDirectionVal()), 1.0);
+	shaderGlobalData.data.dirLightDirection = glm::vec4(engine.getShaderManager().getDirectionalLight().getDirectionVal(), 1.0);
 
 	shaderGlobalData.updateToGpu();
 	shaderGlobalData.bind(engine.props.consts.GLOBAL_DATA_BIND_ID);

@@ -61,55 +61,62 @@ layout (std140, binding = 3) uniform ShadowsInfo
 uniform Material material;
 uniform sampler2DArray shadowMap;
 
+// Gloval variables
+vec3 layer1Color = vec3(1.0, 0.73, 0.0);
+
+// Array of colors for each layer
+# define LAYER_DEBUG_COLORS 7
+vec3 layerDebugColor[] = {
+    vec3(0.98, 0.25, 0.27),
+    vec3(0.95, 0.45, 0.17),
+    vec3(0.97, 0.59, 0.12),
+    vec3(0.98, 0.78, 0.31),
+    vec3(0.56, 0.75, 0.43),
+    vec3(0.26, 0.67, 0.55),
+    vec3(0.34, 0.46, 0.56)
+};
+
 //// Functions declarations
+int bitTest(int value, int bit);
 float getLinearDepth(float zNear, float zFar);
-vec3 calculateDirLight(vec3 normal, vec3 view_dir);
+vec3 calculateDirLight(vec3 normal, vec3 view_dir, Material material);
 float calculateShadows(vec3 fragPosWorldSpace);
 int calculateLayer(vec3 fragPosWorldSpace);
 
-void main()
-{
+void main() {
 	vec3 view_dir = normalize(g.viewPos - fs_in.FragPos);
     vec3 all_lights_result;
 
-	//// Calculate result for every light type
-
-    if(g.displayMode == 4) {
-        vec3 debugColor = vec3(0.0);
+	// Calculate result for every light type
+    if(bitTest(g.displayMode, 4) == 1) {
+        Material debugMaterial;
         int layer = calculateLayer(fs_in.FragPos);
 
-        if(layer == 0) {
-            debugColor = vec3(0.02, 0.84, 0.63);
-        }
-        else if(layer == 1){
-            debugColor = vec3(1.0, 0.82, 0.4);
-        }
-        else if(layer == 2){
-            debugColor = vec3(0.94, 0.28, 0.44);
-        }
-        else if(layer == 3){
-            debugColor = vec3(0.07, 0.54, 0.70);
-        }
-        else if(layer == 4){
-            debugColor = vec3(0.03, 0.23, 0.30);
-        }
-        else{
-            debugColor = vec3(0.0);
+        if(layer < LAYER_DEBUG_COLORS) {
+            debugMaterial.ambient = layerDebugColor[layer] * shadowStrength;
+            debugMaterial.diffuse = layerDebugColor[layer];
+        } else {
+            debugMaterial.ambient = vec3(0.0);
+            debugMaterial.diffuse = vec3(0.0);
         }
 
-        // Get depth of the fragment
-        debugColor *= getLinearDepth(g.nearPlane, g.farPlane) * 0.01;
+        debugMaterial.specular = vec3(0.0);
+        debugMaterial.shininess = 0;
 
-        FragColor = vec4(debugColor, 1.0);
-        return;
+        // Directional light
+	    all_lights_result = calculateDirLight(fs_in.Normal, view_dir, debugMaterial);
     }
     else {
         // Directional light
-	    all_lights_result = calculateDirLight(fs_in.Normal, view_dir);
+	    all_lights_result = calculateDirLight(fs_in.Normal, view_dir, material);
     }
 
-	//// Final result
+	// Final result
 	FragColor = vec4(all_lights_result, 1.f);
+}
+
+int bitTest(int value, int bit){
+    return (value >> bit) & 1;
 }
 
 float getLinearDepth(float zNear, float zFar)
@@ -118,7 +125,7 @@ float getLinearDepth(float zNear, float zFar)
      return 2.0 * zNear * zFar / (zFar + zNear - z_n * (zFar - zNear));
 }
 
-vec3 calculateDirLight(vec3 normal, vec3 view_dir)
+vec3 calculateDirLight(vec3 normal, vec3 view_dir, Material material)
 {
 	// Ambient
 	vec3 ambient = g.dirLightAmbient * material.ambient;
