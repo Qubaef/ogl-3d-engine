@@ -1,5 +1,6 @@
 ﻿#include "DepthRenderPass.h"
 
+#include "App/Renderables/GuiEntityManager/EntityProperties/FloatPropertyContinuousModifier.h"
 #include "App/Renderables/GuiEntityManager/EntityProperties/IntPropertyContinuousSliderModifier.h"
 #include "App/Renderables/GuiEntityManager/EntityProperties/TexturePropertyWatcher.h"
 #include "App/Renderables/GuiEntityManager/Messages/RegisterEntityMessage.h"
@@ -74,6 +75,10 @@ DepthRenderPass::DepthRenderPass(Engine& engine) :
 	// Send messages to entity manager
 	//
 	sendMessage(new RegisterEntityMessage(""), "EntityManager");
+
+	sendMessage(new RegisterPropertyMessage("DepthRenderPass",
+		new FloatPropertyContinuousModifier("zMultiplier", 0, 15, zMultiplier, zMultiplier)),
+		"EntityManager");
 
 	sendMessage(new RegisterPropertyMessage("DepthRenderPass",
 		new IntPropertyContinuousSliderModifier("debugLayerId", 0, shadowCascadeLevelsList.size() - 1, debugLayerId, debugLayerId)),

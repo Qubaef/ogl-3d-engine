@@ -263,14 +263,16 @@ __pycache__/
 # VsCode
 .vscode/
 
+# Plugins
+.ionide/
+.VSCodeCounter/
+StructLayoutSettings.json
+
 # Tracy collected data
 output.tracy
 
 # Imgui data
 imgui.ini
-
-# Ionide
-.ionide/
 
 # debug profiles
 debug-profile-collect/

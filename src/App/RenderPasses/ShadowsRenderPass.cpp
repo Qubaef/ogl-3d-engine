@@ -1,14 +1,16 @@
 ﻿#include "ShadowsRenderPass.h"
 
 #include "DepthRenderPass.h"
+#include "App/Renderables/GuiEntityManager/EntityProperties/FloatPropertyContinuousModifier.h"
 #include "App/Renderables/GuiEntityManager/Messages/RegisterEntityMessage.h"
+#include "App/Renderables/GuiEntityManager/Messages/RegisterPropertyMessage.h"
 #include "Engine/Engine.h"
 #include "Engine/Components/Shaders/ShaderGlobalData.h"
 
 
 ShadowsRenderPass::ShadowsRenderPass(Engine& engine, DepthRenderPass& depthRenderPass) :
 	RenderPass(engine),
-	IMessanger(&engine.getMessageBus(), "ShadowsRenderPass"),
+	IMessanger(&engine.getMessageBus(), typeid(*this).name()),
 	depthRenderPass(depthRenderPass)
 {
 	//
@@ -20,6 +22,10 @@ ShadowsRenderPass::ShadowsRenderPass(Engine& engine, DepthRenderPass& depthRende
 	// Send messages to entity manager
 	//
 	sendMessage(new RegisterEntityMessage(""), "EntityManager");
+
+	sendMessage(new RegisterPropertyMessage("ShadowsRenderPass",
+		new FloatPropertyContinuousModifier("shadowStrength", 0, 1, shadowStrength, shadowStrength)),
+		"EntityManager");
 }
 
 void ShadowsRenderPass::preRender()
