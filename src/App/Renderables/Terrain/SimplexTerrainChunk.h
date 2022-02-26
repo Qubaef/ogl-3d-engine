@@ -9,8 +9,6 @@
 
 class SimplexTerrainChunk : public Terrain
 {
-
-	Shader* shaderPtr;
 	int sectorSizeX;
 	int sectorSizeY;
 	int sectorsNumberX;
@@ -88,15 +86,13 @@ class SimplexTerrainChunk : public Terrain
 
 
 public:
-	SimplexTerrainChunk(int sectorSizeX, int sectorSizeY, int sectorsNumberX, int sectorsNumberY, int pointsPerSectorLine, Shader* shaderPtr);
+	SimplexTerrainChunk(int sectorSizeX, int sectorSizeY, int pointsPerSectorLine);
 
 	void initialize() override;
 
 	void update() override;
 
-	void sendAndRender() override;
-
-	Shader* getShader() override;
+	void sendAndRender(Shader* shaderPtr) override;
 
 	~SimplexTerrainChunk() override;
 

@@ -2,12 +2,10 @@
 
 using namespace glm;
 
-WaterTerrain::WaterTerrain(int sectorSizeX, int sectorSizeY, int sectorsNumberX, int sectorsNumberY, int pointsPerSectorLine, Shader* shaderPtr)
-	: shaderPtr(shaderPtr),
+WaterTerrain::WaterTerrain(int sectorSizeX, int sectorSizeY, int pointsPerSectorLine, Shader* shaderPtr) :
+	shaderPtr(shaderPtr),
 	sectorSizeX(sectorSizeX),
 	sectorSizeY(sectorSizeY),
-	sectorsNumberX(sectorsNumberX),
-	sectorsNumberY(sectorsNumberY),
 	pointsPerSectorLine(pointsPerSectorLine)
 {
 	ZoneScoped;
@@ -98,10 +96,9 @@ void WaterTerrain::initialize()
 
 void WaterTerrain::update()
 {
-	ZoneScoped;
 }
 
-void WaterTerrain::sendAndRender()
+void WaterTerrain::sendAndRender(Shader* shaderPtr)
 {
 	ZoneScoped;
 
@@ -116,11 +113,6 @@ void WaterTerrain::sendAndRender()
 		GL_UNSIGNED_INT,		// type
 		(void*)0				// element array buffer offset
 	);
-}
-
-Shader* WaterTerrain::getShader()
-{
-	return shaderPtr;
 }
 
 WaterTerrain::~WaterTerrain()

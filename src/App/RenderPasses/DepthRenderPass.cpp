@@ -122,7 +122,7 @@ DepthRenderPass::DepthRenderPass(Engine& engine) :
 							ImGui::DragFloat(
 								"Upper bound: 0",
 								&shadowCascadeLevelsList[0],
-								engine.props.consts.cameraFarClipping / 1000,
+								engine.props.consts.cameraFarClipping / 10000,
 								0, engine.props.consts.cameraFarClipping,
 								"%f",
 								ImGuiSliderFlags_AlwaysClamp
@@ -133,7 +133,7 @@ DepthRenderPass::DepthRenderPass(Engine& engine) :
 							ImGui::DragFloat(
 								("Lower bound: " + std::to_string(debugLayerId - 1)).c_str(),
 								&shadowCascadeLevelsList[debugLayerId - 1],
-								engine.props.consts.cameraFarClipping / 1000,
+								engine.props.consts.cameraFarClipping / 10000,
 								0, engine.props.consts.cameraFarClipping,
 								"%f",
 								ImGuiSliderFlags_AlwaysClamp
@@ -142,7 +142,7 @@ DepthRenderPass::DepthRenderPass(Engine& engine) :
 							ImGui::DragFloat(
 								("Upper bound: " + std::to_string(debugLayerId)).c_str(),
 								&shadowCascadeLevelsList[debugLayerId],
-								engine.props.consts.cameraFarClipping / 1000,
+								engine.props.consts.cameraFarClipping / 10000,
 								0, engine.props.consts.cameraFarClipping,
 								"%f",
 								ImGuiSliderFlags_AlwaysClamp
@@ -178,6 +178,8 @@ void DepthRenderPass::preRender()
 	// Reverse face culling to minimize peter-panning
 	glDisable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
+
+	updateCascades();
 
 	//
 	//  Setup shaderGlobalData and send it to GPU
@@ -257,6 +259,40 @@ void DepthRenderPass::calculateCascades()
 	//
 	cascadesUbo.init(MAX_LIGHT_MATRICES * 2 * sizeof(vec4) + sizeof(vec4));
 
+	// Cascade boundaries
+	int baseOffset = 0;
+	for (int i = 0; i < shadowCascadeLevelsList.size(); i++)
+	{
+		cascadesUbo.setData(
+			baseOffset + i * sizeof(vec4),
+			sizeof(float),
+			&shadowCascadeLevelsList[i]
+		);
+	}
+
+	// Cascade boundaries
+	baseOffset = MAX_LIGHT_MATRICES * sizeof(vec4);
+	for (int i = 0; i < shadowCascadeBiasesList.size(); i++)
+	{
+		cascadesUbo.setData(
+			baseOffset + i * sizeof(vec4),
+			sizeof(float),
+			&shadowCascadeBiasesList[i]
+		);
+	}
+
+	// Cascade count
+	baseOffset = 2 * MAX_LIGHT_MATRICES * sizeof(vec4);
+	int cascadeCount = shadowCascadeLevelsList.size();
+	cascadesUbo.setData(
+		baseOffset,
+		sizeof(int),
+		&cascadeCount
+	);
+}
+
+void DepthRenderPass::updateCascades()
+{
 	// Cascade boundaries
 	int baseOffset = 0;
 	for (int i = 0; i < shadowCascadeLevelsList.size(); i++)

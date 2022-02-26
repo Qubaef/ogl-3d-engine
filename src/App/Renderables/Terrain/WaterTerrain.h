@@ -9,7 +9,6 @@
 
 class WaterTerrain : public Terrain
 {
-
 	glm::vec4 wave1;
 	glm::vec4 wave2;
 	glm::vec4 wave3;
@@ -17,8 +16,6 @@ class WaterTerrain : public Terrain
 	Shader* shaderPtr;
 	int sectorSizeX;
 	int sectorSizeY;
-	int sectorsNumberX;
-	int sectorsNumberY;
 
 	int pointsPerSectorLine;
 
@@ -32,15 +29,13 @@ class WaterTerrain : public Terrain
 	std::vector<int> indicesData;
 
 public:
-	WaterTerrain(int sectorSizeX, int sectorSizeY, int sectorsNumberX, int sectorsNumberY, int pointsPerSectorLine, Shader* shaderPtr);
+	WaterTerrain(int sectorSizeX, int sectorSizeY, int pointsPerSectorLine, Shader* shaderPtr);
 
 	void initialize() override;
 
 	void update() override;
 
-	void sendAndRender() override;
-
-	Shader* getShader() override;
+	void sendAndRender(Shader* shaderPtr) override;
 
 	~WaterTerrain() override;
 };

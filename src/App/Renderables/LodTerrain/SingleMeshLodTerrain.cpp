@@ -202,8 +202,8 @@ void SingleMeshLodTerrain::render()
 	shaderPtr->setVec3("materialSteep.specular", vec3(0.0f, 0.0f, 0.0f));
 	shaderPtr->setFloat("materialSteep.shininess", 1024);
 
-	shaderPtr->setVec3("materialFlat.ambient", vec3(0.339f, 0.559f, 0.339f));
-	shaderPtr->setVec3("materialFlat.diffuse", vec3(0.565f, 0.933f, 0.565f));
+	shaderPtr->setVec3("materialFlat.ambient", vec3(0.339f, 0.559f, 0.339f) * vec3(0.7));
+	shaderPtr->setVec3("materialFlat.diffuse", vec3(0.565f, 0.933f, 0.565f) * vec3(0.7));
 	shaderPtr->setVec3("materialFlat.specular", vec3(0.0f, 0.0f, 0.0f));
 	shaderPtr->setFloat("materialFlat.shininess", 1024);
 

@@ -8,11 +8,8 @@
 
 class FlatTerrain : Terrain
 {
-	Shader* shaderPtr;
 	int sectorSizeX;
 	int sectorSizeY;
-	int sectorsNumberX;
-	int sectorsNumberY;
 
 	int pointsPerSectorLine;
 
@@ -25,17 +22,14 @@ class FlatTerrain : Terrain
 	glm::vec3* normalsData;
 	std::vector<int> indicesData;
 
-
 public:
-	FlatTerrain(int sectorSizeX, int sectorSizeY, int sectorsNumberX, int sectorsNumberY, int pointsPerSectorLine, Shader* shaderPtr);
+	FlatTerrain(int sectorSizeX, int sectorSizeY, int pointsPerSectorLine);
 
 	void initialize() override;
 
 	void update() override;
 
-	void sendAndRender() override;
-
-	Shader* getShader() override;
+	void sendAndRender(Shader* shaderPtr) override;
 
 	~FlatTerrain() override;
 };

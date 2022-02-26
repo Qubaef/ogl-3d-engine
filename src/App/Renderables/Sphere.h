@@ -8,12 +8,8 @@
 class Sphere : public IProcessable
 {
 	// Shader used for Sphere
-	Shader* shaderPtr;
-
-	// Handles to view matrices ids
-	GLuint MvpMatrixID;
-	GLuint ViewMatrixID;
-	GLuint ModelMatrixID;
+	Shader* depthShader;
+	Shader* lightingShadowsShader;
 
 	unsigned xSegments = 30;
 	unsigned ySegments = 30;
@@ -36,6 +32,9 @@ public:
 
 	void process() override;
 
+	void setupDepthRender();
+	void setupDefaultRender();
+	void renderScene();
 	void render() override;
 
 	~Sphere() override = default;

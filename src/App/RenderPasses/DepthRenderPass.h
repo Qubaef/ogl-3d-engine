@@ -46,6 +46,7 @@ private:
 
 	// Internal methods
 	void calculateCascades();
+	void updateCascades();
 
 	std::vector<glm::vec4> getFrustumCornersWorldSpace(const glm::mat4& proj, const glm::mat4& view);
 	glm::mat4 calculateLightSpaceMatrix(const float nearPlane, const float farPlane);

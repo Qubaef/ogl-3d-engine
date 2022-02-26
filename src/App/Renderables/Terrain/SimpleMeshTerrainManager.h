@@ -6,7 +6,8 @@
 class SimpleMeshTerrainManager : public IProcessable
 {
 	// Shader used for SimpleMeshTerrainManager
-	Shader* shaderPtr;
+	Shader* depthShader;
+	Shader* lightingShadowsShader;
 
 	// Terrain specific object, which provides operations on terrain mesh 
 	Terrain* terrainPtr;
@@ -37,6 +38,8 @@ public:
 
 	void process() override;
 
+	void setupDepthRender();
+	void setupDefaultRender();
 	void render() override;
 
 	~SimpleMeshTerrainManager() override = default;

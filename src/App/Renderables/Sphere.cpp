@@ -5,14 +5,9 @@ using namespace glm;
 Sphere::Sphere(Engine& engine, vec3 pos)
 	: IProcessable(engine), pos(pos)
 {
-	shaderPtr = engine.getShaderByName("LightingShader");
+	depthShader = engine.getShaderByName("DepthShader");
+	lightingShadowsShader = engine.getShaderByName("LightingShadowsShader");
 
-	// Initialize view matrices
-	shaderPtr->use();
-
-	MvpMatrixID = glGetUniformLocation(shaderPtr->getId(), "MVP");
-	ViewMatrixID = glGetUniformLocation(shaderPtr->getId(), "V");
-	ModelMatrixID = glGetUniformLocation(shaderPtr->getId(), "M");
 
 	for (unsigned int y = 0; y <= ySegments; ++y)
 	{
@@ -96,36 +91,25 @@ void Sphere::process()
 {
 }
 
-void Sphere::render()
+void Sphere::setupDepthRender()
 {
-	ZoneScoped;
+	// Render scene from light's point of view
+	depthShader->use();
+}
 
-	Camera* cameraPtr = engine.getCamera();
+void Sphere::setupDefaultRender()
+{
+	// Render scene from camera's point of view
+	lightingShadowsShader->use();
 
-	// Get pointers to matrices
-	mat4* mvp = cameraPtr->getMVPMatrix();
-	mat4* V = cameraPtr->getViewMatrix();
-	mat4* M = cameraPtr->getModelMatrix();
+	lightingShadowsShader->setVec3("material.ambient", vec3(0.0215, 0.1745, 0.0215));
+	lightingShadowsShader->setVec3("material.diffuse", vec3(0.07568, 0.61424, 0.07568));
+	lightingShadowsShader->setVec3("material.specular", vec3(0.633, 0.727811, 0.633));
+	lightingShadowsShader->setFloat("material.shininess", 2);
+}
 
-	shaderPtr->use();
-
-	this->shaderPtr->setVec3("material.ambient", vec3(0.0215, 0.1745, 0.0215));
-	this->shaderPtr->setVec3("material.diffuse", vec3(0.07568, 0.61424, 0.07568));
-	this->shaderPtr->setVec3("material.specular", vec3(0.633, 0.727811, 0.633));
-	this->shaderPtr->setFloat("material.shininess", 76.8f);
-
-	// Send transformation to the currently bound shader, in the "MVP" uniform
-	// This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
-	glUniformMatrix4fv(MvpMatrixID, 1, GL_FALSE, &(*mvp)[0][0]);
-	glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &(*V)[0][0]);
-	glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &(*M)[0][0]);
-
-	// Send M_inverted for optimization purposes (it is better to calculate it on cpu)
-	shaderPtr->setMat3("M_inverted", mat3(transpose(inverse(*M))));
-
-	// Send view position for specular component
-	shaderPtr->setVec3("view_pos", cameraPtr->getPosition());
-
+void Sphere::renderScene()
+{
 	// bind global VAO object
 	glBindVertexArray(mainVao.id);
 
@@ -140,4 +124,18 @@ void Sphere::render()
 	);
 
 	glCullFace(GL_FRONT);
+}
+
+void Sphere::render()
+{
+	if ((engine.getShaderGlobalData().data.displayMode & ShaderGlobalData::DisplayMode::DEPTH) > 0)
+	{
+		setupDepthRender();
+	}
+	else if ((engine.getShaderGlobalData().data.displayMode & ShaderGlobalData::DisplayMode::DEFAULT) > 0)
+	{
+		setupDefaultRender();
+	}
+
+	renderScene();
 }

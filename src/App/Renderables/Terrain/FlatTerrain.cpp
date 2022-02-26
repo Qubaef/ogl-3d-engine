@@ -2,16 +2,11 @@
 
 using namespace glm;
 
-FlatTerrain::FlatTerrain(int sectorSizeX, int sectorSizeY, int sectorsNumberX, int sectorsNumberY, int pointsPerSectorLine, Shader* shaderPtr)
-	: shaderPtr(shaderPtr),
+FlatTerrain::FlatTerrain(int sectorSizeX, int sectorSizeY, int pointsPerSectorLine) :
 	sectorSizeX(sectorSizeX),
 	sectorSizeY(sectorSizeY),
-	sectorsNumberX(sectorsNumberX),
-	sectorsNumberY(sectorsNumberY),
 	pointsPerSectorLine(pointsPerSectorLine)
 {
-	ZoneScoped;
-
 	// Generate buffer for vertex data
 	vertexData = new vec3[pointsPerSectorLine * pointsPerSectorLine];
 
@@ -182,18 +177,16 @@ void FlatTerrain::update()
 }
 
 
-void FlatTerrain::sendAndRender()
+void FlatTerrain::sendAndRender(Shader* shaderPtr)
 {
-	ZoneScoped;
-
 	// bind global VAO object
 	glBindVertexArray(mainVao.id);
 
 	// Set material
-	this->shaderPtr->setVec3("material.ambient", vec3(0.298f, 0.282f, 0.27f));
-	this->shaderPtr->setVec3("material.diffuse", vec3(0.458f, 0.411f, 0.341f));
-	this->shaderPtr->setVec3("material.specular", vec3(1.0f, 1.0f, 1.0f));
-	this->shaderPtr->setFloat("material.shininess", 32);
+	shaderPtr->setVec3("material.ambient", vec3(0.298f, 0.282f, 0.27f));
+	shaderPtr->setVec3("material.diffuse", vec3(0.458f, 0.411f, 0.341f));
+	shaderPtr->setVec3("material.specular", vec3(1.0f, 1.0f, 1.0f));
+	shaderPtr->setFloat("material.shininess", 32);
 
 	// Draw
 	glDrawElements(
@@ -202,11 +195,6 @@ void FlatTerrain::sendAndRender()
 		GL_UNSIGNED_INT,		// type
 		(void*)0				// element array buffer offset
 	);
-}
-
-Shader* FlatTerrain::getShader()
-{
-	return shaderPtr;
 }
 
 FlatTerrain::~FlatTerrain()

@@ -99,7 +99,7 @@ int main()
 		return -1;
 	}
 
-	// Register render pipeline
+	//// Register render pipeline
 	//engine.registerRenderPass(new DefaultRenderPass(engine));
 
 	DepthRenderPass* depthRenderPass = new DepthRenderPass(engine);
@@ -122,13 +122,15 @@ void loadInteriorScene(Engine& engine, InputManager* inputManager)
 	cameraManager->addCamera(new OverviewCameraController(engine, inputManager));
 	engine.registerProcessable(cameraManager);
 
-	// engine.registerProcessable(new SimpleMeshTerrainManager(engine, SimpleMeshTerrainManager::TERRAIN_TYPE::FLAT));
-	// engine.registerProcessable(new Sphere(engine, vec3(5, 5, 5)));
-	engine.registerProcessable(new Skybox(engine));
 	engine.registerProcessable(new EntityManager(engine));
-	// engine.registerProcessable(new Interior(engine));
-	engine.registerProcessable(new InteriorNoShading(engine));
 
+	// Ported
+	engine.registerProcessable(new SimpleMeshTerrainManager(engine, SimpleMeshTerrainManager::TERRAIN_TYPE::SIMPLEX));
+	engine.registerProcessable(new Sphere(engine, vec3(5, 5, 5)));
+	engine.registerProcessable(new Skybox(engine));
+	// engine.registerProcessable(new InteriorNoShading(engine));
+
+	// engine.registerProcessable(new Interior(engine));
 	// engine.registerProcessable(reinterpret_cast<IProcessable*>(new Framebuffer(engine)));
 	engine.registerProcessable(new BaseGui(engine));
 }

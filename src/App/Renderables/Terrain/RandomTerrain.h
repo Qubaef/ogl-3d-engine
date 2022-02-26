@@ -9,7 +9,6 @@
 
 class RandomTerrain : public Terrain
 {
-	Shader* shaderPtr;
 	int sectorSizeX;
 	int sectorSizeY;
 	int sectorsNumberX;
@@ -27,15 +26,13 @@ class RandomTerrain : public Terrain
 	std::vector<int> indicesData;
 	
 public:
-	RandomTerrain(int sectorSizeX, int sectorSizeY, int sectorsNumberX, int sectorsNumberY, int pointsPerSectorLine, Shader* shaderPtr);
+	RandomTerrain(int sectorSizeX, int sectorSizeY, int pointsPerSectorLine);
 
 	void initialize() override;
 
 	void update() override;
 
-	void sendAndRender() override;
-
-	Shader* getShader() override;
+	void sendAndRender(Shader* shaderPtr) override;
 
 	~RandomTerrain() override;
 };

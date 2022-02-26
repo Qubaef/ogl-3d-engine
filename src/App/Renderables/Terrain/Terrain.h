@@ -24,12 +24,7 @@ public:
 	//  * it's execution time will effect engine runtime, so it is required to be optimized
 	//  * difference between process and render is crucial, as process gets called in worker thread, which cannot
 	//	  send or render on gpu
-	virtual void sendAndRender() = 0;
-
-	// Each Terrain should be able to return it's Shader object
-	//  * getShader will be called by SimpleMeshTerrainManager every frame to pass MVP matrices
-	//  * it should either return own created shader, or the one passed during initialization
-	virtual Shader* getShader() = 0;
+	virtual void sendAndRender(Shader* shaderPtr) = 0;
 
 	// Destructor must be defined
 	virtual ~Terrain() = default;
